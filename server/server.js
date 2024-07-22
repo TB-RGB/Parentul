@@ -6,12 +6,16 @@ const cors = require('cors');
 const { Server } = require('socket.io');
 const http = require('http');
 const server = http.createServer(app);
+const { setupSocket } = require('./services/setupSocket');
 const io = new Server(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
   },
 });
+
+setupSocket(io);
+
 
 // Middleware Includes
 const sessionMiddleware = require('./modules/session-middleware');
