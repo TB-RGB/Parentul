@@ -3,39 +3,15 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 
-/**
- * GET route template
- */
-router.get('/', (req, res) => {
-  // GET route code here
 
-
-
-  const queryText = `SELECT * FROM "children";`
-
-  pool.query(queryText)
-    .then(result => {
-      res.send(result.rows);
-
-    })
-    .catch(err => {
-
-      console.log("error with get all children route")
-
-      res.sendStatus(500)
-    })
-
-
-
-});
 
 //route will return all children associated with a specific user_id
 //specifically all children belonging to a family will be returned
 router.get('/:user_id', (req, res) => {
   // GET route code here
 
-  
-  let childdataid =  req.body.user_id
+
+  let childdataid = req.body.user_id
   const queryText = `SELECT *
                       FROM children
                       where user_id = $1;`
@@ -58,87 +34,141 @@ router.get('/:user_id', (req, res) => {
 
 /**
  * POST route template
+ * This template reflects a SQL Transaction
  */
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   // POST route code here
 
-  const queryText = `
-  INSERT INTO "children"  
+  const connection = await pool.connect()
+
+
+  try {
+
+    await connection.query('BEGIN');
+
+    //defines children from req.body
+    //children contains many different child components 
+    //which will be iterated through and added to database
+    let children = req.body.children
+
+    queryText = ` INSERT INTO "children"  
   
       ("user_id", "name", "dob")
       VALUES
-    ($1, $2, $3);
-  `
+    ($1, $2, $3);`
+
+    //inserts to database
+    for (let child of children) {
+
+      await client.query(queryText, [child.user_id, child.name, child.dob])
+    }
+
+    connection.query('COMMIT')
+
+    res.sendStatus(200)
+    //commit 
+  }
+
+  catch (error) {
+    await connection.query('ROLLBACK');
+    console.log(error);
+    res.sendStatus(500);
+  }
+
+  finally {
+
+    connection.release()
+  }
+
 
 
   //array which contains the user prefrences from req.body 
   //this array will contain 5 parameters reflecting the number of values
   //in queryText 
 
-  const insertQuery = [
-    
-    req.body.user_id,
-    req.body.name,
-   
-    req.body.dob
-    
-   
-
-  ]
 
   //request to the postgres server which will update userprefrences
-  pool.query(queryText, insertQuery)
-  .then((result)=> {res.sendStatus(201);})
 
-  .catch((err) => {
-    console.log('Error with Post preferences', err);
-    res.sendStatus(500);
-  });
+
+
+
 });
 
 
 
 
 
-//this route will update by 
-router.put('/:id', (req, res) => {
+//this route needs to be written as a SQL Transaction 
+//IF two children are 
+//Never chage the user_id in the put route
+//always update by 
+//always will relate user_id
+
+
+//ASYNC\
+
+
+//begibn
+
+//commit 
+
+//rollback
+
+router.put('/update', async(req, res) => {
   // PUT route code here
 
   //update id is derived from req.params.id
-  let updateid = req.params.id
+  //let updateid = req.params.id
 
 
-  //the text which will update a specific entry in the database 
-  const queryText = `
-  UPDATE "children"
+
+  const connection = await pool.connect()
+
+
+
+  try {
+
+    await connection.query('BEGIN');
+
+    
+    let updateid = req.body.id
+    let children = req.body.children
+
+    let queryText = ` UPDATE "children"
   SET 
   
-  "user_id" = $1,
-  "name" = $2,
-  "dob" = $3
+ 
+  "name" = $1,
+  "dob" = $2
   
 
   WHERE 
-  id = $4;
-  `
+  id = $3;`
 
-  const updatedpreferences = [
-   
-    req.body.user_id,
-    
-    req.body.name,
-    req.body.dob,
-    
-    updateid
+    //inserts to database
+    for (let child of children) {
 
-  ]
+      await connection.query(queryText, [child.name, child.dob, updateid])
+    }
 
-  pool.query(queryText, updatedpreferences)
-  .then((result)=> {res.sendStatus(200); })
-  .catch((err)=>{
-    console.log('Error with the put route');
+    connection.query('COMMIT')
+
+    res.sendStatus(200)
+    //commit 
+  }
+
+  catch (error) {
+    await connection.query('ROLLBACK');
+    console.log(error);
     res.sendStatus(500);
-  })
+  }
+
+  finally {
+
+    connection.release()
+  }
+  //the text which will update a specific entry in the database 
+  
 });
 
 module.exports = router;
