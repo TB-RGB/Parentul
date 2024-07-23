@@ -15,6 +15,7 @@ const passport = require('./strategies/user.strategy');
 const userRouter = require('./routes/user.router');
 const preferencesRouter = require('./routes/preferences.router');
 const faqRouter = require('./routes/faq.router');
+const childrenRouter = require('./routes/children.router');
 
 // Express Middleware
 app.use(express.json());
@@ -32,6 +33,7 @@ app.use(passport.session());
 app.use('/api/user', userRouter);
 app.use('/api/preferences', preferencesRouter);
 app.use('/api/faq', faqRouter);
+app.use('/api/children', childrenRouter);
 
 // Listen Server & Port
 app.listen(PORT, () => {
