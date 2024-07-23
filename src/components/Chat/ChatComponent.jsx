@@ -8,6 +8,7 @@ import { sendMessage, initializeChat } from "../../redux/actions/chatActions";
 const ChatComponent = () => {
     const dispatch = useDispatch();
     const { messages, isLoading } = useSelector((state) => state.chat);
+    const user = useSelector((state) => state.user);
 
     useEffect(() => {
         dispatch(initializeChat());
@@ -15,7 +16,7 @@ const ChatComponent = () => {
 
     const handleSendMessage = (message) => {
         console.log("Sending message:", message);
-        dispatch(sendMessage(message));
+        dispatch(sendMessage(message, user.id));
     };
 
     return (

@@ -29,7 +29,7 @@ async function logChatHistory(userId, userMessage, aiResponse) {
             `;
     const aiMessageResult = await client.query(aiMessageQuery, [
       conversationId,
-      aiResponse,
+      aiResponse.text,
     ]);
     const aiMessageId = aiMessageResult.rows[0].id;
 
@@ -83,8 +83,23 @@ async function addUserFeedback(userId, conversationId, rating) {
     }
 }
 
+async function endConversation(conversationId) {
+    const queryText = `
+      UPDATE conversations
+      SET end_time = NOW()
+      WHERE id = $1;
+    `;
+    try {
+      await pool.query(queryText, [conversationId]);
+    } catch (err) {
+      console.error("Error ending conversation:", err);
+      throw err;
+    }
+  }
+
 module.exports = {
     logChatHistory,
     getUserChatHistory,
-    addUserFeedback
+    addUserFeedback,
+    endConversation
 }

@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { List, ListItem, ListItemText, Paper } from "@mui/material";
+import { List, ListItem, ListItemText, Paper, Typography } from "@mui/material";
 
 const MessageList = ({ messages }) => {
   const messagesEndRef = useRef(null);

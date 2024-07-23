@@ -9,7 +9,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   pool
-    .query('SELECT * FROM "user" WHERE id = $1', [id])
+    .query('SELECT * FROM "users" WHERE id = $1', [id])
     .then((result) => {
       // Handle Errors
       const user = result && result.rows && result.rows[0];
@@ -37,12 +37,12 @@ passport.deserializeUser((id, done) => {
 // Does actual work of logging in
 passport.use(
   'local',
-  new LocalStrategy((username, password, done) => {
+  new LocalStrategy((email, password_hash, done) => {
     pool
-      .query('SELECT * FROM "user" WHERE username = $1', [username])
+      .query('SELECT * FROM "users" WHERE email = $1', [email])
       .then((result) => {
         const user = result && result.rows && result.rows[0];
-        if (user && encryptLib.comparePassword(password, user.password)) {
+        if (user && encryptLib.comparePassword(password_hash, user.password_hash)) {
           // All good! Passwords match!
           // done takes an error (null in this case) and a user
           done(null, user);

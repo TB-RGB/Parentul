@@ -2,15 +2,20 @@ import { io }from 'socket.io-client';
 import store from '../redux/store';
 import { receiveWebSocketMessage } from '../redux/actions/chatActions';
 
+
+
 let socket;
 
+
+
 export const initializeWebSocket = () => {
-  socket = io('http://localhost:3000'), {
+  socket = io('http://localhost:5001'), {
     transports: ['websocket', 'polling'],
   };
 
   socket.on('connect', () => {
     console.log('Connected to WebSocket server');
+    console.log('Socket ID:', socket.id);
   });
 
   socket.on('connect_error', (error) => {
@@ -25,10 +30,12 @@ export const initializeWebSocket = () => {
   return socket;
 };
 
-export const sendWebSocketMessage = (message) => {
-  if (socket && socket.connected) {
-    socket.emit('message', message);
-  } else {
-    console.log('WebSocket is not connected. Message not sent:', message);
-  }
-};
+export const sendWebSocketMessage = (message, id) => {
+    console.log('Attempting to send WebSocket message', message);
+    if (socket && socket.connected) {
+      socket.emit('message', { text: message, userId: id }); // Replace 'someUserId' with actual user ID if available
+      console.log('WebSocket message sent');
+    } else {
+      console.error('WebSocket is not connected. Message not sent:', message);
+    }
+  };
