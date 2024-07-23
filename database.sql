@@ -1,12 +1,10 @@
-
-
 -- Create users table with fields for Google authentication
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255),
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
     has_diag_in_family BOOLEAN,
     google_id VARCHAR(255) UNIQUE,
     profile_pic_url TEXT,
