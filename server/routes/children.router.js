@@ -29,14 +29,16 @@ router.get('/', (req, res) => {
 
 });
 
-router.get('/:id', (req, res) => {
+//route will return all children associated with a specific user_id
+//specifically all children belonging to a family will be returned
+router.get('/:user_id', (req, res) => {
   // GET route code here
 
   
-  let childdataid =  req.params.id
+  let childdataid =  req.body.user_id
   const queryText = `SELECT *
                       FROM children
-                      where id = $1;`
+                      where user_id = $1;`
 
   pool.query(queryText, [childdataid])
     .then(result => {
@@ -45,7 +47,7 @@ router.get('/:id', (req, res) => {
     })
     .catch(err => {
 
-      console.log("error with get single child route")
+      console.log("error with get child by user_id route")
 
       res.sendStatus(500)
     })
@@ -97,8 +99,8 @@ router.post('/', (req, res) => {
 
 
 
-//the put router will update prefrences by a specific id 
 
+//this route will update by 
 router.put('/:id', (req, res) => {
   // PUT route code here
 
