@@ -19,6 +19,15 @@ import InfoPage from '../InfoPage/InfoPage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import Chat from '../Chat/Chat';
+import ChatHistory from '../Chat/ChatHistory';
+import ChatHistoryDetails from '../Chat/ChatHistoryDetails';
+import UserPreferences from '../UserPreferences/UserPreferences';
+import FAQ from '../FAQ/FAQ';
+import FirstTimeSetupName from '../FirstTimeSetup/FirstTimeSetupName';
+import FirstTimeSetupChildren from '../FirstTimeSetup/FirstTimeSetupChildren';
+
+
 
 import './App.css';
 
@@ -109,6 +118,29 @@ function App() {
               <LandingPage />
             }
           </Route>
+            <Route exact path="/chat">
+            <Chat />
+            </Route>
+
+            <Route exact path="/chathistory">
+            <ChatHistory />
+            </Route>
+
+            <Route exact path="/preferences">
+            <UserPreferences />
+            </Route>
+
+            <Route exact path="/questions">
+            <FAQ />
+            </Route>
+
+            <Route exact path="/firsttime">
+            <FirstTimeSetupName />
+            </Route>
+
+
+
+
 
           {/* If none of the other routes matched, we will show a 404. */}
           <Route>
