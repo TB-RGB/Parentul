@@ -61,24 +61,50 @@ router.post('/google', async (req, res) => {
 });
 
 // Handles POST request with new user data
-router.post('/register', (req, res, next) => {
+router.post('/register', async (req, res, next) => {
   const email = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
 
-  const queryText = `INSERT INTO "users" (email, password_hash) VALUES ($1, $2) RETURNING id`;
-  pool
-    .query(queryText, [email, password])
-    .then(() => res.sendStatus(201))
-    .catch((err) => {
-      console.log('User registration failed: ', err);
-      res.sendStatus(500);
+  try {
+    const queryText = `INSERT INTO "users" (email, password_hash) VALUES ($1, $2) RETURNING *`;
+    const result = await pool.query(queryText, [email, password]);
+    const newUser = result.rows[0];
+    
+    req.login(newUser, (err) => {
+      if (err) {
+        return next(err);
+      }
+      res.json({ user: newUser });
     });
+  } catch (err) {
+    console.log('User registration failed: ', err);
+    res.sendStatus(500);
+  }
 });
 
 
+
 // Handles login form authenticate/login POST
-router.post('/login', userStrategy.authenticate('local'), (req, res) => {
-  res.sendStatus(200);
+router.post('/login', (req, res, next) => {
+  console.log('Login attempt for user:', req.body.username); // Log the username
+  userStrategy.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.log('Error in authentication:', err);
+      return next(err);
+    }
+    if (!user) {
+      console.log('Authentication failed. Info:', info);
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    req.login(user, (err) => {
+      if (err) {
+        console.log('Error in req.login:', err);
+        return next(err);
+      }
+      console.log('User logged in successfully:', user.email);
+      return res.json({ user });
+    });
+  })(req, res, next);
 });
 
 // clear all server session information about this user
