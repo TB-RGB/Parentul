@@ -28,21 +28,38 @@ passport.deserializeUser(async (id, done) => {
 // Local Strategy
 passport.use(
   'local',
-  new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-    pool.query('SELECT * FROM "users" WHERE email = $1', [email])
-      .then(result => {
-        const user = result && result.rows && result.rows[0];
-        if (user && encryptLib.comparePassword(password, user.password_hash)) {
-          done(null, user);
-        } else {
-          done(null, false, { message: 'Invalid credentials' });
-        }
-      })
-      .catch(error => {
-        console.log('Error with query for user', error);
-        done(error);
-      });
-  })
+  new LocalStrategy(
+    {
+      usernameField: 'email',
+      passwordField: 'password',
+    },
+    ((email, password, done) => {
+      console.log('Attempting to authenticate user:', email);
+      pool
+        .query('SELECT * FROM "users" WHERE email = $1', [email])
+        .then((result) => {
+          console.log('Query result:', result.rows);
+          const user = result && result.rows && result.rows[0];
+          if (user) {
+            console.log('User found, comparing passwords');
+            if (encryptLib.comparePassword(password, user.password_hash)) {
+              console.log('Password match, authentication successful');
+              done(null, user);
+            } else {
+              console.log('Password mismatch');
+              done(null, null);
+            }
+          } else {
+            console.log('User not found');
+            done(null, null);
+          }
+        })
+        .catch((error) => {
+          console.log('Error with query for user ', error);
+          done(error, null);
+        });
+    })
+  )
 );
 
 // Google Strategy
