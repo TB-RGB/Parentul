@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
 // worker Saga: will be fired on "REGISTER" actions
@@ -21,9 +21,24 @@ function* registerUser(action) {
     yield put({ type: 'REGISTRATION_FAILED' });
   }
 }
+function* googleRegisterUser(action) {
+  try {
+    const response = yield call(axios.post, '/api/user/google', { token: action.payload.token });
+
+    if (response.data && response.data.token) {
+      yield put({ type: 'SET_USER', payload: response.data });
+    } else {
+      yield put({ type: 'LOGIN_FAILED', payload: { message: 'Login failed' } });
+    }
+  } catch (error) {
+    console.log('Error with Google login:', error);
+    yield put({ type: 'LOGIN_FAILED', payload: { message: 'Login failed' } });
+  }
+}
 
 function* registrationSaga() {
   yield takeLatest('REGISTER', registerUser);
+  yield takeLatest('GOOGLE_LOGIN', googleRegisterUser)
 }
 
 export default registrationSaga;
