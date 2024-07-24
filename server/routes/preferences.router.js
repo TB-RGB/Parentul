@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
   //console.log(req.body)
 
-  const queryText = `SELECT * FROM "preferences";`
+  const queryText = `SELECT * FROM "user_preferences";`
 
   pool.query(queryText)
     .then(result => {
@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
   // POST route code here
 
   const queryText = `
-  INSERT INTO "preferences"  
+  INSERT INTO "user_preferences"  
   
       ("user_id", "notifications_email", "notifications_sms", "notifications_push", "notifications_freq", "updated_at")
       VALUES
@@ -87,7 +87,7 @@ router.put('/:id', (req, res) => {
 
   //the text which will update a specific entry in the database 
   const queryText = `
-  UPDATE "preferences"
+  UPDATE "user_preferences"
   SET 
   
   "notifications_email" = $1,

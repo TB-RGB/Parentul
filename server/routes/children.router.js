@@ -120,54 +120,54 @@ router.put('/update', async(req, res) => {
   //update id is derived from req.params.id
   //let updateid = req.params.id
 
+  console.log("Incoming Body:", req.body)
+  res.sendStatus(200)
+  // const connection = await pool.connect()
 
 
-  const connection = await pool.connect()
 
+  // try {
 
-
-  try {
-
-    await connection.query('BEGIN');
+  //   await connection.query('BEGIN');
 
     
-    let updateid = req.body.id
-    let children = req.body.children
+  //   let updateid = req.body.id
+  //   let children = req.body.children
 
-    let queryText = ` UPDATE "children"
-  SET 
+  //   let queryText = ` UPDATE "children"
+  // SET 
   
  
-  "name" = $1,
-  "dob" = $2
+  // "name" = $1,
+  // "dob" = $2
   
 
-  WHERE 
-  id = $3;`
+  // WHERE 
+  // id = $3;`
 
-    //inserts to database
-    for (let child of children) {
+  //   //inserts to database
+  //   for (let child of children) {
 
-      await connection.query(queryText, [child.name, child.dob, updateid])
-    }
+  //     await connection.query(queryText, [child.name, child.dob, updateid])
+  //   }
 
-    connection.query('COMMIT')
+  //   connection.query('COMMIT')
 
-    res.sendStatus(200)
-    //commit 
-  }
+  //   res.sendStatus(200)
+  //   //commit 
+  // }
 
-  catch (error) {
-    await connection.query('ROLLBACK');
-    console.log(error);
-    res.sendStatus(500);
-  }
+  // catch (error) {
+  //   await connection.query('ROLLBACK');
+  //   console.log(error);
+  //   res.sendStatus(500);
+  // }
 
-  finally {
+  // finally {
 
-    connection.release()
-  }
-  //the text which will update a specific entry in the database 
+  //   connection.release()
+  // }
+  // //the text which will update a specific entry in the database 
   
 });
 
