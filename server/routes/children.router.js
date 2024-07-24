@@ -51,8 +51,8 @@ router.post('/', async (req, res) => {
     //which will be iterated through and added to database
     let children = req.body
 
-  
-   
+
+
     queryText = ` INSERT INTO "children"  
   
       ("user_id", "name", "dob")
@@ -116,7 +116,7 @@ router.post('/', async (req, res) => {
 
 //rollback
 
-router.put('/update', async(req, res) => {
+router.put('/update', async (req, res) => {
   // PUT route code here
 
   const connection = await pool.connect()
@@ -126,7 +126,7 @@ router.put('/update', async(req, res) => {
   try {
 
     await connection.query('BEGIN');
-    
+
     let children = req.body  // [{name, dob, child_id},{}]
 
     let queryText = ` UPDATE "children"
@@ -163,7 +163,7 @@ router.put('/update', async(req, res) => {
     connection.release()
   }
   //the text which will update a specific entry in the database 
-  
+
 });
 
 module.exports = router;
