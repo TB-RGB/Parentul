@@ -2,8 +2,19 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT || 5001;
-const bodyParser = require("body-parser");
+const cors = require('cors');
+const { Server } = require('socket.io');
+const http = require('http');
+const server = http.createServer(app);
+const { setupSocket } = require('./services/setupSocket');
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST'],
+  },
+});
 
+setupSocket(io);
 
 
 
@@ -13,6 +24,7 @@ const passport = require('./strategies/user.strategy');
 
 // Route Includes
 const userRouter = require('./routes/user.router');
+const chatRouter = require('./routes/chat.router');
 const preferencesRouter = require('./routes/preferences.router');
 const faqRouter = require('./routes/faq.router.js');
 const childrenRouter = require('./routes/children.router');
@@ -22,6 +34,8 @@ const childrenRouter = require('./routes/children.router');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('build'));
+// CORS Configuration
+app.use(cors());
 
 // Passport Session Configuration
 app.use(sessionMiddleware);
@@ -32,12 +46,20 @@ app.use(passport.session());
 
 // Routes
 app.use('/api/user', userRouter);
+app.use('/api/chat', chatRouter);
+
+//Check Server is Running
+app.get('/', (req, res) => {
+  res.send('Server is running');
+});
+
 app.use('/api/preferences', preferencesRouter);
 app.use('/api/faq', faqRouter);
 app.use('/api/children', childrenRouter);
 
 
+
 // Listen Server & Port
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });

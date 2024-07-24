@@ -30,6 +30,8 @@ import FirstTimeSetupChildren from '../FirstTimeSetup/FirstTimeSetupChildren';
 
 
 import './App.css';
+import ChatComponent from '../Chat/ChatComponent';
+import './output.css';
 
 function App() {
   const dispatch = useDispatch();
@@ -118,6 +120,11 @@ function App() {
               <LandingPage />
             }
           </Route>
+
+          <Route path="/chat">
+            <ChatComponent />
+          </Route>
+
             <Route exact path="/chat">
             <Chat />
             </Route>
@@ -137,6 +144,7 @@ function App() {
             <Route exact path="/firsttime">
             <FirstTimeSetupName />
             </Route>
+
 
 
 

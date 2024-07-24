@@ -39,7 +39,7 @@ module.exports = expressSession({
         pruneSessionInterval,
     }),
     secret: serverSessionSecret() || 'secret', // please set this in your .env file
-    name: 'user', // this is the name of the req.variable. 'user' is convention, but not required
+    name: 'users', // this is the name of the req.variable. 'user' is convention, but not required
     saveUninitialized: false,
     resave: false,
     // This isn't currently being used but should be left in for future proofing

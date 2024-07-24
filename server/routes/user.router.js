@@ -6,6 +6,7 @@ const userStrategy = require('../strategies/user.strategy');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 
+
 const router = express.Router();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -19,7 +20,7 @@ async function verifyGoogleToken(token) {
 }
 
 // Handles Ajax request for user information if user is authenticated
-router.get('/', rejectUnauthenticated, (req, res) => {
+router.get("/", rejectUnauthenticated, (req, res) => {
   // Send back user object from the session (previously queried from the database)
   res.send(req.user);
 });
@@ -110,7 +111,9 @@ router.post('/login', (req, res, next) => {
 // clear all server session information about this user
 router.post('/logout', (req, res, next) => {
   req.logout((err) => {
-    if (err) { return next(err); }
+    if (err) {
+      return next(err);
+    }
     res.sendStatus(200);
   });
 });
