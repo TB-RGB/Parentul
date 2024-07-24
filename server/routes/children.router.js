@@ -49,8 +49,10 @@ router.post('/', async (req, res) => {
     //defines children from req.body
     //children contains many different child components 
     //which will be iterated through and added to database
-    let children = req.body.children
+    let children = req.body
 
+  
+   
     queryText = ` INSERT INTO "children"  
   
       ("user_id", "name", "dob")
@@ -60,7 +62,7 @@ router.post('/', async (req, res) => {
     //inserts to database
     for (let child of children) {
 
-      await client.query(queryText, [child.user_id, child.name, child.dob])
+      await connection.query(queryText, [child.user_id, child.name, child.dob])
     }
 
     connection.query('COMMIT')
@@ -117,57 +119,50 @@ router.post('/', async (req, res) => {
 router.put('/update', async(req, res) => {
   // PUT route code here
 
-  //update id is derived from req.params.id
-  //let updateid = req.params.id
-
-  console.log("Incoming Body:", req.body)
-  res.sendStatus(200)
-  // const connection = await pool.connect()
+  const connection = await pool.connect()
 
 
 
-  // try {
+  try {
 
-  //   await connection.query('BEGIN');
-
+    await connection.query('BEGIN');
     
-  //   let updateid = req.body.id
-  //   let children = req.body.children
+    let children = req.body  // [{name, dob, child_id},{}]
 
-  //   let queryText = ` UPDATE "children"
-  // SET 
+    let queryText = ` UPDATE "children"
+  SET 
   
  
-  // "name" = $1,
-  // "dob" = $2
+  "name" = $1,
+  "dob" = $2
   
 
-  // WHERE 
-  // id = $3;`
+  WHERE 
+  id = $3;`
 
-  //   //inserts to database
-  //   for (let child of children) {
+    //inserts to database
+    for (let child of children) {
 
-  //     await connection.query(queryText, [child.name, child.dob, updateid])
-  //   }
+      await connection.query(queryText, [child.name, child.dob, child.child_id])
+    }
 
-  //   connection.query('COMMIT')
+    connection.query('COMMIT')
 
-  //   res.sendStatus(200)
-  //   //commit 
-  // }
+    res.sendStatus(200)
+    //commit 
+  }
 
-  // catch (error) {
-  //   await connection.query('ROLLBACK');
-  //   console.log(error);
-  //   res.sendStatus(500);
-  // }
+  catch (error) {
+    await connection.query('ROLLBACK');
+    console.log(error);
+    res.sendStatus(500);
+  }
 
-  // finally {
+  finally {
 
-  //   connection.release()
-  // }
-  // //the text which will update a specific entry in the database 
+    connection.release()
+  }
+  //the text which will update a specific entry in the database 
   
 });
 
