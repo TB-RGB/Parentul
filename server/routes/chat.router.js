@@ -4,10 +4,10 @@ const {
 } = require("../modules/authentication-middleware");
 const router = express.Router();
 const { handleChatMessage } = require("../services/chat.service");
-const { getUserChatHistory, addUserFeedback } = require("../models/chat.models");
+const { getUserChatHistory, addUserFeedback, endConversation } = require("../models/chat.models");
 
 
-router.post("/chat", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     
     const { message, userId } = req.body.message;
@@ -19,7 +19,7 @@ router.post("/chat", async (req, res) => {
   }
 });
 
-router.get("/chat/history/:userId", async (req, res) => {
+router.get("/history/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     const chatHistory = await getUserChatHistory(userId);
@@ -30,13 +30,24 @@ router.get("/chat/history/:userId", async (req, res) => {
   }
 });
 
-router.post("/chat/feedback", async (req, res) => {
+router.post("/feedback", async (req, res) => {
   try {
     const { userId, conversationId, rating } = req.body;
     await addUserFeedback(userId, conversationId, rating);
     res.sendStatus(200);
   } catch (err) {
     console.error("Error adding user feedback:", err);
+    res.sendStatus(500).json({error: err});
+  }
+});
+
+router.put('/end', async (req, res) => {
+  try {
+    const { conversationId } = req.body;
+    await endConversation(conversationId);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error("Error ending conversation:", err);
     res.sendStatus(500).json({error: err});
   }
 });

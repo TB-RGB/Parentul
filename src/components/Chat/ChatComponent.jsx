@@ -3,7 +3,7 @@ import MessageList from "./MessageList";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Typography } from "@mui/material";
-import { sendMessage, initializeChat } from "../../redux/actions/chatActions";
+import { sendMessage, initializeChat, endConversation } from "../../redux/actions/chatActions";
 
 const ChatComponent = () => {
     const dispatch = useDispatch();
