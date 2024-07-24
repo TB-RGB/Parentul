@@ -11,7 +11,7 @@ const family = (state = {parent:[], children:[]}, action) => {
       //reducer will have to deconstruct and parse data from the saga
     case 'SET_FAMILY':
       let toReturn = action.payload;
-      return ;
+      return toReturn;
 
     case 'UNSET_FAMILY':
       return null;
