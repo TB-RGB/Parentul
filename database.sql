@@ -11,7 +11,6 @@ CREATE TABLE users (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
 -- Create children table
 CREATE TABLE children (
     id SERIAL PRIMARY KEY,
@@ -19,7 +18,6 @@ CREATE TABLE children (
     name VARCHAR(100) NOT NULL,
     dob DATE NOT NULL
 );
-
 -- Create conversations table
 CREATE TABLE conversations (
     id SERIAL PRIMARY KEY,
@@ -27,7 +25,6 @@ CREATE TABLE conversations (
     start_time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     end_time TIMESTAMP WITH TIME ZONE
 );
-
 -- Create messages table
 CREATE TABLE messages (
     id SERIAL PRIMARY KEY,
@@ -36,7 +33,6 @@ CREATE TABLE messages (
     content TEXT NOT NULL,
     timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
 -- Create ai_responses table
 CREATE TABLE ai_responses (
     id SERIAL PRIMARY KEY,
@@ -46,7 +42,6 @@ CREATE TABLE ai_responses (
     processing_time INTEGER NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
 -- Create user_feedback table
 CREATE TABLE user_feedback (
     id SERIAL PRIMARY KEY,
@@ -55,7 +50,6 @@ CREATE TABLE user_feedback (
     rating BOOLEAN NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
 -- Create follow_ups table
 CREATE TABLE follow_ups (
     id SERIAL PRIMARY KEY,
@@ -64,7 +58,6 @@ CREATE TABLE follow_ups (
     is_asked BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
 -- Create user_preferences table
 CREATE TABLE user_preferences (
     user_id INTEGER PRIMARY KEY REFERENCES users(id),
@@ -74,7 +67,6 @@ CREATE TABLE user_preferences (
     notifications_freq VARCHAR(50) DEFAULT 'daily',
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
 -- Create faq table
 CREATE TABLE faq (
     id SERIAL PRIMARY KEY,
