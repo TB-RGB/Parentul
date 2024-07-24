@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT || 5001;
+const bodyParser = require("body-parser");
+
+
+
 
 // Middleware Includes
 const sessionMiddleware = require('./modules/session-middleware');
@@ -9,6 +13,9 @@ const passport = require('./strategies/user.strategy');
 
 // Route Includes
 const userRouter = require('./routes/user.router');
+const preferencesRouter = require('./routes/preferences.router');
+const faqRouter = require('./routes/faq.router');
+const childrenRouter = require('./routes/children.router');
 
 
 // Express Middleware
@@ -25,6 +32,9 @@ app.use(passport.session());
 
 // Routes
 app.use('/api/user', userRouter);
+app.use('/api/preferences', preferencesRouter);
+app.use('/api/faq', faqRouter);
+app.use('/api/children', childrenRouter);
 
 
 // Listen Server & Port
