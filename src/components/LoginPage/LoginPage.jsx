@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginForm from '../LoginForm/LoginForm';
 import { useHistory } from 'react-router-dom';
+import GoogleSignIn from '../GoogleSignIn/GoogleSignIn';
 
 function LoginPage() {
   const history = useHistory();
@@ -8,7 +9,7 @@ function LoginPage() {
   return (
     <div>
       <LoginForm />
-
+<GoogleSignIn />
       <center>
         <button
           type="button"

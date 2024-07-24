@@ -17,6 +17,7 @@ const preferencesRouter = require('./routes/preferences.router');
 const faqRouter = require('./routes/faq.router');
 const childrenRouter = require('./routes/children.router');
 
+
 // Express Middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -34,6 +35,7 @@ app.use('/api/user', userRouter);
 app.use('/api/preferences', preferencesRouter);
 app.use('/api/faq', faqRouter);
 app.use('/api/children', childrenRouter);
+
 
 // Listen Server & Port
 app.listen(PORT, () => {

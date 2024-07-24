@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
 // worker Saga: will be fired on "LOGIN" actions
@@ -57,10 +57,25 @@ function* logoutUser(action) {
     console.log('Error with user logout:', error);
   }
 }
-
+function* googleLoginUser(action) {
+  try {
+    const response = yield call(axios.post, '/api/user/google', { token: action.payload.token });
+    
+    if (response.data && response.data.user) {
+      yield put({ type: 'SET_USER', payload: response.data.user });
+      yield put({ type: 'LOGIN_SUCCESS' });
+    } else {
+      yield put({ type: 'LOGIN_FAILED', payload: { message: 'Login failed' } });
+    }
+  } catch (error) {
+    console.log('Error with Google login:', error);
+    yield put({ type: 'LOGIN_FAILED', payload: { message: 'Login failed' } });
+  }
+}
 function* loginSaga() {
   yield takeLatest('LOGIN', loginUser);
   yield takeLatest('LOGOUT', logoutUser);
+  yield takeLatest('GOOGLE_LOGIN', googleLoginUser)
 }
 
 export default loginSaga;
