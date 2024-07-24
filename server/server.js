@@ -17,6 +17,7 @@ const io = new Server(server, {
 setupSocket(io);
 
 
+
 // Middleware Includes
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./strategies/user.strategy');
@@ -24,6 +25,10 @@ const passport = require('./strategies/user.strategy');
 // Route Includes
 const userRouter = require('./routes/user.router');
 const chatRouter = require('./routes/chat.router');
+const preferencesRouter = require('./routes/preferences.router');
+const faqRouter = require('./routes/faq.router.js');
+const childrenRouter = require('./routes/children.router');
+
 
 // Express Middleware
 app.use(express.json());
@@ -47,6 +52,12 @@ app.use('/api/chat', chatRouter);
 app.get('/', (req, res) => {
   res.send('Server is running');
 });
+
+app.use('/api/preferences', preferencesRouter);
+app.use('/api/faq', faqRouter);
+app.use('/api/children', childrenRouter);
+
+
 
 // Listen Server & Port
 server.listen(PORT, () => {
