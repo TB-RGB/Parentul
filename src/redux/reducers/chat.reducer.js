@@ -1,4 +1,4 @@
-import { RECEIVE_MESSAGE, SET_LOADING, CONVERSATION_ENDED } from "../actions/chatActions";
+import { RECEIVE_MESSAGE, SET_LOADING, CONVERSATION_ENDED, SET_CURRENT_CONVERSATION_ID, CLEAR_MESSAGES } from "../actions/chatActions";
 
 const chatReducer = (state = { messages: [], isLoading: false, currentConversationId: null }, action) => {
   switch (action.type) {
@@ -13,6 +13,10 @@ const chatReducer = (state = { messages: [], isLoading: false, currentConversati
           },
         ],
       };
+    case CLEAR_MESSAGES:
+        return { ...state, messages: [] };
+    case SET_CURRENT_CONVERSATION_ID:
+        return { ...state, currentConversationId: action.payload };
     case SET_LOADING:
       return { ...state, isLoading: action.payload };
     case CONVERSATION_ENDED:

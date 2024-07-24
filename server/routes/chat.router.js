@@ -10,7 +10,7 @@ const { getUserChatHistory, addUserFeedback, endConversation } = require("../mod
 router.post("/", async (req, res) => {
   try {
     
-    const { message, userId } = req.body.message;
+    const { message, userId } = req.body;
     const { aiResponse, conversationId } = await handleChatMessage(userId, message);
     res.json({aiResponse, conversationId});
   } catch (err) {

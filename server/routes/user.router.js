@@ -6,6 +6,7 @@ const encryptLib = require("../modules/encryption");
 const pool = require("../modules/pool");
 const userStrategy = require("../strategies/user.strategy");
 
+
 const router = express.Router();
 
 // Handles Ajax request for user information if user is authenticated
@@ -41,22 +42,14 @@ router.post("/login", userStrategy.authenticate("local"), (req, res) => {
 });
 
 // clear all server session information about this user
-router.post("/logout", async (req, res, next) => {
-  try {
-    if (req.user && req.user.currentConversationId) {
-      await endConversation(req.user.currentConversationId);
+router.post("/logout", (req, res, next) => {
+  // Use passport's built-in method to log out the user
+  req.logout((err) => {
+    if (err) {
+      return next(err);
     }
-    // Use passport's built-in method to log out the user
-    req.logout((err) => {
-      if (err) {
-        return next(err);
-      }
-      res.sendStatus(200);
-    });
-  } catch (err) {
-    console.error("Error logging out user:", err);
-    res.sendStatus(500);
-  }
+    res.sendStatus(200);
+  });
 });
 
 module.exports = router;

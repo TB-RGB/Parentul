@@ -24,7 +24,7 @@ export const initializeWebSocket = () => {
    
 
   socket.on('message', (message) => {
-    store.dispatch(receiveWebSocketMessage({ sender: 'ai', content: message }));
+    store.dispatch(receiveWebSocketMessage({ sender: 'ai', content: message.aiResponse, chatLogId: message.chatLogId }));
   });
 
   return socket;

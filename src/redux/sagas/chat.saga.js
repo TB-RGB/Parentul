@@ -1,4 +1,4 @@
-import { takeEvery, put, call, race, take } from "redux-saga/effects";
+import { takeEvery, put, call, race, take, takeLatest } from "redux-saga/effects";
 import {
   SEND_MESSAGE,
   INITIALIZE_CHAT,
@@ -7,6 +7,7 @@ import {
   setLoading,
   receiveMessage,
   conversationEnded,
+  setCurrentConversationId
 } from "../actions/chatActions";
 import {
   sendWebSocketMessage,
@@ -26,11 +27,14 @@ function* sendMessageSaga(action) {
     // Wait for either a WebSocket response or a timeout
     const { wsResponse, httpResponse } = yield race({
       wsResponse: take(RECEIVE_WEBSOCKET_MESSAGE),
-      httpResponse: call(api.getAIResponse, action.payload.message),
+    //   httpResponse: call(api.getAIResponse, action.payload.message, action.payload.userId),
       timeout: call(delay, 5000), // 5 second timeout
     });
 
+   
+
     if (wsResponse) {
+      yield put(setCurrentConversationId(wsResponse.payload.chatLogId));
       console.log("Received WebSocket response:", wsResponse.payload);
       const responseText =
         wsResponse.payload.text ||

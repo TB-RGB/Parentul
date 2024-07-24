@@ -17,8 +17,9 @@ function setupSocket(io) {
           console.log("AI Response:", aiResponse);
   
           // Log chat history
-          await logChatHistory(message.userId, message.text, aiResponse);
-          socket.emit("message", aiResponse);
+          const chatLogId = await logChatHistory(message.userId, message.text, aiResponse);
+          console.log("Chat log:", chatLogId);
+          socket.emit("message", {aiResponse, chatLogId});
         } catch (err) {
           console.error("Error handling chat message:", err);
           socket.emit("message", {
