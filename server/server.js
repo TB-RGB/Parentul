@@ -14,7 +14,7 @@ const passport = require('./strategies/user.strategy');
 // Route Includes
 const userRouter = require('./routes/user.router');
 const preferencesRouter = require('./routes/preferences.router');
-const faqRouter = require('./routes/faq.router');
+const faqRouter = require('./routes/faq.router.js');
 const childrenRouter = require('./routes/children.router');
 
 
