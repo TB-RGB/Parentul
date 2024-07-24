@@ -37,7 +37,7 @@ CREATE TABLE messages (
 CREATE TABLE ai_responses (
     id SERIAL PRIMARY KEY,
     message_id INTEGER REFERENCES messages(id),
-    response_type INTEGER NOT NULL,
+    response_type VARCHAR(80) NOT NULL,
     confidence_score FLOAT4 NOT NULL,
     processing_time INTEGER NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
