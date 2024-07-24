@@ -38,12 +38,12 @@ passport.use(
       pool
         .query('SELECT * FROM "users" WHERE email = $1', [email])
         .then((result) => {
-          console.log('Query result:', result.rows);
+          // console.log('Query result:', result.rows);
           const user = result && result.rows && result.rows[0];
           if (user) {
-            console.log('User found, comparing passwords');
+            // console.log('User found, comparing passwords');
             if (encryptLib.comparePassword(password, user.password_hash)) {
-              console.log('Password match, authentication successful');
+              // console.log('Password match, authentication successful');
               done(null, user);
             } else {
               console.log('Password mismatch');
