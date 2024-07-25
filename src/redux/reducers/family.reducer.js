@@ -11,7 +11,7 @@ const family = (state = {parent:[], children:[]}, action) => {
       //reducer will have to deconstruct and parse data from the saga
     case 'SET_FAMILY':
       let toReturn = action.payload;
-      return toReturn;
+      return {parent:[], children:[]};
 
     case 'UNSET_FAMILY':
       return null;
@@ -27,6 +27,6 @@ const family = (state = {parent:[], children:[]}, action) => {
 // these will be on the redux state at:
 // state.errors.loginMessage and state.errors.registrationMessage
 export default combineReducers({
-  family,
-  registrationMessage,
+  family
+  
 });

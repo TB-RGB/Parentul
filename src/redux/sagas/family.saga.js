@@ -6,16 +6,16 @@ function* fetchFamily() {
 
     try {
         //retrieves the compounds from the compounds table
-        const compounds = yield axios.get('/api/preferences')
-
+        const family = yield axios.get('/api/children/family')
+        ///api/children
         
         //put communicates with the reducer after retrieving a server call
-        yield put({ type: 'SET_COMPOUNDS', payload: compounds.data})
+        yield put({ type: 'SET_FAMILY', payload: family.data})
     }
 
     catch (error) {
 
-        console.log("error with setCompounds")
+        console.log("error with fetch family")
     }
 
 
@@ -112,7 +112,7 @@ function* compoundsSaga() {
 
     
     //communicates with the dispatch in compopnent file
-    yield takeLatest('FETCH_COMPOUNDS', fetchCompounds);
+    yield takeLatest('FETCH_FAMILY', fetchFamily);
 
     //retrieve a single compound based on id
     yield takeLatest('FETCH_COMPOUND', fetchCompound);

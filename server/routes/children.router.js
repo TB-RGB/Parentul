@@ -5,18 +5,46 @@ const router = express.Router();
 
 
 
-//route will return all children associated with a specific user_id
-//specifically all children belonging to a family will be returned
-router.get('/:user_id', (req, res) => {
-  // GET route code here
+// //route will return all children associated with a specific user_id
+// //specifically all children belonging to a family will be returned
+// router.get('/:user_id', (req, res) => {
+//   // GET route code here
 
 
-  let childdataid = req.body.user_id
-  const queryText = `SELECT *
-                      FROM children
-                      where user_id = $1;`
+//   let childdataid = req.body.user_id
+//   const queryText = `SELECT *
+//                       FROM children
+//                       where user_id = $1;`
 
-  pool.query(queryText, [childdataid])
+//   pool.query(queryText, [childdataid])
+//     .then(result => {
+//       res.send(result.rows);
+
+//     })
+//     .catch(err => {
+
+//       console.log("error with get child by user_id route")
+
+//       res.sendStatus(500)
+//     })
+
+
+
+// });
+
+
+//want to take in the id of a parent and return all corresponding children
+//makes use of an SQL Join 
+
+router.get('/family/:user_id', (req, res) => {
+  
+
+  let idtoreturn = req.body.user_id
+  const queryText = `SELECT * FROM "children"
+JOIN "users" ON "users"."id"="children"."user_id"
+                      where "users"."id" = $1;`
+
+  pool.query(queryText, [idtoreturn])
     .then(result => {
       res.send(result.rows);
 
@@ -31,7 +59,6 @@ router.get('/:user_id', (req, res) => {
 
 
 });
-
 /**
  * POST route template
  * This template reflects a SQL Transaction
