@@ -1,5 +1,4 @@
 const natural = require("natural");
-const classifier = new natural.BayesClassifier();
 
 class AIChatEngine {
   constructor() {
