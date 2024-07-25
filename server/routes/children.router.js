@@ -37,12 +37,31 @@ const router = express.Router();
 //makes use of an SQL Join 
 
 router.get('/family/:user_id', (req, res) => {
-  
 
-  let parentid = req.body.user_id
-  const queryText = `SELECT * FROM "children"
-JOIN "users" ON "users"."id"="children"."user_id"
-                      where "users"."id" = $1;`
+
+  console.log("Req Params from /family/:user_id", req.params)
+
+  let parentid = req.params.user_id
+  const queryText = `SELECT
+      users.id,
+      users.first_name AS parent_first_name,
+      users.last_name AS parent_last_name,
+      json_agg(json_build_object(
+        'id', children.id,
+        'name', children.name,
+        'dob', children.dob
+        )) AS children
+    FROM
+      children
+    JOIN
+      users
+    ON
+      children.user_id = users.id
+    WHERE
+      users.id = $1
+    GROUP BY
+      users.id, users.first_name, users.last_name;
+  `
 
   pool.query(queryText, [parentid])
     .then(result => {
@@ -78,8 +97,8 @@ router.post('/', async (req, res) => {
     //which will be iterated through and added to database
     let children = req.body
 
-  
-   
+
+
     queryText = ` INSERT INTO "children"  
   
       ("user_id", "name", "dob")
@@ -143,7 +162,7 @@ router.post('/', async (req, res) => {
 
 //rollback
 
-router.put('/update', async(req, res) => {
+router.put('/update', async (req, res) => {
   // PUT route code here
 
   const connection = await pool.connect()
@@ -153,7 +172,7 @@ router.put('/update', async(req, res) => {
   try {
 
     await connection.query('BEGIN');
-    
+
     let children = req.body  // [{name, dob, child_id},{}]
 
     let queryText = ` UPDATE "children"
@@ -190,7 +209,7 @@ router.put('/update', async(req, res) => {
     connection.release()
   }
   //the text which will update a specific entry in the database 
-  
+
 });
 
 module.exports = router;
