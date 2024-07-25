@@ -74,12 +74,10 @@ async function logChatHistory(userId, userMessage, aiResponse) {
 
 async function getUserChatHistory(userId) {
     const queryText = `
-    SELECT conversations.id, conversations.start_time, conversations.end_time,
-    messages.id, messages.sender_type, messages.content, messages.timestamp
+    SELECT conversations.id, conversations.start_time, conversations.end_time
     FROM conversations
-    JOIN messages ON conversations.id = messages.conversation_id
     WHERE conversations.user_id = $1
-    ORDER BY conversations.start_time DESC, messages.timestamp ASC;
+    ORDER BY conversations.start_time DESC;
     `
 
     try {
@@ -87,6 +85,23 @@ async function getUserChatHistory(userId) {
         return result.rows;
     } catch (err) {
         console.error("Error getting user chat history:", err);
+        throw err;
+    }
+}
+
+async function getConversationLog(conversationId) {
+    const queryText = `
+        SELECT messages.id, messages.sender_type, messages.content, messages.timestamp
+        FROM messages
+        WHERE messages.conversation_id = $1
+        ORDER BY messages.timestamp ASC;
+    `
+
+    try {
+        const result = await pool.query(queryText, [conversationId]);
+        return result.rows;
+    } catch (err) {
+        console.error("Error getting conversation log:", err);
         throw err;
     }
 }
@@ -122,5 +137,6 @@ module.exports = {
     logChatHistory,
     getUserChatHistory,
     addUserFeedback,
-    endConversation
+    endConversation,
+    getConversationLog
 }
