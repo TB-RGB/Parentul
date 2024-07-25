@@ -39,12 +39,12 @@ const router = express.Router();
 router.get('/family/:user_id', (req, res) => {
   
 
-  let idtoreturn = req.body.user_id
+  let parentid = req.body.user_id
   const queryText = `SELECT * FROM "children"
 JOIN "users" ON "users"."id"="children"."user_id"
                       where "users"."id" = $1;`
 
-  pool.query(queryText, [idtoreturn])
+  pool.query(queryText, [parentid])
     .then(result => {
       res.send(result.rows);
 

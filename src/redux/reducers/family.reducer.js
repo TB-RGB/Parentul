@@ -5,8 +5,7 @@ import { combineReducers } from 'redux';
 const family = (state = {parent:[], children:[]}, action) => {
   switch (action.type) {
     //FETCH_FAMILY will just return the state without processing it
-    case 'FETCH_FAMILY':
-      return state;
+
 
       //reducer will have to deconstruct and parse data from the saga
     case 'SET_FAMILY':

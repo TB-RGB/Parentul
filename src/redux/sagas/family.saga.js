@@ -6,7 +6,7 @@ function* fetchFamily() {
 
     try {
         //retrieves the compounds from the compounds table
-        const family = yield axios.get('/api/children/family')
+        const family = yield axios.get(`/api/children/family/${id}`)
         ///api/children
         
         //put communicates with the reducer after retrieving a server call
