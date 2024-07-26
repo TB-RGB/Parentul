@@ -46,6 +46,10 @@ const ChatComponent = () => {
  const handleHistoryClick = () => {
    history.push('/chathistory');
  }
+  const handlePreferencesClick = () => {
+    dispatch({ type: 'FETCH_USER_PREFERENCES', payload:{userId: user.id} });
+   history.push('/preferences');
+ }
 
   return (
     <>
@@ -59,6 +63,7 @@ const ChatComponent = () => {
           </button>
         </p>
         <button className="btn btn-secondary mt-5" onClick={handleHistoryClick}>View Chat History</button>
+        <button className="btn btn-outline btn-xs" onClick={handlePreferencesClick}>View User Preferences</button>
         <Typography variant="h4" gutterBottom>
           Parentul Chat
         </Typography>
