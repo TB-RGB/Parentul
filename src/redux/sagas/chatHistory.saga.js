@@ -4,7 +4,7 @@ import axios from "axios";
 function* fetchConversations(action) {
   try {
     const conversations = yield axios.get(
-      "/api/chat/history/${action.payload.userId}"
+      `/api/chat/history/${action.payload.userId}`
     );
     yield put({ type: "SET_CONVERSATIONS", payload: conversations.data });
   } catch (err) {

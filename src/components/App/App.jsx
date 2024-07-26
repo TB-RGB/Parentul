@@ -133,6 +133,10 @@ function App() {
             <ChatHistory />
             </Route>
 
+            <Route exact path="/chatlog/:chatId">
+            <ChatHistoryDetails />
+            </Route>
+
             <Route exact path="/preferences">
             <UserPreferences />
             </Route>
