@@ -14,7 +14,7 @@ const FirstTimeSetup = () => {
   const [children, setChildren] = useState([{ name: '', dob: '' }]);
 
   useEffect(() => {
-    if (user.first_name && user.last_name && user.children && user.children.length > 0) {
+    if (user.first_name && user.last_name && user.id === children.user_id) {
       history.push('/chat');
     }
   }, [user, history]);
@@ -50,10 +50,10 @@ const FirstTimeSetup = () => {
   const renderVerificationStep = () => (
     <>
       <h3>Verify Your Information</h3>
-      <p>First Name: {firstTimeSetup?.firstName || 'Not provided'}</p>
-      <p>Last Name: {firstTimeSetup?.lastName || 'Not provided'}</p>
+      <p>First Name: {firstTimeSetup.firstName || 'Not provided'}</p>
+      <p>Last Name: {firstTimeSetup.lastName || 'Not provided'}</p>
       <h4>Children:</h4>
-      {firstTimeSetup?.children?.length > 0 ? (
+      {firstTimeSetup?.children.length > 0 ? (
         firstTimeSetup.children.map((child, index) => (
           <div key={index}>
             <p>Name: {child.name || 'Not provided'}</p>
