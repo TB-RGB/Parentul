@@ -74,7 +74,44 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/family/:user_id', async (req, res) => {
+  const { user_id } = req.params;
 
+  const queryText = `
+   SELECT
+    users.id,
+    users.first_name AS parent_first_name,
+    users.last_name AS parent_last_name,
+    COALESCE(json_agg(
+        json_build_object(
+            'id', children.id,
+            'name', children.name,
+            'dob', children.dob
+        ) ORDER BY children.id
+    ) FILTER (WHERE children.id IS NOT NULL), '[]'::json) AS children
+FROM
+    users
+JOIN
+    children ON children.user_id = users.id
+WHERE
+    users.id = $1
+GROUP BY
+    users.id, users.first_name, users.last_name;
+  `;
+
+  try {
+    const result = await pool.query(queryText, [user_id]);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error fetching family data:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
   //array which contains the user prefrences from req.body 
   //this array will contain 5 parameters reflecting the number of values
