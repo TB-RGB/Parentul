@@ -83,7 +83,34 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
+router.put('/', rejectUnauthenticated, async (req, res) => {
+  const { id, first_name, last_name } = req.body;
 
+  // Ensure the logged-in user is only updating their own information
+  if (req.user.id !== parseInt(id)) {
+    return res.status(403).json({ error: 'Not authorized to update this user' });
+  }
+
+  try {
+    const queryText = `
+      UPDATE users 
+      SET first_name = $1, last_name = $2
+      WHERE id = $3
+      RETURNING id, email, first_name, last_name, profile_pic_url
+    `;
+    const result = await pool.query(queryText, [first_name, last_name, id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const updatedUser = result.rows[0];
+    res.json(updatedUser);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ error: 'Failed to update user information' });
+  }
+});
 
 // Handles login form authenticate/login POST
 router.post('/login', (req, res, next) => {
