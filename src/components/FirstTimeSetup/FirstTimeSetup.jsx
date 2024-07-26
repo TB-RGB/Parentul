@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 const FirstTimeSetup = () => {
   const user = useSelector(state => state.user);
   const firstTimeSetup = useSelector(state => state.firstTimeSetupReducer);
+  const family = useSelector(state => state.familyReducer);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -14,10 +15,13 @@ const FirstTimeSetup = () => {
   const [children, setChildren] = useState([{ name: '', dob: '' }]);
 
   useEffect(() => {
-    if (user.first_name && user.last_name && user.id === children.user_id) {
+    console.log('Family data:', family); // For debugging
+
+    if (family.parent && family.parent.firstName && family.parent.lastName && family.children && family.children.length > 0) {
+      console.log('Redirecting to chat due to existing family data');
       history.push('/chat');
     }
-  }, [user, history]);
+  }, [family, history]);
 
   const handleAddChild = () => {
     setChildren([...children, { name: '', dob: '' }]);

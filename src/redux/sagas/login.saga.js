@@ -16,6 +16,7 @@ function* loginUser(action) {
     if (response.data && response.data.user) {
       yield put({ type: 'SET_USER', payload: response.data.user });
       yield put({ type: 'LOGIN_SUCCESS' });
+      yield put({ type: 'FETCH_FAMILY', payload: response.data.user.id });
     } else {
       yield put({ type: 'LOGIN_FAILED' });
     }
@@ -43,6 +44,7 @@ function* logoutUser(action) {
     // remove the client-side user object to let
     // the client-side code know the user is logged out
     yield put({ type: 'UNSET_USER' });
+    yield put({ type: 'UNSET_FAMILY'})
   } catch (error) {
     console.log('Error with user logout:', error);
   }
@@ -54,6 +56,7 @@ function* googleLoginUser(action) {
     if (response.data && response.data.user) {
       yield put({ type: 'SET_USER', payload: response.data.user });
       yield put({ type: 'LOGIN_SUCCESS' });
+      yield put({ type: 'FETCH_FAMILY', payload: response.data.user.id });
     } else {
       yield put({ type: 'LOGIN_FAILED', payload: { message: 'Login failed' } });
     }
@@ -62,6 +65,7 @@ function* googleLoginUser(action) {
     yield put({ type: 'LOGIN_FAILED', payload: { message: 'Login failed' } });
   }
 }
+
 function* loginSaga() {
   yield takeLatest('LOGIN', loginUser);
   yield takeLatest('LOGOUT', logoutUser);

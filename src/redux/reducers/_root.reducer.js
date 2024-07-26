@@ -6,6 +6,7 @@ import chat from './chat.reducer';
 import history from './chatHistory.reducer';
 
 import firstTimeSetupReducer from './firsttimesetup.reducer';
+import familyReducer from './family.reducer';
 
 
 // rootReducer is the primary reducer for our entire project
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   user, // will have an id and username if someone is logged in
   chat, // will have an array of messages
   history, // will have an array of conversations and a log of messages
-  firstTimeSetupReducer
+  firstTimeSetupReducer,
+  familyReducer,
 
 });
 
