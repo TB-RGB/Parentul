@@ -24,8 +24,8 @@ import ChatHistory from '../Chat/ChatHistory';
 import ChatHistoryDetails from '../Chat/ChatHistoryDetails';
 import UserPreferences from '../UserPreferences/UserPreferences';
 import FAQ from '../FAQ/FAQ';
-import FirstTimeSetupName from '../FirstTimeSetup/FirstTimeSetupName';
-import FirstTimeSetupChildren from '../FirstTimeSetup/FirstTimeSetupChildren';
+import FirstTimeSetup from '../FirstTimeSetup/FirstTimeSetup';
+
 
 
 
@@ -146,7 +146,7 @@ function App() {
             </Route>
 
             <Route exact path="/firsttime">
-            <FirstTimeSetupName />
+            <FirstTimeSetup />
             </Route>
 
 
