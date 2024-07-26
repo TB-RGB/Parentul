@@ -55,7 +55,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/preferences', preferencesRouter);
 app.use('/api/faq', faqRouter);
-app.use('/api/children', childrenRouter);
+app.use('/api/child', childrenRouter);
 
 
 

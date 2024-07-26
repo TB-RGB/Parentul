@@ -36,51 +36,43 @@ router.get('/:user_id', (req, res) => {
  * POST route template
  * This template reflects a SQL Transaction
  */
+/**
+ * POST route for adding one or multiple children
+ */
 router.post('/', async (req, res) => {
-  // POST route code here
-
-  const connection = await pool.connect()
-
+  const connection = await pool.connect();
 
   try {
-
     await connection.query('BEGIN');
 
-    //defines children from req.body
-    //children contains many different child components 
-    //which will be iterated through and added to database
-    let children = req.body
+    const children = Array.isArray(req.body) ? req.body : [req.body];
 
-
-
-    queryText = ` INSERT INTO "children"  
-  
+    const queryText = `
+      INSERT INTO "children"  
       ("user_id", "name", "dob")
-      VALUES
-    ($1, $2, $3);`
+      VALUES ($1, $2, $3)
+      RETURNING *;
+    `;
 
-    //inserts to database
+    const results = [];
+
     for (let child of children) {
-
-      await connection.query(queryText, [child.user_id, child.name, child.dob])
+      const { user_id, name, dob } = child;
+      const result = await connection.query(queryText, [user_id, name, dob]);
+      results.push(result.rows[0]);
     }
 
-    connection.query('COMMIT')
+    await connection.query('COMMIT');
 
-    res.sendStatus(200)
-    //commit 
-  }
-
-  catch (error) {
+    res.status(201).json(results);
+  } catch (error) {
     await connection.query('ROLLBACK');
-    console.log(error);
-    res.sendStatus(500);
+    console.error('Error adding child(ren):', error);
+    res.status(500).json({ error: 'Failed to add child(ren)' });
+  } finally {
+    connection.release();
   }
-
-  finally {
-
-    connection.release()
-  }
+});
 
 
 
@@ -94,7 +86,7 @@ router.post('/', async (req, res) => {
 
 
 
-});
+
 
 
 
