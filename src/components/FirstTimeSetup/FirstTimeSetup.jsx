@@ -43,6 +43,7 @@ const FirstTimeSetup = () => {
       setStep(3);
     } else {
       dispatch({ type: 'FINALIZE_FIRST_TIME_SETUP' });
+      history.push('/chat')
     }
   };
 
