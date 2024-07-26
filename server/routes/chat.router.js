@@ -4,7 +4,7 @@ const {
 } = require("../modules/authentication-middleware");
 const router = express.Router();
 const { handleChatMessage } = require("../services/chat.service");
-const { getUserChatHistory, addUserFeedback, endConversation } = require("../models/chat.models");
+const { getUserChatHistory, addUserFeedback, endConversation, getConversationLog } = require("../models/chat.models");
 
 
 router.post("/", async (req, res) => {
@@ -28,6 +28,17 @@ router.get("/history/:userId", async (req, res) => {
     console.error("Error getting chat history:", err);
     res.sendStatus(500).json({error: err});
   }
+});
+
+router.get("/log/:conversationId", async (req, res) => {
+    try {
+        const { conversationId } = req.params;
+        const chatLog = await getConversationLog(conversationId);
+        res.json(chatLog);
+    } catch (err) {
+        console.error("Error getting chat log:", err);
+        res.sendStatus(500).json({error: err});
+    }
 });
 
 router.post("/feedback", async (req, res) => {

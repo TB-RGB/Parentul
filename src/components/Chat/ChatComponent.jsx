@@ -9,9 +9,11 @@ import {
   endConversation,
   clearMessages,
 } from "../../redux/actions/chatActions";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const ChatComponent = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { messages, isLoading, currentConversationId } = useSelector(
     (state) => state.chat
   );
@@ -40,17 +42,22 @@ const ChatComponent = () => {
     }
   };
 
+ const handleHistoryClick = () => {
+   history.push('/chathistory');
+ }
+
   return (
     <>
       <Box sx={{ maxWidth: 600, margin: "auto", mt: 4 }}>
         <p className="text-center">
           <button
-            className="btn btn-danger mb-5"
+            className="btn btn-primary mb-5"
             onClick={handleEndConversation}
           >
             End Conversation
           </button>
         </p>
+        <button className="btn btn-secondary mt-5" onClick={handleHistoryClick}>View Chat History</button>
         <Typography variant="h4" gutterBottom>
           Parentul Chat
         </Typography>
