@@ -21,14 +21,14 @@ const ChatComponent = () => {
 
   useEffect(() => {
     dispatch(initializeChat());
-
+    dispatch({ type: 'FETCH_FAMILY', payload: user.id });
     return () => {
       if (currentConversationId) {
         dispatch(endConversation(currentConversationId));
         dispatch(clearMessages());
       }
     };
-  }, [dispatch]);
+  }, [dispatch, user.id]);
 
   const handleSendMessage = (message) => {
     console.log("Sending message:", message);
