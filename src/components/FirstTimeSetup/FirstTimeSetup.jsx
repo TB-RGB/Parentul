@@ -47,6 +47,7 @@ const FirstTimeSetup = () => {
       setStep(3);
     } else {
       dispatch({ type: 'FINALIZE_FIRST_TIME_SETUP' });
+      dispatch({ type: 'FETCH_FAMILY', payload: user.id })
       history.push('/chat')
     }
   };
