@@ -32,26 +32,15 @@ router.post("/", (req, res) => {
   // POST route code here
 
   const queryText = `
-  INSERT INTO "user_preferences"  
-  
-      ("user_id", "notifications_email", "notifications_sms", "notifications_push", "notifications_freq", "updated_at")
-      VALUES
-    ($1, $2, $3, $4, $5, 'NOW()');
+  INSERT INTO "user_preferences"
+  ("user_id")
+  VALUES $1;
   `;
 
   //array which contains the user prefrences from req.body
   //this array will contain 5 parameters reflecting the number of values
   //in queryText
-
-  const insertQuery = [
-    req.body.user_id,
-    req.body.notifications_email,
-
-    req.body.notifications_sms,
-    req.body.notifications_push,
-    req.body.notifications_freq,
-  ];
-
+  const insertQuery = [req.body.user_id];
   //request to the postgres server which will update userprefrences
   pool
     .query(queryText, insertQuery)
