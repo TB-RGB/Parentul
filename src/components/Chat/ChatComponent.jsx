@@ -10,6 +10,7 @@ import {
   clearMessages,
 } from "../../redux/actions/chatActions";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import './output.css';
 
 const ChatComponent = () => {
   const dispatch = useDispatch();
