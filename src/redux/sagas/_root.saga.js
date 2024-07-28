@@ -3,11 +3,10 @@ import loginSaga from './login.saga';
 import registrationSaga from './registration.saga';
 import userSaga from './user.saga';
 import chatSaga from './chat.saga';
-
 import historySaga from './chatHistory.saga';
-
 import { firstTimeSetupSaga } from './firsttimesetup.saga';
 import familySaga from './family.saga';
+import preferencesSaga from './preferences.saga';
 
 
 // rootSaga is the primary saga.
@@ -25,6 +24,7 @@ export default function* rootSaga() {
     chatSaga(),
     historySaga(),
     firstTimeSetupSaga(),
-    familySaga()
+    familySaga(),
+    preferencesSaga(),
   ]);
 }

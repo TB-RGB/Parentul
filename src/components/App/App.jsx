@@ -32,7 +32,7 @@ import FirstTimeSetup from '../FirstTimeSetup/FirstTimeSetup';
 
 import './App.css';
 import ChatComponent from '../Chat/ChatComponent';
-import './output.css';
+// import './output.css';
 
 function App() {
   const dispatch = useDispatch();
