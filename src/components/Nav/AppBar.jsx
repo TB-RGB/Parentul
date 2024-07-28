@@ -13,7 +13,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import LogOutButton from '../LogOutButton/LogOutButton';
+
 
 function Nav() {
   const user = useSelector((store) => store.user);
@@ -167,6 +167,7 @@ function Nav() {
                         handleCloseUserMenu();
                         if (setting === 'Logout') {
                           handleLogout();
+                          history.push('/login')
                         } else if (setting === 'User Preferences') {
                           history.push('/preferences');
                         }
