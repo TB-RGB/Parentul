@@ -7,10 +7,10 @@ const ChatHistory = () => {
   const { conversations } = useSelector((state) => state.history);
   const history = useHistory();
 
-  //   const userId = useSelector((state) => state.user.id);
+    const userId = useSelector((state) => state.user.id);
 
   useEffect(() => {
-    dispatch({ type: "FETCH_CONVERSATIONS", payload: { userId: 1 } });
+    dispatch({ type: "FETCH_CONVERSATIONS", payload: { userId: userId } });
   }, [dispatch]);
 
   const handleLogClick = (conversationId) => {
