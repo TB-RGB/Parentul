@@ -17,6 +17,7 @@ function* loginUser(action) {
     if (response.data && response.data.user) {
       yield put({ type: 'SET_USER', payload: response.data.user });
       yield put({ type: 'LOGIN_SUCCESS' });
+      yield put({ type: 'CLEAR_LOGIN_ERROR'})
       yield put({ type: 'FETCH_FAMILY', payload: response.data.user.id });
     } else {
       yield put({ type: 'LOGIN_FAILED' });
