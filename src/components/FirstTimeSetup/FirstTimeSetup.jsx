@@ -17,7 +17,7 @@ const FirstTimeSetup = () => {
   useEffect(() => {
     console.log('Family data:', family); // For debugging
 
-    if (family.parent && family.parent.firstName && family.parent.lastName && family.children && family.children.length > 0) {
+    if (family.parent.firstName && family.parent.lastName && family.children && family.children.length > 0) {
       console.log('Redirecting to chat due to existing family data');
       history.push('/chat');
     }

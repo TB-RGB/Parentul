@@ -38,6 +38,7 @@ function App() {
   const dispatch = useDispatch();
 
   const user = useSelector(store => store.user);
+  
 
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });
@@ -134,7 +135,7 @@ function App() {
             <Chat />
             </Route> */}
 
-            <Route exact path="/chathistory">
+            <Route exact path="/chathistory/:userId">
             <ChatHistory />
             </Route>
 
@@ -142,7 +143,7 @@ function App() {
             <ChatHistoryDetails />
             </Route>
 
-            <Route exact path="/preferences">
+            <Route exact path="/preferences/:userId">
             <UserPreferences />
             </Route>
 
