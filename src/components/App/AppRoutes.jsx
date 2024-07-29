@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import AboutPage from '../AboutPage/AboutPage';
@@ -18,11 +18,15 @@ import FirstTimeSetup from '../FirstTimeSetup/FirstTimeSetup';
 
 function AppRoutes() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const user = useSelector(store => store.user);
 
   useEffect(() => {
-    if (!user.id) {
-      history.push('/login');
+    // if (!user.id) {
+    //   history.push('/login');
+    // }
+    if (user.id){
+    dispatch({ type: 'FETCH_FAMILY', payload: user.id });
     }
   }, [user, history]);
 

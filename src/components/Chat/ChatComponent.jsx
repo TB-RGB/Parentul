@@ -10,7 +10,7 @@ import {
   clearMessages,
 } from "../../redux/actions/chatActions";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import './output.css';
+import "./output.css";
 
 const ChatComponent = () => {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const ChatComponent = () => {
 
   useEffect(() => {
     dispatch(initializeChat());
-    
+
     return () => {
       if (currentConversationId) {
         dispatch(endConversation(currentConversationId));
@@ -43,13 +43,13 @@ const ChatComponent = () => {
     }
   };
 
- const handleHistoryClick = () => {
-   history.push('/chathistory');
- }
+  const handleHistoryClick = () => {
+    history.push("/chathistory");
+  };
   const handlePreferencesClick = () => {
-    dispatch({ type: 'FETCH_USER_PREFERENCES', payload:{userId: user.id} });
-   history.push('/preferences');
- }
+    dispatch({ type: "FETCH_USER_PREFERENCES", payload: { userId: user.id } });
+    history.push("/preferences");
+  };
 
   return (
     <>
@@ -62,8 +62,15 @@ const ChatComponent = () => {
             End Conversation
           </button>
         </p>
-        <button className="btn btn-secondary mt-5" onClick={handleHistoryClick}>View Chat History</button>
-        <button className="btn btn-outline btn-xs" onClick={handlePreferencesClick}>View User Preferences</button>
+        <button className="btn btn-secondary mt-5" onClick={handleHistoryClick}>
+          View Chat History
+        </button>
+        <button
+          className="btn btn-outline btn-xs"
+          onClick={handlePreferencesClick}
+        >
+          View User Preferences
+        </button>
         <Typography variant="h4" gutterBottom>
           Parentul Chat
         </Typography>
