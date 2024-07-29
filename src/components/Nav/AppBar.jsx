@@ -31,7 +31,6 @@ function Nav() {
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
-   
   };
 
   const handleUserPreferences = () => {
