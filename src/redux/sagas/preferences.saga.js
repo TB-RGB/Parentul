@@ -22,7 +22,7 @@ function* updateUserPreferences(action) {
 function* createUserPreferences(action) {
     try {
         yield axios.post('/api/preferences', action.payload);
-        yield put({ type: 'FETCH_USER_PREFERENCES', payload: action.payload.user_id });
+        yield put({ type: 'FETCH_USER_PREFERENCES', payload: action.payload });
     } catch (err) {
         console.error('Error creating user preferences:', err);
     }
