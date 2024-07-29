@@ -30,8 +30,9 @@ function Nav() {
   };
 
   const handleLogout = () => {
-    dispatch({ type: 'LOGOUT' });
     history.push('/login');
+    dispatch({ type: 'LOGOUT' });
+    
   };
 
   const pages = user.id ? ['Chat', 'Chat History', 'FAQ'] : [];

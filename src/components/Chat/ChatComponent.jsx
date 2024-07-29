@@ -22,7 +22,7 @@ const ChatComponent = () => {
 
   useEffect(() => {
     dispatch(initializeChat());
-    dispatch({ type: 'FETCH_FAMILY', payload: user.id });
+    
     return () => {
       if (currentConversationId) {
         dispatch(endConversation(currentConversationId));
