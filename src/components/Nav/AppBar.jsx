@@ -41,7 +41,7 @@ function Nav() {
   const pages = user.id ? [
     {page:'Chat', Link: '/chat'},
     {page: 'Chat History', Link: `/chathistory/${user.id}`},
-    {page: 'FAQ', Link: '/faq'}] : [];
+    {page: 'FAQ', Link: '/questions'}] : [];
   const settings = user.id ? [
     {page: 'User Preferences', Link: `/preferences/${user.id}`},
     {page: 'Logout', Link: '/login'}] : [{page: 'Login', Link: '/login'}];
