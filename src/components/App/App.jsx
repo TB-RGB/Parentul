@@ -123,12 +123,16 @@ function App() {
           </Route>
 
           <Route path="/chat">
+          {user.id ?
             <ChatComponent />
+            :
+            <LoginPage />
+          }
           </Route>
 
-            <Route exact path="/chat">
+            {/* <Route exact path="/chat">
             <Chat />
-            </Route>
+            </Route> */}
 
             <Route exact path="/chathistory">
             <ChatHistory />
