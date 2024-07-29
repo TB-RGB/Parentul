@@ -19,6 +19,7 @@ function AppRoutes() {
   const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector(store => store.user);
+  const children = useSelector(store => store.familyReducer.children)
 
   useEffect(() => {
     // if (!user.id) {
@@ -47,7 +48,7 @@ function AppRoutes() {
         {user.id ? <Redirect to="/firsttime" /> : <LandingPage />}
       </Route>
       <Route path="/chat">
-        {user.id ? <ChatComponent /> : <LoginPage />}
+        {(children.length > 0 && user.id) ? <ChatComponent /> : (user.id && children.length === 0) ? <FirstTimeSetup /> : <LoginPage /> }
       </Route>
       <Route exact path="/chathistory/:userId" component={ChatHistory} />
       <Route exact path="/chatlog/:chatId" component={ChatHistoryDetails} />
