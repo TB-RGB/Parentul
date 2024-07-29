@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams } from "react-router-dom";
 
 const ChatHistory = () => {
   const dispatch = useDispatch();
   const { conversations } = useSelector((state) => state.history);
   const history = useHistory();
 
-    const userId = useSelector((state) => state.user.id);
+    const { userId } = useParams();
 
   useEffect(() => {
     dispatch({ type: "FETCH_CONVERSATIONS", payload: { userId: userId } });
