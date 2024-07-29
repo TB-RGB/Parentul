@@ -61,7 +61,7 @@ const FirstTimeSetup = () => {
       });
     } else if (activeStep === 2) {
       dispatch({ type: 'FINALIZE_FIRST_TIME_SETUP' });
-      dispatch({ type: 'FETCH_FAMILY', payload: user.id });
+      dispatch({ type: 'CREATE_USER_PREFERENCES', payload: { userId: user.id} });
       history.push('/chat');
       return;
     }
