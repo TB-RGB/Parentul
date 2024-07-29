@@ -48,6 +48,7 @@ function* logoutUser(action) {
     yield put({ type: 'UNSET_USER' });
     yield put({ type: 'UNSET_FAMILY'})
     yield put({ type: 'CLEAR_LOGIN_ERROR'})
+    
   } catch (error) {
     console.log('Error with user logout:', error);
   }
