@@ -16,7 +16,7 @@ const ChatHistoryDetails = () => {
     return (
         <>
             <h1>Chat Log</h1>
-            <button className="btn btn-secondary mt-5" onClick={handleBackClick}>Back</button>
+            <button onClick={handleBackClick}>Back</button>
             {log.map((message) => (
                 <div key={message.id}>
                     <p>{message.content}</p>
