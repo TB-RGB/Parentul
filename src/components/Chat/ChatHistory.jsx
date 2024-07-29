@@ -2,13 +2,25 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { useParams } from "react-router-dom";
+import {
+  Stack,
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Accordion,
+  AccordionActions,
+  AccordionSummary,
+  AccordionDetails,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const ChatHistory = () => {
   const dispatch = useDispatch();
   const { conversations } = useSelector((state) => state.history);
   const history = useHistory();
 
-    const { userId } = useParams();
+  const { userId } = useParams();
 
   useEffect(() => {
     dispatch({ type: "FETCH_CONVERSATIONS", payload: { userId: userId } });
@@ -26,19 +38,70 @@ const ChatHistory = () => {
     history.push("/chat");
   };
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric', 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    };
+    return date.toLocaleDateString('en-US', options);
+  }
+
   return (
     <>
-      <h1>Chat History</h1>
-      <button className="btn btn-secondary mt-5" onClick={handleBackClick}>Back</button>
-      {conversations.map((conversation) => (
-        <div key={conversation.id}>
-          <h2>{conversation.start_time}</h2>
-          <p>{conversation.end_time}</p>
-          <button className="btn btn-circle btn-outline" onClick={() => handleLogClick(conversation.id)}>
-            View Log
-          </button>
-        </div>
-      ))}
+      <Box sx={{ maxWidth: 800, margin: "auto", padding: 2 }}>
+        <Card
+          sx={{
+            color: "white",
+            backgroundColor: "#1E1E1E",
+            borderRadius: "1em",
+            my: 2,
+            p: 4,
+            boxShadow: "0px 0px 20px black",
+            border: "2px outset orange",
+          }}
+        >
+          <Typography variant="h4" textAlign={"center"}>
+            Chat History
+          </Typography>
+          <button onClick={handleBackClick}>Back</button>
+          <Stack
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="stretch"
+            spacing={2}
+          >
+            {conversations.map((conversation) => (
+              <Accordion
+                sx={{
+                  backgroundColor: "#1E1E1E",
+                  border: "2px outset orange",
+                  boxShadow: "0px 0px 20px black",
+                  borderRadius: "1em",
+                  color: "white",
+                }}
+                key={conversation.id}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}>
+                  {formatDate(conversation.start_time)}
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography><strong>User:</strong> {conversation.user_message}</Typography>
+                  <Typography><strong>AI:</strong> {conversation.ai_response}</Typography>
+                </AccordionDetails>
+                <AccordionActions>
+                  <button onClick={() => handleLogClick(conversation.id)}>
+                    View Log
+                  </button>
+                </AccordionActions>
+              </Accordion>
+            ))}
+          </Stack>
+        </Card>
+      </Box>
     </>
   );
 };

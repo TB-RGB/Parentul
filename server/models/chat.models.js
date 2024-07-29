@@ -74,8 +74,22 @@ async function logChatHistory(userId, userMessage, aiResponse) {
 
 async function getUserChatHistory(userId) {
     const queryText = `
-    SELECT conversations.id, conversations.start_time, conversations.end_time
+    WITH RankedMessages AS (
+        SELECT 
+        messages.conversation_id,
+        messages.sender_type,
+        messages.content,
+        messages.timestamp,
+        ROW_NUMBER() OVER (PARTITION BY messages.conversation_id, messages.sender_type ORDER BY messages.timestamp DESC) AS row_number
+        FROM messages
+    )
+    SELECT
+        conversations.id, conversations.start_time, conversations.end_time,
+        user_messages.content AS user_message,
+        ai_messages.content AS ai_response
     FROM conversations
+    LEFT JOIN RankedMessages AS user_messages ON user_messages.conversation_id = conversations.id AND user_messages.sender_type = 'user' AND user_messages.row_number = 1
+    LEFT JOIN RankedMessages AS ai_messages ON ai_messages.conversation_id = conversations.id AND ai_messages.sender_type = 'ai' AND ai_messages.row_number = 1
     WHERE conversations.user_id = $1
     ORDER BY conversations.start_time DESC;
     `
