@@ -46,9 +46,9 @@ function AppRoutes() {
       <Route path="/chat">
         {user.id ? <ChatComponent /> : <LoginPage />}
       </Route>
-      <Route exact path="/chathistory" component={ChatHistory} />
+      <Route exact path="/chathistory/:userId" component={ChatHistory} />
       <Route exact path="/chatlog/:chatId" component={ChatHistoryDetails} />
-      <Route exact path="/preferences" component={UserPreferences} />
+      <Route exact path="/preferences/:userId" component={UserPreferences} />
       <Route exact path="/questions" component={FAQ} />
       <Route exact path="/firsttime">
         {user.id ? <FirstTimeSetup /> : <LoginPage />}
