@@ -56,42 +56,35 @@ router.post("/", (req, res) => {
 //the put router will update prefrences by a specific id
 
 router.put("/:id", (req, res) => {
-  // PUT route code here
+  let updateId = req.params.id;
+  console.log('Updating preferences for user:', updateId, 'with data:', req.body);
 
-  //update id is derived from req.params.id
-  let updateid = req.params.id;
-
-  //the text which will update a specific entry in the database
   const queryText = `
   UPDATE "user_preferences"
   SET 
-  
-  "notifications_email" = $1,
-  "notifications_sms" = $2,
-  "notifications_push" = $3,
-  "notifications_freq" = $4,
-  "updated_at" = 'NOW()'
-
+    "notifications_email" = $1,
+    "notifications_sms" = $2,
+    "notifications_freq" = $3,
+    "updated_at" = NOW()
   WHERE 
-  user_id = $5;
+    user_id = $4;
   `;
 
-  const updatedpreferences = [
+  const updatedPreferences = [
     req.body.notifications_email,
-
     req.body.notifications_sms,
-    req.body.notifications_push,
     req.body.notifications_freq,
-    updateid,
+    updateId,
   ];
 
   pool
-    .query(queryText, updatedpreferences)
+    .query(queryText, updatedPreferences)
     .then((result) => {
+      console.log('Preferences updated successfully');
       res.sendStatus(200);
     })
     .catch((err) => {
-      console.log("Error with the put route");
+      console.log("Error with the put route", err);
       res.sendStatus(500);
     });
 });

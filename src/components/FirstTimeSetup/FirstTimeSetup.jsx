@@ -154,8 +154,8 @@ const FirstTimeSetup = () => {
       label: 'Verify Your Information',
       content: (
         <>
-          <Typography>First Name: {firstName}</Typography>
-          <Typography>Last Name: {lastName}</Typography>
+          <Typography>Name: {firstName} {lastName}</Typography>
+          
           <Typography variant="h6" style={{ marginTop: '16px' }}>Children:</Typography>
           {children.map((child, index) => (
             <div key={index}>
