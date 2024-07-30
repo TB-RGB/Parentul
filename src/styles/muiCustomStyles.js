@@ -71,6 +71,7 @@ export const muiCustomStyles = {
   backButton: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1),
     color: theme.palette.common.white,
     borderColor: theme.palette.common.white,
     '&:hover': {

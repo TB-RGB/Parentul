@@ -6,21 +6,24 @@ import {
   Stack,
   Box,
   Card,
-  CardContent,
   Typography,
   Accordion,
   AccordionActions,
   AccordionSummary,
   AccordionDetails,
+  IconButton,
+  Button
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import muiCustomStyles from "../../styles/muiCustomStyles";
 
 const ChatHistory = () => {
   const dispatch = useDispatch();
-  const { conversations } = useSelector((state) => state.history);
+  const { conversations } = useSelector((store) => store.history);
   const history = useHistory();
-
   const { userId } = useParams();
+  const family = useSelector((store) => store.familyReducer);
 
   useEffect(() => {
     dispatch({ type: "FETCH_CONVERSATIONS", payload: { userId: userId } });
@@ -67,7 +70,9 @@ const ChatHistory = () => {
           <Typography variant="h4" textAlign={"center"}>
             Chat History
           </Typography>
-          <button onClick={handleBackClick}>Back</button>
+          <Button variant="outlined" sx={muiCustomStyles.backButton} onClick={handleBackClick} startIcon={<FirstPageIcon />}>
+            To Chat
+          </Button>
           <Stack
             direction="column"
             justifyContent="flex-start"
@@ -86,11 +91,11 @@ const ChatHistory = () => {
                 key={conversation.id}
               >
                 <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}>
-                  {formatDate(conversation.start_time)}
+                  {formatDate(conversation.start_time)} {conversation.user_rating != null ? ` - Was this helpful? ${conversation.user_rating}` : ""}
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Typography><strong>User:</strong> {conversation.user_message}</Typography>
-                  <Typography><strong>AI:</strong> {conversation.ai_response}</Typography>
+                  <Typography><strong>{!family.parent.firstName ? "User": `${family.parent.firstName}'s`} Message:</strong> {conversation.user_message}</Typography>
+                  <Typography><strong>Parentul's Response:</strong> {conversation.ai_response}</Typography>
                 </AccordionDetails>
                 <AccordionActions>
                   <button onClick={() => handleLogClick(conversation.id)}>
