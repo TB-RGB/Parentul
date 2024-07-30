@@ -80,7 +80,7 @@ async function getUserChatHistory(userId) {
         messages.sender_type,
         messages.content,
         messages.timestamp,
-        ROW_NUMBER() OVER (PARTITION BY messages.conversation_id, messages.sender_type ORDER BY messages.timestamp DESC) AS row_number
+        ROW_NUMBER() OVER (PARTITION BY messages.conversation_id, messages.sender_type ORDER BY messages.timestamp ASC) AS row_number
         FROM messages
     )
     SELECT

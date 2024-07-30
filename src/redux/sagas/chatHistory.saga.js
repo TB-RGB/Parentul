@@ -23,9 +23,19 @@ function* fetchLog(action) {
   }
 }
 
+function* sendFeedback(action) {
+    try {
+        yield axios.post(`/api/chat/feedback`, action.payload);
+        // + ADD SAGA TO GENERATE FOLLOW UP MESSAGE HERE
+    } catch (err) {
+        console.error("Error sending feedback:", err);
+    }
+}
+
 const historySaga = function* historySaga() {
   yield takeLatest("FETCH_CONVERSATIONS", fetchConversations);
   yield takeLatest("FETCH_LOG", fetchLog);
+  yield takeLatest('SEND_FEEDBACK', sendFeedback);
 };
 
 export default historySaga;
