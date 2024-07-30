@@ -62,6 +62,7 @@ export const muiCustomStyles = {
   continueButton: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
+    color: 'white',
     backgroundColor: '#FFA500',
     '&:hover': {
       backgroundColor: '#FF8C00',
@@ -76,6 +77,13 @@ export const muiCustomStyles = {
       borderColor: '#FFA500',
       color: '#FFA500',
     },
+  },
+  loginContainer: {
+    backgroundColor: '#1E1E1E',
+    borderRadius: '1em',
+    padding: theme.spacing(3),
+    boxShadow: '0px 0px 20px black',
+    border: '2px outset orange'
   },
 };
 

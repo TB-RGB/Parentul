@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Box, Card, TextField, Button, Typography, Alert } from '@mui/material';
+import muiCustomStyles from '../../styles/muiCustomStyles'; 
+import GoogleSignIn from '../GoogleSignIn/GoogleSignIn';
 
 function RegisterForm() {
   const [username, setUsername] = useState('');
@@ -17,44 +20,55 @@ function RegisterForm() {
         password: password,
       },
     });
-  }; // end registerUser
+  };
 
   return (
-    <form className="formPanel" onSubmit={registerUser}>
-      <h2>Register User</h2>
-      {errors.registrationMessage && (
-        <h3 className="alert" role="alert">
-          {errors.registrationMessage}
-        </h3>
-      )}
-      <div>
-        <label htmlFor="username">
-          Username:
-          <input
+    <Box sx={{ maxWidth: 400, margin: 'auto', padding: 2 }}>
+      <Card sx={muiCustomStyles.card}>
+        <Box component="form" onSubmit={registerUser} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Typography variant="h4" gutterBottom>
+            Register User
+          </Typography>
+          
+          {errors.registrationMessage && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {errors.registrationMessage}
+            </Alert>
+          )}
+          
+          <TextField
+            label="Email"
             type="text"
             name="username"
-            value={username}
             required
+            value={username}
             onChange={(event) => setUsername(event.target.value)}
+            sx={muiCustomStyles.textField}
           />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
+          
+          <TextField
+            label="Password"
             type="password"
             name="password"
-            value={password}
             required
+            value={password}
             onChange={(event) => setPassword(event.target.value)}
+            sx={muiCustomStyles.textField}
           />
-        </label>
-      </div>
-      <div>
-        <input className="btn" type="submit" name="submit" value="Register" />
-      </div>
-    </form>
+          
+          <Button
+            type="submit"
+            variant="contained"
+            sx={muiCustomStyles.continueButton}
+          >
+            Register
+          </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <GoogleSignIn />
+          </Box>
+        </Box>
+      </Card>
+    </Box>
   );
 }
 

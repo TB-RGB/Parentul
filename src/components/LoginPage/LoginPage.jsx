@@ -1,7 +1,9 @@
 import React from 'react';
 import LoginForm from '../LoginForm/LoginForm';
 import { useHistory } from 'react-router-dom';
-import GoogleSignIn from '../GoogleSignIn/GoogleSignIn';
+import { Button } from '@mui/material';
+import muiCustomStyles from '../../styles/muiCustomStyles';
+
 
 function LoginPage() {
   const history = useHistory();
@@ -9,17 +11,18 @@ function LoginPage() {
   return (
     <div>
       <LoginForm />
-<GoogleSignIn />
+
       <center>
-        <button
-          type="button"
-          className="btn btn_asLink"
+        <Button
+        sx={muiCustomStyles.continueButton}
+          
+          
           onClick={() => {
             history.push('/registration');
           }}
         >
           Register
-        </button>
+        </Button>
       </center>
     </div>
   );

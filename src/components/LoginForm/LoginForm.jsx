@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Box, Card, TextField, Button, Typography, Alert } from '@mui/material';
+import GoogleSignIn from '../GoogleSignIn/GoogleSignIn';
+import muiCustomStyles from '../../styles/muiCustomStyles';
+import { Google } from '@mui/icons-material';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -24,41 +28,53 @@ function LoginForm() {
   };
 
   return (
-    <form className="formPanel" onSubmit={login}>
-      <h2>Login</h2>
-      {errors.loginMessage && (
-        <h3 className="alert" role="alert">
-          {errors.loginMessage}
-        </h3>
-      )}
-      <div>
-        <label htmlFor="email">
-          Email:
-          <input
+    <Box sx={{ maxWidth: 400, margin: 'auto', padding: 2 }}>
+      <Card sx={muiCustomStyles.card}>
+        <Box component="form" onSubmit={login} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Typography variant="h4" gutterBottom>
+            Login
+          </Typography>
+          
+          {errors.loginMessage && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {errors.loginMessage}
+            </Alert>
+          )}
+          
+          <TextField
+            label="Email"
             type="email"
             name="email"
             required
             value={email}
             onChange={(event) => setEmail(event.target.value)}
+            sx={muiCustomStyles.textField}
           />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
+          
+          <TextField
+            label="Password"
             type="password"
             name="password"
             required
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            sx={muiCustomStyles.textField}
           />
-        </label>
-      </div>
-      <div>
-        <input className="btn" type="submit" name="submit" value="Log In" />
-      </div>
-    </form>
+          
+          <Button
+            type="submit"
+            variant="contained"
+            sx={muiCustomStyles.continueButton}
+          >
+            Log In
+          </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <GoogleSignIn />
+          </Box>
+
+        </Box>
+      </Card>
+    </Box>
   );
 }
 
