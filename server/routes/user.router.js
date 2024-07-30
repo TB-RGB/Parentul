@@ -84,7 +84,7 @@ router.post('/register', async (req, res, next) => {
 });
 
 router.put('/', rejectUnauthenticated, async (req, res) => {
-  const { id, first_name, last_name } = req.body;
+  const { id, first_name, last_name, has_diag_in_family } = req.body;
 
   // Ensure the logged-in user is only updating their own information
   if (req.user.id !== parseInt(id)) {
@@ -94,11 +94,11 @@ router.put('/', rejectUnauthenticated, async (req, res) => {
   try {
     const queryText = `
       UPDATE users 
-      SET first_name = $1, last_name = $2
-      WHERE id = $3
+      SET first_name = $1, last_name = $2, has_diag_in_family = $3
+      WHERE id = $4
       RETURNING id, email, first_name, last_name, profile_pic_url
     `;
-    const result = await pool.query(queryText, [first_name, last_name, id]);
+    const result = await pool.query(queryText, [first_name, last_name, has_diag_in_family, id]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'User not found' });

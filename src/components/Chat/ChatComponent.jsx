@@ -2,7 +2,7 @@ import ChatInput from "./ChatInput";
 import MessageList from "./MessageList";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Card, Typography } from "@mui/material";
 import {
   sendMessage,
   initializeChat,
@@ -10,6 +10,7 @@ import {
   clearMessages,
 } from "../../redux/actions/chatActions";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import muiCustomStyles from "../../styles/muiCustomStyles";
 import "./output.css";
 
 const ChatComponent = () => {
@@ -43,41 +44,39 @@ const ChatComponent = () => {
     }
   };
 
-  const handleHistoryClick = () => {
-    history.push("/chathistory");
-  };
-  const handlePreferencesClick = () => {
-    dispatch({ type: "FETCH_USER_PREFERENCES", payload: { userId: user.id } });
-    history.push("/preferences");
-  };
 
   return (
     <>
       <Box sx={{ maxWidth: 600, margin: "auto", mt: 4 }}>
-        <p className="text-center">
-          <button
-            className="btn btn-primary mb-5"
-            onClick={handleEndConversation}
-          >
-            End Conversation
-          </button>
-        </p>
-        <button className="btn btn-secondary mt-5" onClick={handleHistoryClick}>
-          View Chat History
-        </button>
-        <button
-          className="btn btn-outline btn-xs"
-          onClick={handlePreferencesClick}
-        >
-          View User Preferences
-        </button>
+<Card sx={muiCustomStyles.card}>
+        
+        
         <Typography variant="h4" gutterBottom>
           Parentul Chat
         </Typography>
 
         <MessageList messages={messages} />
         <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
+        <Box sx={{ 
+          maxWidth: 600, 
+          margin: "auto", 
+          mt: 2, 
+          display: 'flex', 
+          justifyContent: 'flex-end'  // This aligns the button to the right
+        }}>
+      
+      <Button
+            sx={{mt: 4, ...muiCustomStyles.button}}
+            onClick={handleEndConversation}
+          >
+            End Conversation
+          </Button>
+          
+          </Box>
+        
+        </Card>
       </Box>
+     
     </>
   );
 };

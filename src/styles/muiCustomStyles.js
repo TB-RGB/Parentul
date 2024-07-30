@@ -86,6 +86,71 @@ export const muiCustomStyles = {
     boxShadow: '0px 0px 20px black',
     border: '2px outset orange'
   },
+  checkbox: {
+    color: 'orange', 
+    '&.Mui-checked': {
+        color: 'orange'
+    }
+  },
+  large: {
+    fontSize: '50px'
+  },
+  medium: {
+    fontSize: '30px'
+  },
+  select: {
+    '& .MuiOutlinedInput-root': {
+      color: 'white',
+      '& fieldset': {
+        borderColor: 'orange',
+      },
+      '&:hover fieldset': {
+        borderColor: 'white',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'orange',
+      },
+    },
+    '& .MuiInputLabel-root': {
+      color: 'orange',
+      '&.Mui-focused': {
+        color: 'orange',
+      },
+    },
+    '& .MuiSelect-icon': {
+      color: 'orange',
+    },
+  },
+  menu: {
+    '& .MuiPaper-root': {
+      backgroundColor: '#1E1E1E',
+      color: 'white',
+    },
+    '& .MuiList-root': {
+      padding: 0,
+    },
+  },
+  menuItem: {
+    backgroundColor: '#1E1E1E',
+    color: 'orange',
+    '&:hover': {
+      backgroundColor: 'black',
+    },
+    '&.Mui-selected': {
+      backgroundColor: '#1E1E1E',
+      '&:hover': {
+        backgroundColor: 'black',
+      },
+    },
+  },
+  button: {
+    backgroundColor: 'orange',
+    color: 'black',
+    '&:hover': {
+      backgroundColor: 'darkorange',
+    },
+  },
 };
+
 
 export default muiCustomStyles;
