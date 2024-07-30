@@ -26,7 +26,7 @@ function* fetchLog(action) {
 function* sendFeedback(action) {
     try {
         yield axios.post(`/api/chat/feedback`, action.payload);
-        // + ADD SAGA TO GENERATE FOLLOW UP MESSAGE HERE
+        yield axios.post(`/api/followup`, {conversationId: action.payload.conversationId, userId: action.payload.userId, questionText: action.payload.questionText});
     } catch (err) {
         console.error("Error sending feedback:", err);
     }
