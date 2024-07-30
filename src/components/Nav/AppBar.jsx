@@ -31,6 +31,7 @@ function Nav() {
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
+    history.replace('/login')
   };
 
   const handleUserPreferences = () => {

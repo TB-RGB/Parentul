@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { Card } from '@mui/material';
+import { Card, Checkbox, FormControlLabel } from '@mui/material';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
@@ -26,10 +26,11 @@ const FirstTimeSetup = () => {
   const [firstName, setFirstName] = useState(user.first_name || '');
   const [lastName, setLastName] = useState(user.last_name || '');
   const [children, setChildren] = useState([{ name: '', dob: '' }]);
+  const [hasDiagnosis, setHasDiagnosis] = useState(false);
 
   useEffect(() => {
     if (family.parent.firstName && family.parent.lastName && family.children && family.children.length > 0) {
-      history.push('/chat');
+      history.replace('/chat');
     }
   }, [family, history]);
 
@@ -55,11 +56,13 @@ const FirstTimeSetup = () => {
         alert('Please fill in all child information');
         return;
       }
+    } else if (activeStep === 2) {
+      
+    } else if (activeStep === 3) {
       dispatch({ 
         type: 'SET_FIRST_TIME_SETUP_DATA',
-        payload: { firstName, lastName, children }
+        payload: { firstName, lastName, children, hasDiagnosis }
       });
-    } else if (activeStep === 2) {
       dispatch({ type: 'FINALIZE_FIRST_TIME_SETUP' });
       dispatch({ type: 'CREATE_USER_PREFERENCES', payload: { userId: user.id} });
       history.push('/chat');
@@ -133,18 +136,34 @@ const FirstTimeSetup = () => {
       ),
     },
     {
+      label: 'Diagnosis in the Family?',
+      content: (
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={hasDiagnosis}
+              onChange={(e) => setHasDiagnosis(e.target.checked)}
+              sx={muiCustomStyles.checkbox}
+            />
+          }
+          label="Is there a diagnosis in the family?"
+        />
+      ),
+    },
+    {
       label: 'Verify Your Information',
       content: (
         <>
-          <Typography>First Name: {firstTimeSetup.firstName || firstName}</Typography>
-          <Typography>Last Name: {firstTimeSetup.lastName || lastName}</Typography>
+          <Typography>First Name: {firstName}</Typography>
+          <Typography>Last Name: {lastName}</Typography>
           <Typography variant="h6" style={{ marginTop: '16px' }}>Children:</Typography>
-          {(firstTimeSetup.children || children).map((child, index) => (
+          {children.map((child, index) => (
             <div key={index}>
               <Typography>Name: {child.name}</Typography>
               <Typography>Date of Birth: {child.dob}</Typography>
             </div>
           ))}
+          <Typography>Diagnosis in Family: {hasDiagnosis ? 'Yes' : 'No'}</Typography>
         </>
       ),
     },

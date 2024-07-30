@@ -86,6 +86,12 @@ export const muiCustomStyles = {
     boxShadow: '0px 0px 20px black',
     border: '2px outset orange'
   },
+  checkbox: {
+    color: 'orange', 
+    '&.Mui-checked': {
+        color: 'orange'
+    }
+  }
 };
 
 export default muiCustomStyles;
