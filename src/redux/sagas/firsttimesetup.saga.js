@@ -3,9 +3,6 @@ import axios from 'axios';
 
 function* finalizeFirstTimeSetup() {
   try {
-    
-
-    // Select the firstTimeSetup state
     const firstTimeSetup = yield select(state => state.firstTimeSetupReducer);
     console.log('First Time Setup State:', firstTimeSetup);
 
@@ -13,14 +10,15 @@ function* finalizeFirstTimeSetup() {
       throw new Error('First Time Setup data is not available');
     }
 
-    const { firstName, lastName, children } = firstTimeSetup;
+    const { firstName, lastName, children, hasDiagnosis } = firstTimeSetup;
     const userId = yield select(state => state.user.id);
 
     // Update user profile
     yield call(axios.put, '/api/user', {
       id: userId,
       first_name: firstName,
-      last_name: lastName
+      last_name: lastName,
+      has_diag_in_family: hasDiagnosis
     });
 
     // Add children
@@ -36,7 +34,8 @@ function* finalizeFirstTimeSetup() {
       type: 'SET_USER', 
       payload: { 
         first_name: firstName, 
-        last_name: lastName 
+        last_name: lastName,
+        has_diag_in_family: hasDiagnosis
       } 
     });
 
@@ -46,10 +45,8 @@ function* finalizeFirstTimeSetup() {
     // Clear first time setup data
     yield put({ type: 'CLEAR_FIRST_TIME_SETUP' });
 
-
   } catch (error) {
     console.error('Error finalizing first time setup:', error);
-    // Handle error (e.g., show error message to user)
     yield put({ type: 'SET_FIRST_TIME_SETUP_ERROR', payload: error.message });
   }
 }

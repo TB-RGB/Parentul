@@ -1,4 +1,4 @@
-import { takeLatest, put } from "redux-saga/effects"; 
+import { takeLatest, put, call } from "redux-saga/effects"; 
 import axios from "axios";
 
 function* fetchUserPreferences(action) {
@@ -12,12 +12,16 @@ function* fetchUserPreferences(action) {
 
 function* updateUserPreferences(action) {
     try {
-        yield axios.put(`/api/preferences/${action.payload.userId}`, action.payload.preferences);
-        yield put({ type: 'FETCH_USER_PREFERENCES', payload: action.payload.userId });
-    } catch (err) {
-        console.error('Error updating user preferences:', err);
+      const { userId, preferences } = action.payload;
+      console.log('Updating preferences for user:', userId, 'with data:', preferences);
+      yield call(axios.put, `/api/preferences/${userId}`, preferences);
+      console.log('Preferences updated successfully');
+      yield put({ type: 'FETCH_USER_PREFERENCES', payload: { userId } });
+    } catch (error) {
+      console.error('Error updating user preferences:', error);
+      
     }
-}
+  }
 
 function* createUserPreferences(action) {
     try {
