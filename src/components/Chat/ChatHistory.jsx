@@ -91,7 +91,7 @@ const ChatHistory = () => {
                 key={conversation.id}
               >
                 <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}>
-                  {formatDate(conversation.start_time)}
+                  {formatDate(conversation.start_time)} {conversation.user_rating != null ? ` - Was this helpful? ${conversation.user_rating}` : ""}
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography><strong>{!family.parent.firstName ? "User": `${family.parent.firstName}'s`} Message:</strong> {conversation.user_message}</Typography>

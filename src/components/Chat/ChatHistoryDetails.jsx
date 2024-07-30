@@ -67,6 +67,7 @@ const ChatHistoryDetails = () => {
       type: "SEND_FEEDBACK",
       payload: { userId: user.id, conversationId: chatId, rating: userFeedback },
     });
+    handleBackClick();
   };
 
   return (
