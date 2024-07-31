@@ -155,7 +155,7 @@ async function addUserFeedback(userId, conversationId, rating) {
       }
       params = [conversationId, userId, rating];
 
-      const result = await client.query(query, params);
+      const result = await client.query(queryText, params);
       await client.query('COMMIT');
       return result.rows[0];
   } catch (err) {
