@@ -90,16 +90,22 @@ const ChatHistory = () => {
                 <Typography><strong>Parentul's Response:</strong> {conversation.ai_response}</Typography>
               </AccordionDetails>
               <AccordionActions>
-                <Button onClick={() => handleLogClick(conversation.id)}>
+                <Button 
+                sx={muiCustomStyles.backButton}
+                onClick={() => handleLogClick(conversation.id)}>
                   View Log
                 </Button>
+                
                 <IconButton 
+                sx={muiCustomStyles.deleteButton}
                   onClick={() => handleDeleteClick(conversation.id)}
                   aria-label="delete"
                   color="error"
                 >
+                  
                   <DeleteIcon />
                 </IconButton>
+                
               </AccordionActions>
             </Accordion>
           ))}

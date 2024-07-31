@@ -32,6 +32,16 @@ export const muiCustomStyles = {
         boxShadow: '0px 0px 5px #FFA560',
         border: '1px outset #FFA500'
     },
+    deleteButton: {
+        border: '1px outset orange',
+        '&:hover': {
+            borderColor: '#FFA555',
+            color: '#FFA500',
+        },
+        padding: .7,
+        
+        borderRadius: '.15em'
+    },
     divider: {
 
         borderColor: 'white',
