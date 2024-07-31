@@ -65,7 +65,7 @@ CREATE TABLE user_preferences (
     notifications_email BOOLEAN DEFAULT TRUE,
     notifications_sms BOOLEAN DEFAULT FALSE,
     notifications_push BOOLEAN DEFAULT FALSE,
-    notifications_freq VARCHAR(50) DEFAULT 'daily',
+    notifications_freq VARCHAR(10) DEFAULT '24',
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 -- Create faq table

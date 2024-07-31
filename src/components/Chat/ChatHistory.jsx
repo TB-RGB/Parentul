@@ -62,7 +62,7 @@ const ChatHistory = () => {
           <Typography variant="h4" textAlign={"center"}>
             Chat History
           </Typography>
-          <Button variant="outlined" sx={muiCustomStyles.backButton} onClick={handleBackClick} startIcon={<FirstPageIcon />}>
+          <Button sx={muiCustomStyles.backButton} onClick={handleBackClick} startIcon={<FirstPageIcon />}>
             To Chat
           </Button>
           <Stack

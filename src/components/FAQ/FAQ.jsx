@@ -52,7 +52,7 @@ const FAQ = () => {
             expanded={expandedCategory === category}
             onChange={() => handleCategoryExpand(category)}
           >
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "white" }}/>}>
               <Typography variant="h6">{category}</Typography>
             </AccordionSummary>
             <AccordionDetails>
