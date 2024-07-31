@@ -37,11 +37,11 @@ const FAQ = () => {
   return (
     <Box sx={muiCustomStyles.box}>
       <Card sx={muiCustomStyles.card}>
-        <Typography variant="h4" className="mb-4">Frequently Asked Questions</Typography>
+        <Typography variant="h4">Frequently Asked Questions</Typography>
         <Button 
            
           onClick={toggleDevelopmentalDiagnosis}
-          sx={{mb: 1, ...muiCustomStyles.continueButton}}
+          sx={muiCustomStyles.backButton}
         >
           {showDevelopmentalDiagnosis ? "Show General Questions" : "Show Developmental Diagnosis Questions"}
         </Button>

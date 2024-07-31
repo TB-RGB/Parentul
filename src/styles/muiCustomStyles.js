@@ -91,6 +91,7 @@ export const muiCustomStyles = {
     marginRight: theme.spacing(1),
     marginBottom: theme.spacing(1),
     color: theme.palette.common.white,
+    border: "1px outset black", 
     borderColor: theme.palette.common.white,
     '&:hover': {
       borderColor: '#FFA500',
