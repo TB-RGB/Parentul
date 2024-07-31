@@ -123,16 +123,48 @@ async function getConversationLog(conversationId) {
 }
 
 async function addUserFeedback(userId, conversationId, rating) {
-    const queryText = `
-    INSERT INTO user_feedback (conversation_id, user_id, rating, created_at)
-    VALUES ($1, $2, $3, NOW());
-    `
-    try {
-        await pool.query(queryText, [conversationId, userId, rating]);
-    } catch (err) {
-        console.error("Error adding user feedback:", err);
-        throw err;
-    }
+  const client = await pool.connect();
+  try {
+      await client.query('BEGIN');
+
+      // Check if feedback already exists for specific conversation_id
+      const checkQuery = `
+          SELECT * FROM user_feedback
+          WHERE conversation_id = $1 AND user_id = $2
+      `;
+      const checkResult = await client.query(checkQuery, [conversationId, userId]);
+
+      let queryText;
+      let params;
+
+      if (checkResult.rows.length > 0) {
+          // Update existing feedback if the conversation_id already exists in the user_feedback table
+          queryText = `
+              UPDATE user_feedback
+              SET rating = $3, updated_at = NOW()
+              WHERE conversation_id = $1 AND user_id = $2
+              RETURNING *
+          `;
+      } else {
+          // Insert new feedback if the conversation_id doesn't exist in the user_feedback table
+          queryText = `
+              INSERT INTO user_feedback (conversation_id, user_id, rating, created_at)
+              VALUES ($1, $2, $3, NOW())
+              RETURNING *
+          `;
+      }
+      params = [conversationId, userId, rating];
+
+      const result = await client.query(query, params);
+      await client.query('COMMIT');
+      return result.rows[0];
+  } catch (err) {
+      await client.query('ROLLBACK');
+      console.error("Error adding/updating user feedback:", err);
+      throw err;
+  } finally {
+      client.release();
+  }
 }
 
 async function endConversation(conversationId) {
