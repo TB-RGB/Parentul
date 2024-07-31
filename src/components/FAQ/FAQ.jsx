@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Card, Typography, Accordion, AccordionSummary, AccordionDetails, Divider, Button } from "@mui/material";
+import {  Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, Divider, Grid, Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import muiCustomStyles from "../../styles/muiCustomStyles";
 
@@ -56,17 +56,23 @@ const FAQ = () => {
               <Typography variant="h6">{category}</Typography>
             </AccordionSummary>
             <AccordionDetails>
+            <Grid container justifyContent="left" spacing={2}>
               {faqs.map((faq, index) => (
-                <Box key={index} className="mb-4">
+               <Grid item xs={12} sm={12} md={6} lg={6} key={index}>
+               <Box>
+                <Card sx={muiCustomStyles.faqcard} >
                   <Typography variant="subtitle1" className="font-bold">
-                    {faq.question}
+                    Q: {faq.question}
                   </Typography>
-                  <Divider />
+                  <Divider sx={muiCustomStyles.divider} />
                   <Typography variant="body1">
-                    {faq.answer}
+                    A: {faq.answer}
                   </Typography>
+                  </Card>
                 </Box>
+                </Grid>
               ))}
+              </Grid>
             </AccordionDetails>
           </Accordion>
         ))}

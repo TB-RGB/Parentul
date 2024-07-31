@@ -23,6 +23,22 @@ export const muiCustomStyles = {
     boxShadow: '0px 0px 15px #FFA560',
     border: '2px outset #FFA500'
   },
+  faqcard: {
+    color: 'white',
+    backgroundColor: '#1E1E1E',
+    borderRadius: '1em',
+    margin: theme.spacing(2, 0),
+    padding: theme.spacing(4),
+    boxShadow: '0px 0px 5px #FFA560',
+    border: '1px outset #FFA500'
+  },
+  divider: {
+    
+                    borderColor: 'white',
+                      my: 2,
+                      color: 'white',
+                      fontSize: '25px'
+  },
   buttonbox: {
     maxWidth: 800, 
           margin: "auto", 
