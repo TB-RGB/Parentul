@@ -56,9 +56,9 @@ const FAQ = () => {
               <Typography variant="h6">{category}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-            <Grid container justifyContent="left" spacing={2}>
+            <Grid container justifyContent="center" spacing={2}>
               {faqs.map((faq, index) => (
-               <Grid item xs={12} sm={12} md={6} lg={6} key={index}>
+               <Grid item {...muiCustomStyles.gridItem} key={index}>
                <Box>
                 <Card sx={muiCustomStyles.faqcard} >
                   <Typography variant="subtitle1" className="font-bold">

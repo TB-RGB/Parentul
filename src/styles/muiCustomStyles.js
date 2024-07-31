@@ -39,6 +39,12 @@ export const muiCustomStyles = {
                       color: 'white',
                       fontSize: '25px'
   },
+  gridItem: {
+    xs: 12,
+    sm: 12,
+    md: 6,
+    lg: 6,
+  },
   buttonbox: {
     maxWidth: 800, 
           margin: "auto", 
