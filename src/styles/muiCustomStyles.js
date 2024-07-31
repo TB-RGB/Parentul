@@ -150,6 +150,13 @@ export const muiCustomStyles = {
       backgroundColor: 'darkorange',
     },
   },
+  accordion: {
+    backgroundColor: "#1E1E1E",
+    border: "2px outset orange",
+    boxShadow: "0px 0px 20px black",
+    borderRadius: "1em",
+    color: "white",
+  }
 };
 
 

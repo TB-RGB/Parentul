@@ -57,15 +57,7 @@ const ChatHistory = () => {
     <>
       <Box sx={{ maxWidth: 800, margin: "auto", padding: 2 }}>
         <Card
-          sx={{
-            color: "white",
-            backgroundColor: "#1E1E1E",
-            borderRadius: "1em",
-            my: 2,
-            p: 4,
-            boxShadow: "0px 0px 20px black",
-            border: "2px outset orange",
-          }}
+          sx={muiCustomStyles.card}
         >
           <Typography variant="h4" textAlign={"center"}>
             Chat History
@@ -81,13 +73,7 @@ const ChatHistory = () => {
           >
             {conversations.map((conversation) => (
               <Accordion
-                sx={{
-                  backgroundColor: "#1E1E1E",
-                  border: "2px outset orange",
-                  boxShadow: "0px 0px 20px black",
-                  borderRadius: "1em",
-                  color: "white",
-                }}
+                sx={muiCustomStyles.accordion}
                 key={conversation.id}
               >
                 <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}>
