@@ -3,7 +3,17 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme();
 
 export const muiCustomStyles = {
-  card: {
+    box: {
+        width: {
+            xs: '100vw',  
+            sm: '100vw',
+            md: '800px',
+            lg: '800px',    
+          },
+          margin: 'auto',
+          padding: 2
+    },
+    card: {
     color: 'white',
     backgroundColor: '#1E1E1E',
     borderRadius: '1em',
@@ -11,6 +21,13 @@ export const muiCustomStyles = {
     padding: theme.spacing(4),
     boxShadow: '0px 0px 20px black',
     border: '2px outset orange'
+  },
+  buttonbox: {
+    maxWidth: 600, 
+          margin: "auto", 
+          mt: 2, 
+          display: 'flex', 
+          justifyContent: 'flex-end'
   },
   textField: {
     color: 'white',
@@ -93,10 +110,20 @@ export const muiCustomStyles = {
     }
   },
   large: {
-    fontSize: '50px'
+    fontSize: {
+        xs: '35px',
+        sm: '35px',
+        md: '50px',
+        lg: '50px',
+    }
   },
   medium: {
-    fontSize: '30px'
+    fontSize: {
+        xs: '20px',
+        sm: '20px',
+        md: '30px',
+        lg: '30px',
+    }
   },
   select: {
     '& .MuiOutlinedInput-root': {

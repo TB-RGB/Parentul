@@ -5,7 +5,7 @@ import muiCustomStyles from "../../styles/muiCustomStyles"
 const FAQ = () => {
 
     return (
-        <Box sx={{ maxWidth: 800, margin: 'auto', padding: 2 }}>
+        <Box sx={muiCustomStyles.box}>
         <Card sx={muiCustomStyles.card}>
           
         </Card>

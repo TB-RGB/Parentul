@@ -72,7 +72,7 @@ const ChatHistoryDetails = () => {
 
   return (
     <>
-      <Box sx={{ maxWidth: 800, margin: "auto", padding: 2 }}>
+      <Box sx={muiCustomStyles.box}>
         <Card
           sx={{
             color: "white",

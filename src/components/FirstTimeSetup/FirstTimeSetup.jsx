@@ -170,7 +170,7 @@ const FirstTimeSetup = () => {
   ];
 
   return (
-    <Box sx={{ maxWidth: 600, margin: 'auto', padding: 2 }}>
+    <Box sx={muiCustomStyles.box}>
       <Card sx={muiCustomStyles.card}>
         <Typography variant="h4" gutterBottom>
           First Time Setup
