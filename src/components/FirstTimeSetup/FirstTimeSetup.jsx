@@ -188,6 +188,13 @@ const FirstTimeSetup = () => {
                 {step.content}
                 <Box sx={{ mb: 2 }}>
                   <div>
+                  <Button
+                      disabled={index === 0}
+                      onClick={handleBack}
+                      sx={muiCustomStyles.backButton}
+                    >
+                      Back
+                    </Button>
                     <Button
                       variant="contained"
                       onClick={handleNext}
@@ -195,13 +202,7 @@ const FirstTimeSetup = () => {
                     >
                       {index === steps.length - 1 ? 'Finish' : 'Continue'}
                     </Button>
-                    <Button
-                      disabled={index === 0}
-                      onClick={handleBack}
-                      sx={muiCustomStyles.backButton}
-                    >
-                      Back
-                    </Button>
+                    
                   </div>
                 </Box>
               </StepContent>

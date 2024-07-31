@@ -20,8 +20,8 @@ export const muiCustomStyles = {
     borderRadius: '1em',
     margin: theme.spacing(2, 0),
     padding: theme.spacing(4),
-    boxShadow: '0px 0px 20px black',
-    border: '2px outset orange'
+    boxShadow: '0px 0px 15px #FFA560',
+    border: '2px outset #FFA500'
   },
   buttonbox: {
     maxWidth: 800, 
@@ -80,6 +80,7 @@ export const muiCustomStyles = {
   continueButton: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1),
     color: 'white',
     backgroundColor: '#FFA500',
     '&:hover': {
@@ -91,8 +92,8 @@ export const muiCustomStyles = {
     marginRight: theme.spacing(1),
     marginBottom: theme.spacing(1),
     color: theme.palette.common.white,
-    border: "1px outset black", 
-    borderColor: theme.palette.common.white,
+    border: "1px outset orange", 
+    
     '&:hover': {
       borderColor: '#FFA500',
       color: '#FFA500',

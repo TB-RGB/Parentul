@@ -4,7 +4,7 @@ const {
 } = require("../modules/authentication-middleware");
 const router = express.Router();
 const { handleChatMessage } = require("../services/chat.service");
-const { getUserChatHistory, addUserFeedback, endConversation, getConversationLog } = require("../models/chat.models");
+const { getUserChatHistory, addUserFeedback, endConversation, getConversationLog, deleteConversation } = require("../models/chat.models");
 
 
 router.post("/", async (req, res) => {
@@ -63,4 +63,14 @@ router.put('/end', async (req, res) => {
   }
 });
 
+router.delete("/conversation/:conversationId", async (req, res) => {
+  try {
+    const { conversationId } = req.params;
+    await deleteConversation(conversationId);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error("Error deleting conversation:", err);
+    res.status(500).json({error: err.message});
+  }
+});
 module.exports = router;
