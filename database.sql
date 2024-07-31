@@ -57,6 +57,7 @@ CREATE TABLE follow_ups (
     question_text TEXT NOT NULL,
     is_asked BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 -- Create user_preferences table
 CREATE TABLE user_preferences (
@@ -70,6 +71,8 @@ CREATE TABLE user_preferences (
 -- Create faq table
 CREATE TABLE faq (
     id SERIAL PRIMARY KEY,
-    question VARCHAR(200) NOT NULL,
-    answer VARCHAR(200) NOT NULL
+    category VARCHAR(50) NOT NULL,
+    has_developmental_diagnosis BOOLEAN,
+    question TEXT,
+    answer TEXT
 );

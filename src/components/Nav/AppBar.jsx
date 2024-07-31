@@ -48,7 +48,7 @@ function Nav() {
     {page: 'Logout', Link: '/login'}] : [{page: 'Login', Link: '/login'}];
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#1E1E1E' }}>
+    <AppBar position="fixed" sx={{ backgroundColor: '#1E1E1E' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box

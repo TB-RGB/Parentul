@@ -11,6 +11,7 @@ export const muiCustomStyles = {
             lg: '800px',    
           },
           margin: 'auto',
+          marginTop: '3.5em',
           padding: 2
     },
     card: {
@@ -23,7 +24,7 @@ export const muiCustomStyles = {
     border: '2px outset orange'
   },
   buttonbox: {
-    maxWidth: 600, 
+    maxWidth: 800, 
           margin: "auto", 
           mt: 2, 
           display: 'flex', 
