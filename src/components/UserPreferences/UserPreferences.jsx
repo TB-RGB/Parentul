@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Box, Card, Typography, CircularProgress, Select, MenuItem, FormControl, InputLabel, Button, TextField } from "@mui/material";
+import { Box, Card, Typography, CircularProgress, Grid, Select, MenuItem, FormControl, InputLabel, Button, TextField, IconButton } from "@mui/material";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import muiCustomStyles from "../../styles/muiCustomStyles";
+import UpdateFamilyModal from "./UpdateFamilyModal";
+import AddChildModal from "./AddChildModal";
 
 const UserPreferences = () => {
   const dispatch = useDispatch();
@@ -15,6 +18,9 @@ const UserPreferences = () => {
   const [notificationType, setNotificationType] = useState('');
   const [notifFreq, setNotifFreq] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [addChildModalOpen, setAddChildModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +55,12 @@ const UserPreferences = () => {
     dispatch({ type: "UPDATE_USER_PREFERENCES", payload: { userId, preferences: updatedPreferences } });
   };
 
+  const handleDeleteChild = (childId) => {
+    if (window.confirm('Are you sure you want to delete this child?')) {
+      dispatch({ type: 'DELETE_CHILD', payload: { childId } });
+    }
+  };
+
   if (isLoading) {
     return (
       <Box sx={muiCustomStyles.box}>
@@ -70,20 +82,53 @@ const UserPreferences = () => {
   return (
     <Box sx={muiCustomStyles.box}>
       <Card sx={muiCustomStyles.card}>
-        <Typography sx={muiCustomStyles.large}>User Preferences</Typography>
-
-        <Typography sx={muiCustomStyles.medium}>{user.first_name} {user.last_name}</Typography>
         
+        <Typography sx={muiCustomStyles.header}>User Preferences</Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}> 
+        <Button 
+          variant="outlined" 
+          onClick={() => setUpdateModalOpen(true)} 
+          sx={{ mt: 2, ...muiCustomStyles.backButton }}
+        >
+          Update Family Information
+        </Button>
+        </Box>
+        <Typography sx={muiCustomStyles.large}>{user.first_name} {user.last_name}</Typography>
+        
+        
+        <Grid container justifyContent="center" spacing={2}>
         {family.children && family.children.length > 0 ? (
           family.children.map((child, index) => (
-            <Box key={index} sx={{ marginBottom: 2 }}>
-              <Typography>Child's Name: {child.name}</Typography>
-              <Typography>Age: {currentYear - getBirthYear(child.dob)}</Typography>
+            <Grid item {...muiCustomStyles.childGridItem} key={index}>
+            <Box sx={{ marginBottom: 0, position: 'relative' }}>
+              <Card sx={muiCustomStyles.childcard}> 
+                <Typography sx={muiCustomStyles.small}>{child.name}</Typography>
+                <Typography sx={muiCustomStyles.small}>Age: {currentYear - getBirthYear(child.dob)}</Typography>
+                <IconButton 
+                  aria-label="delete"
+                  onClick={() => handleDeleteChild(child.id)}
+                  sx={{ position: 'absolute', top: -22, right: -22 }}
+                  color="error"
+                >
+                  <HighlightOffIcon />
+                </IconButton>
+              </Card>
             </Box>
+            </Grid>
           ))
         ) : (
           <Typography>No children information available.</Typography>
         )}
+        </Grid>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}> 
+        <Button 
+          
+          onClick={() => setAddChildModalOpen(true)} 
+          sx={{ mt: 2, ...muiCustomStyles.backButton }}
+        >
+          Add Child
+        </Button>
+        </Box>
 
         <Box sx={{ marginTop: 4 }}>
           <Typography sx={muiCustomStyles.medium}>Notifications</Typography>
@@ -130,6 +175,16 @@ const UserPreferences = () => {
           </Button>
         </Box>
       </Card>
+
+      <UpdateFamilyModal 
+        open={updateModalOpen} 
+        handleClose={() => setUpdateModalOpen(false)} 
+      />
+
+      <AddChildModal 
+        open={addChildModalOpen} 
+        handleClose={() => setAddChildModalOpen(false)} 
+      />
     </Box>
   );
 };

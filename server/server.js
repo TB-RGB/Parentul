@@ -28,6 +28,7 @@ const chatRouter = require('./routes/chat.router');
 const preferencesRouter = require('./routes/preferences.router');
 const faqRouter = require('./routes/faq.router.js');
 const childrenRouter = require('./routes/children.router');
+const followupRouter = require('./routes/followup.router');
 
 
 // Express Middleware
@@ -56,6 +57,7 @@ app.get('/', (req, res) => {
 app.use('/api/preferences', preferencesRouter);
 app.use('/api/faq', faqRouter);
 app.use('/api/child', childrenRouter);
+app.use('/api/followup', followupRouter);
 
 
 

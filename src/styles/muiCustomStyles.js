@@ -32,6 +32,16 @@ export const muiCustomStyles = {
         boxShadow: '0px 0px 5px #FFA560',
         border: '1px outset #FFA500'
     },
+    childcard: {
+        color: 'white',
+        backgroundColor: '#1E1E1E',
+        borderRadius: '1em',
+        margin: theme.spacing(0, 0),
+        padding: theme.spacing(1),
+        boxShadow: '0px 0px 5px #FFA560',
+        border: '1px outset #FFA500',
+        textAlign: 'center'
+    },
     deleteButton: {
         border: '1px outset orange',
         '&:hover': {
@@ -55,6 +65,12 @@ export const muiCustomStyles = {
         md: 6,
         lg: 6,
     },
+    childGridItem: {
+        xs: 6,
+        sm: 4,
+        md: 3,
+        lg: 3,
+    },
     buttonbox: {
         maxWidth: 800,
         margin: "auto",
@@ -63,6 +79,78 @@ export const muiCustomStyles = {
         justifyContent: 'flex-end'
     },
     textField: {
+        color: 'white',
+        borderRadius: '1em',
+        width: '100%',
+        '& .MuiInputBase-input': {
+            color: 'white',
+            boxShadow: '1px 1px 1px black',
+            borderRadius: '1em'
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+            border: '2px outset orange',
+            boxShadow: '1px 1px 1px black',
+            borderRadius: '1em'
+        },
+        '&:hover .MuiOutlinedInput-notchedOutline': {
+            border: '2px outset white',
+            boxShadow: '1px 1px 1px black',
+            borderRadius: '1em'
+        },
+        '& .MuiInputLabel-root': {
+            color: 'orange'
+        },
+        '& .MuiInputLabel-root.Mui-focused': {
+            color: 'orange'
+        },
+        '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border: '2px outset orange',
+            boxShadow: '1px 1px 1px black',
+            borderRadius: '1em'
+        },
+        '& input::-webkit-calendar-picker-indicator': {
+            filter: 'invert(1)'
+        }
+    },
+    textFieldTopEdit: {
+        marginTop: 1,
+        marginBottom: 1,
+        color: 'white',
+        borderRadius: '1em',
+        width: '100%',
+        '& .MuiInputBase-input': {
+            color: 'white',
+            boxShadow: '1px 1px 1px black',
+            borderRadius: '1em'
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+            border: '2px outset orange',
+            boxShadow: '1px 1px 1px black',
+            borderRadius: '1em'
+        },
+        '&:hover .MuiOutlinedInput-notchedOutline': {
+            border: '2px outset white',
+            boxShadow: '1px 1px 1px black',
+            borderRadius: '1em'
+        },
+        '& .MuiInputLabel-root': {
+            color: 'orange'
+        },
+        '& .MuiInputLabel-root.Mui-focused': {
+            color: 'orange'
+        },
+        '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border: '2px outset orange',
+            boxShadow: '1px 1px 1px black',
+            borderRadius: '1em'
+        },
+        '& input::-webkit-calendar-picker-indicator': {
+            filter: 'invert(1)'
+        }
+    },
+    textFieldBottomEdit: {
+        marginTop: 0,
+        marginBottom: 1,
         color: 'white',
         borderRadius: '1em',
         width: '100%',
@@ -144,13 +232,23 @@ export const muiCustomStyles = {
             color: 'orange'
         }
     },
-    large: {
+    header: {
         fontSize: {
             xs: '35px',
+            sm: '40px',
+            md: '65px',
+            lg: '65px',
+        }
+    },
+    large: {
+        fontSize: {
+            xs: '30px',
             sm: '35px',
             md: '50px',
             lg: '50px',
-        }
+        },
+        textAlign: 'center',
+        paddingBottom: 2
     },
     medium: {
         fontSize: {
@@ -159,6 +257,17 @@ export const muiCustomStyles = {
             md: '30px',
             lg: '30px',
         }
+    },
+    small: {
+        
+        fontSize: {
+            xs: '24px',
+            sm: '20px',
+            md: '25px',
+            lg: '25px',
+        },
+        fontWeight: '400'
+        
     },
     select: {
         '& .MuiOutlinedInput-root': {
