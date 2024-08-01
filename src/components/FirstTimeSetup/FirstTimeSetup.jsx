@@ -18,6 +18,7 @@ import muiCustomStyles from '../../styles/muiCustomStyles';
 const FirstTimeSetup = () => {
   const user = useSelector(state => state.user);
   const firstTimeSetup = useSelector(state => state.firstTimeSetupReducer);
+  const redirection = useSelector(state => state.redirectionReducer);
   const family = useSelector(state => state.familyReducer);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -28,6 +29,13 @@ const FirstTimeSetup = () => {
   const [children, setChildren] = useState([{ name: '', dob: '' }]);
   const [hasDiagnosis, setHasDiagnosis] = useState(false);
 
+  useEffect(() => {
+    if (redirection) {
+      history.push(redirection);
+      dispatch({ type: 'CLEAR_REDIRECTION' });
+    }
+  }, [redirection, history, dispatch]);
+  
   useEffect(() => {
     if (family.parent.firstName && family.parent.lastName && family.children && family.children.length > 0) {
       history.replace('/chat');

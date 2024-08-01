@@ -13,15 +13,15 @@ function* finalizeFirstTimeSetup() {
     const { firstName, lastName, children, hasDiagnosis } = firstTimeSetup;
     const userId = yield select(state => state.user.id);
 
-    // Update user profile
-    yield call(axios.put, '/api/user', {
+  
+    const updatedUser = yield call(axios.put, '/api/user', {
       id: userId,
       first_name: firstName,
       last_name: lastName,
       has_diag_in_family: hasDiagnosis
     });
 
-    // Add children
+ 
     for (let child of children) {
       yield call(axios.post, '/api/child', {
         ...child,
@@ -29,21 +29,20 @@ function* finalizeFirstTimeSetup() {
       });
     }
 
-    // Update user state
+  
     yield put({ 
       type: 'SET_USER', 
-      payload: { 
-        first_name: firstName, 
-        last_name: lastName,
-        has_diag_in_family: hasDiagnosis
-      } 
+      payload: updatedUser.data 
     });
 
-    // Fetch updated children
-    yield put({ type: 'FETCH_CHILDREN', payload: userId });
+ 
+    yield put({ type: 'FETCH_FAMILY', payload: userId });
 
-    // Clear first time setup data
+
     yield put({ type: 'CLEAR_FIRST_TIME_SETUP' });
+
+ 
+    yield put({ type: 'REDIRECT_TO_CHAT' });
 
   } catch (error) {
     console.error('Error finalizing first time setup:', error);
