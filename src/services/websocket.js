@@ -33,7 +33,7 @@ export const initializeWebSocket = () => {
 export const sendWebSocketMessage = (message, id) => {
     console.log('Attempting to send WebSocket message', message);
     if (socket && socket.connected) {
-      socket.emit('message', { text: message, userId: id }); // Replace 'someUserId' with actual user ID if available
+      socket.emit('message', { text: message, userId: id }); 
       console.log('WebSocket message sent');
     } else {
       console.error('WebSocket is not connected. Message not sent:', message);
