@@ -56,16 +56,7 @@ const UserPreferences = () => {
 
   if (!preferences) {
     return (
-      <Box sx={{
-        width: {
-          xs: '100vw',  
-          sm: '100vw',
-          md: '60vw',
-          lg: '50vw',    
-        },
-        margin: 'auto',
-        padding: 2
-      }}>
+      <Box sx={muiCustomStyles.box}>
         <Card sx={muiCustomStyles.card}>
           <Typography sx={muiCustomStyles.medium}>No preferences found for this user.</Typography>
         </Card>
@@ -74,14 +65,7 @@ const UserPreferences = () => {
   }
 
   return (
-    <Box sx={{
-      width: {
-        xs: '100vw',  // 100vw for extra-small screens and up
-        sm: '70vw'    // 70vw for small screens and up
-      },
-      margin: 'auto',
-      padding: 2
-    }}>
+    <Box sx={muiCustomStyles.box}>
       <Card sx={muiCustomStyles.card}>
         <Typography sx={muiCustomStyles.large}>User Preferences</Typography>
 

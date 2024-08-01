@@ -47,7 +47,7 @@ const ChatComponent = () => {
 
   return (
     <>
-      <Box sx={{ maxWidth: 600, margin: "auto", mt: 4 }}>
+      <Box sx={muiCustomStyles.box}>
 <Card sx={muiCustomStyles.card}>
         
         
@@ -57,13 +57,7 @@ const ChatComponent = () => {
 
         <MessageList messages={messages} />
         <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
-        <Box sx={{ 
-          maxWidth: 600, 
-          margin: "auto", 
-          mt: 2, 
-          display: 'flex', 
-          justifyContent: 'flex-end'  // This aligns the button to the right
-        }}>
+        <Box sx={muiCustomStyles.buttonbox}>
       
       <Button
             sx={{mt: 4, ...muiCustomStyles.button}}

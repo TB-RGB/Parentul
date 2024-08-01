@@ -217,10 +217,32 @@ async function endConversation(conversationId) {
   }
 }
 
+  const deleteConversation = async (conversationId) => {
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      
+      // Delete the conversation
+      const deleteConversationResult = await client.query('DELETE FROM conversations WHERE id = $1', [conversationId]);
+      console.log(`Deleted ${deleteConversationResult.rowCount} conversation`);
+      
+      await client.query('COMMIT');
+    } catch (error) {
+      await client.query('ROLLBACK');
+      console.error('Database error:', error);
+      console.error('Error stack:', error.stack);
+      throw error;
+    } finally {
+      client.release();
+    }
+  };
+
 module.exports = {
-  logChatHistory,
-  getUserChatHistory,
-  addUserFeedback,
-  endConversation,
-  getConversationLog,
-};
+    logChatHistory,
+    getUserChatHistory,
+    addUserFeedback,
+    endConversation,
+    getConversationLog,
+    deleteConversation
+}
+

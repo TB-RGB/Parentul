@@ -7,6 +7,7 @@ import historySaga from './chatHistory.saga';
 import { firstTimeSetupSaga } from './firsttimesetup.saga';
 import familySaga from './family.saga';
 import preferencesSaga from './preferences.saga';
+import faqSaga from './faq.saga';
 
 
 // rootSaga is the primary saga.
@@ -26,5 +27,6 @@ export default function* rootSaga() {
     firstTimeSetupSaga(),
     familySaga(),
     preferencesSaga(),
+    faqSaga(),
   ]);
 }
