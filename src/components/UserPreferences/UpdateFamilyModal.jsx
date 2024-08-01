@@ -55,7 +55,7 @@ const UpdateFamilyModal = ({ open, handleClose }) => {
             PaperProps={{
                 style: {
                     ...muiCustomStyles.card,
-                    maxWidth: '90%',
+                    maxWidth: '100%',
                     width: '500px',
                 }
             }}

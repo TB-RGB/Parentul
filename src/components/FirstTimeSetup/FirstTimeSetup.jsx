@@ -35,7 +35,7 @@ const FirstTimeSetup = () => {
       dispatch({ type: 'CLEAR_REDIRECTION' });
     }
   }, [redirection, history, dispatch]);
-  
+
   useEffect(() => {
     if (family.parent.firstName && family.parent.lastName && family.children && family.children.length > 0) {
       history.replace('/chat');
@@ -168,16 +168,16 @@ const FirstTimeSetup = () => {
           >
             Name
           </Divider>
-          <Card sx={{ ...muiCustomStyles.childcard, mb: 2 }}>
-            <Typography sx={muiCustomStyles.medium}>{firstName} {lastName}</Typography>
-          </Card>
+         
+            <Typography sx={{ textAlign: 'center', ...muiCustomStyles.medium}}>{firstName} {lastName}</Typography>
+          
           <Divider
             textAlign="center"
             sx={muiCustomStyles.firstTimeDivider}
           >
             Children
           </Divider>
-          <Card sx={{ ...muiCustomStyles.childcard, mb: 2 }}>
+          
 
             <Grid container justifyContent="center" spacing={2}>
               {children.map((child, index) => (
@@ -192,7 +192,7 @@ const FirstTimeSetup = () => {
                 </Grid>
               ))}
             </Grid>
-          </Card>
+         
 
           <Divider
             textAlign="center"
@@ -200,9 +200,9 @@ const FirstTimeSetup = () => {
           >
             Diagnosis in Family
           </Divider>
-          <Card sx={muiCustomStyles.childcard}>
-            <Typography>{hasDiagnosis ? 'Yes ✅' : 'No ❌'}</Typography>
-          </Card>
+          
+            <Typography sx={{ textAlign: 'center', ...muiCustomStyles.small}}>{hasDiagnosis ? 'Yes ✅' : 'No ❌'}</Typography>
+          
 
 
         </>
