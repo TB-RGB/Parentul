@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Box, Card, Typography, CircularProgress, Select, MenuItem, FormControl, InputLabel, Button } from "@mui/material";
+import { Box, Card, Typography, CircularProgress, Select, MenuItem, FormControl, InputLabel, Button, TextField } from "@mui/material";
 import muiCustomStyles from "../../styles/muiCustomStyles";
 
 const UserPreferences = () => {
@@ -14,6 +14,7 @@ const UserPreferences = () => {
 
   const [notificationType, setNotificationType] = useState('');
   const [notifFreq, setNotifFreq] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,6 +31,7 @@ const UserPreferences = () => {
     if (preferences) {
       setNotificationType(preferences.notifications_email ? 'email' : 'sms');
       setNotifFreq(preferences.notifications_freq || '');
+      setPhoneNumber(preferences.phone_number || '');
     }
   }, [preferences]);
 
@@ -41,6 +43,7 @@ const UserPreferences = () => {
       notifications_email: notificationType === 'email',
       notifications_sms: notificationType === 'sms',
       notifications_freq: notifFreq,
+      phone_number: phoneNumber
     };
     console.log('Updating preferences:', updatedPreferences);
     dispatch({ type: "UPDATE_USER_PREFERENCES", payload: { userId, preferences: updatedPreferences } });
@@ -48,7 +51,7 @@ const UserPreferences = () => {
 
   if (isLoading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Box sx={muiCustomStyles.box}>
         <CircularProgress />
       </Box>
     );
@@ -96,6 +99,15 @@ const UserPreferences = () => {
               <MenuItem value="sms" sx={muiCustomStyles.menuItem}>SMS</MenuItem>
             </Select>
           </FormControl>
+          {notificationType === 'sms' && (
+            <TextField
+              fullWidth
+              label="Phone Number"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              sx={{ mt: 2, ...muiCustomStyles.textField}}
+            />
+          )}
           <FormControl fullWidth sx={{ mt: 2, ...muiCustomStyles.select }}>
             <InputLabel>Notification Frequency</InputLabel>
             <Select 

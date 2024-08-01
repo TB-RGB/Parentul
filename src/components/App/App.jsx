@@ -23,7 +23,7 @@ function App() {
 
   return (
     <Router>
-      <div>
+      <div className="min-h-screen w-full bg-custom-bg">
         <NavAppBar />
         <AppRoutes />
         <Footer />

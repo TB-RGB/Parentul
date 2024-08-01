@@ -63,7 +63,7 @@ function Nav() {
             <img
               src="/images/parentullogo.png"
               alt="Parentul Logo"
-              style={{ height: '40px', width: 'auto' }}
+              style={{ height: '35px', width: 'auto' }}
             />
           </Box>
 
