@@ -47,7 +47,7 @@ class AIChatEngine {
       "What are they feeling when they're angry?",
     ]);
 
-    this.addTrainingData("not_listening", [
+    this.addTrainingData("not listening", [
       "My child doesn't listen",
       "How to get my child to follow directions",
       "Child ignoring instructions",
@@ -56,7 +56,7 @@ class AIChatEngine {
       "They're not following instructions",
       "What's wrong with their ears?",
       "Are they paying attention?",
-      "Are they deaf?",
+      "Are they deaf or hard of hearing?",
       "They're being rude",
     ]);
 
@@ -72,7 +72,7 @@ class AIChatEngine {
       "Taking something from me",
     ]);
 
-    this.addTrainingData("temper_tantrums", [
+    this.addTrainingData("temper tantrums", [
       "How to handle temper tantrums",
       "My child has frequent temper tantrums",
       "Dealing with angry outbursts",
@@ -247,10 +247,10 @@ class AIChatEngine {
       case "meltdowns":
         adviceMessages = this.getDetailedMeltdownsAdvice();
         break;
-      case "not_listening":
+      case "not listening":
         adviceMessages = this.getDetailedNotListeningAdvice();
         break;
-      case "temper_tantrums":
+      case "temper tantrums":
         adviceMessages = this.getDetailedTemperTantrumsAdvice();
         break;
       default:

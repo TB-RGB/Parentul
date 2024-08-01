@@ -1,16 +1,47 @@
 import { useRef, useEffect } from "react";
 import { List, ListItem, ListItemText, Paper, Typography } from "@mui/material";
 
-const MessageList = ({ messages }) => {
+const MessageList = ({ messages, visibleMessages, setVisibleMessages }) => {
   const messagesEndRef = useRef(null);
+ 
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // ! This is a bit of a hack, but it works for now
+    console.log("Messages updated:", messages);
+    if (messages.length > visibleMessages.length - 1) { // Subtract 1 to account for the initial greeting from chat
+      const newMessages = messages.slice(visibleMessages.length - 1);
+      console.log("New messages:", newMessages);
+
+      newMessages.forEach((newMessage, index) => {
+        if (newMessage.sender === "ai" && Array.isArray(newMessage.content)) {
+          console.log("AI message with array content detected");
+          newMessage.content.forEach((advice, adviceIndex) => {
+            if (advice !== null) { // Skip null content, if any, shouldn't be but..
+              setTimeout(() => {
+                console.log(`Adding advice ${adviceIndex + 1} of ${newMessage.content.length}`);
+                setVisibleMessages(prevMessages => [
+                  ...prevMessages,
+                  { ...newMessage, content: advice }
+                ]);
+              }, (index * newMessage.content.length + adviceIndex) * 5000); // Delay each advice by 5s, staggering start times
+            }
+          });
+        } else {
+          console.log("Adding non-array message");
+          setVisibleMessages(prevMessages => [...prevMessages, newMessage]);
+        }
+      });
+    }
   }, [messages]);
+
+  useEffect(() => {
+    console.log("Visible messages updated:", visibleMessages);
+    scrollToBottom();
+  }, [visibleMessages]);
 
   const renderMessageContent = (content) => {
     if (content === null || content === undefined) {
@@ -24,12 +55,8 @@ const MessageList = ({ messages }) => {
 
   const renderMessage = (message, index) => {
     const isUser = message.sender === "user";
-    const messageContent = Array.isArray(message.content)
-      ? message.content
-      : [renderMessageContent(message.content)];
-
-    return messageContent.map((content, contentIndex) => (
-      <ListItem key={`${index}-${contentIndex}`} alignItems="flex-start">
+    return (
+      <ListItem key={index} alignItems="flex-start">
         <ListItemText
           primary={
             <div className={isUser ? "chat chat-end" : "chat chat-start"}>
@@ -41,20 +68,20 @@ const MessageList = ({ messages }) => {
                   isUser ? "chat-bubble" : "chat-bubble chat-bubble-accent"
                 }
               >
-                {renderMessageContent(content)}
+                {renderMessageContent(message.content)}
               </Typography>
               <div className="chat-footer">{isUser ? " You" : "Parentul"}</div>
             </div>
           }
         />
       </ListItem>
-    ));
+    );
   };
 
   return (
     <Paper elevation={3} sx={{ height: "400px", overflowY: "auto", pt: 2 }}>
       <List>
-      {messages.flatMap((message, index) => renderMessage(message, index))}
+        {visibleMessages.map((message, index) => renderMessage(message, index))}
       </List>
       <div ref={messagesEndRef} />
     </Paper>
