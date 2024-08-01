@@ -1,6 +1,6 @@
 import ChatInput from "./ChatInput";
 import MessageList from "./MessageList";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Button, Card, Typography } from "@mui/material";
 import {
@@ -15,10 +15,13 @@ import "./output.css";
 
 const ChatComponent = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  
   const { messages, isLoading, currentConversationId } = useSelector(
     (state) => state.chat
   );
+  const [visibleMessages, setVisibleMessages] = useState([
+    { sender: "ai", content: "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on." }
+  ]);
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -41,6 +44,9 @@ const ChatComponent = () => {
     if (currentConversationId) {
       dispatch(endConversation(currentConversationId));
       dispatch(clearMessages());
+      setVisibleMessages([
+        { sender: "ai", content: "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on." }
+      ]);
     }
   };
 
@@ -55,7 +61,7 @@ const ChatComponent = () => {
           Parentul Chat
         </Typography>
 
-        <MessageList messages={messages} />
+        <MessageList messages={messages} visibleMessages={visibleMessages} setVisibleMessages={setVisibleMessages} />
         <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
         <Box sx={muiCustomStyles.buttonbox}>
       
