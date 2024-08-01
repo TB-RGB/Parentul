@@ -23,9 +23,10 @@ const ChatInput = ({ onSendMessage, isLoading, disabled }) => {
             onChange={(e) => setMessage(e.target.value)}
             className={disabled ? 'input input-disabled w-full' : 'input input-bordered input-accent w-full'}
             sx={{ mr: 1}}
+            disabled={disabled}
             
         />
-        <button type='submit' className={disabled ? 'btn btn-disabled ml-3': 'btn btn-outline ml-3'}>
+        <button disabled={disabled} type='submit' className={disabled ? 'btn btn-disabled ml-3': 'btn btn-outline ml-3'}>
             Ask
         </button>
      </Box>
