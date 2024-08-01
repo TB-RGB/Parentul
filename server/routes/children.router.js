@@ -113,86 +113,86 @@ GROUP BY
   }
 });
 
-  //array which contains the user prefrences from req.body 
-  //this array will contain 5 parameters reflecting the number of values
-  //in queryText 
-
-
-  //request to the postgres server which will update userprefrences
-
-
-
-
-
-
-
-
-
-
-//this route needs to be written as a SQL Transaction 
-//IF two children are 
-//Never chage the user_id in the put route
-//always update by 
-//always will relate user_id
-
-
-//ASYNC\
-
-
-//begibn
-
-//commit 
-
-//rollback
-
+  
 router.put('/update', async (req, res) => {
-  // PUT route code here
-
-  const connection = await pool.connect()
-
-
-
+  const connection = await pool.connect();
   try {
-
     await connection.query('BEGIN');
+    const { children } = req.body;
 
-    let children = req.body  // [{name, dob, child_id},{}]
-
-    let queryText = ` UPDATE "children"
-  SET 
-  
- 
-  "name" = $1,
-  "dob" = $2
-  
-
-  WHERE 
-  id = $3;`
-
-    //inserts to database
     for (let child of children) {
-
-      await connection.query(queryText, [child.name, child.dob, child.child_id])
+      const queryText = `
+        UPDATE "children"
+        SET "name" = $1, "dob" = $2
+        WHERE "id" = $3 AND "user_id" = $4
+      `;
+      await connection.query(queryText, [child.name, child.dob, child.id, child.user_id]);
     }
 
-    connection.query('COMMIT')
-
-    res.sendStatus(200)
-    //commit 
-  }
-
-  catch (error) {
+    await connection.query('COMMIT');
+    res.sendStatus(200);
+  } catch (error) {
     await connection.query('ROLLBACK');
-    console.log(error);
+    console.log('Error updating children:', error);
     res.sendStatus(500);
+  } finally {
+    connection.release();
   }
-
-  finally {
-
-    connection.release()
-  }
-  //the text which will update a specific entry in the database 
-
 });
 
+router.put('/update-user', async (req, res) => {
+  const connection = await pool.connect();
+  try {
+    const { id, first_name, last_name } = req.body;
+
+    const queryText = `
+      UPDATE "users"
+      SET "first_name" = $1, "last_name" = $2
+      WHERE "id" = $3
+      RETURNING id, first_name, last_name;
+    `;
+
+    const result = await connection.query(queryText, [first_name, last_name, id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.log('Error updating user:', error);
+    res.sendStatus(500);
+  } finally {
+    connection.release();
+  }
+});
+
+router.delete('/:childId', async (req, res) => {
+  const connection = await pool.connect();
+  try {
+    await connection.query('BEGIN');
+    const { childId } = req.params;
+    const userId = req.user.id; // Assuming you have authentication middleware
+
+    const deleteQuery = `
+      DELETE FROM "children"
+      WHERE "id" = $1 AND "user_id" = $2
+    `;
+    
+    const result = await connection.query(deleteQuery, [childId, userId]);
+    
+    if (result.rowCount === 0) {
+      throw new Error('Child not found or user not authorized');
+    }
+
+    await connection.query('COMMIT');
+    res.sendStatus(200);
+  } catch (error) {
+    await connection.query('ROLLBACK');
+    console.error('Error deleting child:', error);
+    res.status(500).json({ message: 'Failed to delete child' });
+  } finally {
+    connection.release();
+  }
+});
 module.exports = router;
