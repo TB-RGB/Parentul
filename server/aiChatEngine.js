@@ -1,8 +1,11 @@
 const natural = require("natural");
+const TfIdf = natural.TfIdf;
+const stemmer = natural.PorterStemmer;
 
 class AIChatEngine {
   constructor() {
     this.classifier = new natural.BayesClassifier();
+    this.tfIdf = new TfIdf();
     this.initializeClassifier();
     this.conversationState = {
       stage: "initial",
@@ -14,7 +17,6 @@ class AIChatEngine {
   }
 
   initializeClassifier() {
-   
     this.addTrainingData("lying", [
       "My child is lying",
       "How to handle child lying",
@@ -23,6 +25,10 @@ class AIChatEngine {
       "My child is lying to me",
       "They aren't honest with me",
       "What are they hiding?",
+      "My child is being dishonest",
+      "How to encourage truthfulness",
+      "My child keeps telling fibs",
+      "Caught my child in a lie",
     ]);
 
     this.addTrainingData("meltdowns", [
@@ -74,12 +80,27 @@ class AIChatEngine {
     ]);
 
     this.classifier.train();
+
+    Object.entries(this.trainingData).forEach(([category, phrases]) => {
+      phrases.forEach((phrase) => {
+        this.tfIdf.addDocument(this.preprocessText(phrase), category);
+      });
+    });
   }
 
   addTrainingData(category, phrases) {
-    phrases.forEach((phrase) => this.classifier.addDocument(phrase, category));
+    if (!this.trainingData) {
+      this.trainingData = {};
+    }
+    this.trainingData[category] = phrases;
+    phrases.forEach((phrase) =>
+      this.classifier.addDocument(this.preprocessText(phrase), category)
+    );
   }
 
+  preprocessText(text) {
+    return stemmer.tokenizeAndStem(text.toLowerCase());
+  }
 
   async generateResponse(message) {
     console.log("Generating response for:", message);
@@ -91,28 +112,33 @@ class AIChatEngine {
       };
     }
 
-    if (this.conversationState.stage === "initial" || this.conversationState.stage === "providing_advice") {
-        const classification = this.classifyMessage(message);
-        this.conversationState = {
-          stage: "asking_child_name",
-          category: classification.category,
-          confidence: classification.confidence,
-          childName: null,
-          specifics: null,
-          frequency: null,
-        };
-        console.log("Conversation state:", this.conversationState);
-        return {
-          text: `I understand you're asking about ${this.conversationState.category}. To help you better, could you tell me which child you're concerned about?`,
-          category: "Who",
-        };
-      } else if (this.conversationState.stage === "asking_child_name") {
+    if (
+      this.conversationState.stage === "initial" ||
+      this.conversationState.stage === "providing_advice"
+    ) {
+      const classification = this.classifyMessage(message);
+      this.conversationState = {
+        stage: "asking_child_name",
+        category: classification.category,
+        confidence: classification.confidence,
+        childName: null,
+        specifics: null,
+        frequency: null,
+      };
+      console.log("Conversation state:", this.conversationState);
+      return {
+        text: `I understand you're asking about ${this.conversationState.category}. To help you better, could you tell me which child you're concerned about?`,
+        category: "Who",
+        confidence: 1,
+      };
+    } else if (this.conversationState.stage === "asking_child_name") {
       this.conversationState.childName = message;
       this.conversationState.stage = "asking_specifics";
       console.log("Conversation state:", this.conversationState);
       return {
         text: `Thank you. What specific ${this.conversationState.category} behavior did ${this.conversationState.childName} exhibit?`,
         category: "What",
+        confidence: 1,
       };
     } else if (this.conversationState.stage === "asking_specifics") {
       this.conversationState.specifics = message;
@@ -121,13 +147,14 @@ class AIChatEngine {
       return {
         text: `I see. Has this happened before? If so, how often?`,
         category: "When",
+        confidence: 1,
       };
     } else if (this.conversationState.stage === "asking_frequency") {
       this.conversationState.frequency = message;
       this.conversationState.stage = "providing_advice";
       console.log("Conversation state:", this.conversationState);
       return this.provideDetailedAdvice();
-    } 
+    }
     // else if (this.conversationState.stage === "providing_advice") {
     //   if (message.toLowerCase().includes("thumbs up")) {
     //     this.conversationState = { stage: "initial" };
@@ -153,10 +180,31 @@ class AIChatEngine {
   }
 
   classifyMessage(message) {
-    const classifications = this.classifier.getClassifications(message);
+    const preprocessedMessage = this.preprocessText(message);
+    const classifications =
+      this.classifier.getClassifications(preprocessedMessage);
+
+    // Use TF-IDF to improve classification
+    this.tfIdf.tfidfs(preprocessedMessage, (i, measure, key) => {
+      const category = key;
+      const existingClassification = classifications.find(
+        (c) => c.label === category
+      );
+      if (existingClassification) {
+        existingClassification.value += measure;
+      } else {
+        classifications.push({ label: category, value: measure });
+      }
+    });
+
+    classifications.sort((a, b) => b.value - a.value);
     const topClassification = classifications[0];
+
+    // Set a minimum confidence threshold
+    const confidenceThreshold = 0.2;
+
     console.log("Top classification:", topClassification);
-    return topClassification && topClassification.value > 0.01
+    return topClassification && topClassification.value > confidenceThreshold
       ? {
           category: topClassification.label,
           confidence: topClassification.value,
@@ -192,7 +240,6 @@ class AIChatEngine {
           "However, it's important to approach the issue with understanding and open communication with your child.",
         ];
     }
-
 
     return {
       messages: adviceMessages,
