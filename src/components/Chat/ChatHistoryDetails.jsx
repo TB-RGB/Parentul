@@ -65,13 +65,14 @@ const ChatHistoryDetails = () => {
     }
     dispatch({
       type: "SEND_FEEDBACK",
-      payload: { userId: user.id, conversationId: chatId, rating: userFeedback, questionText: `This is a question` },
+      payload: { userId: user.id, conversationId: chatId, rating: userFeedback, questionText: userFeedback === true ? "Did using the advice given have a postive impact?" : "What did you find unhelpful about the advice given?" },
     });
     handleBackClick();
   };
 
   return (
     <>
+    <div style={{ overflow: "hidden", overscrollBehavior: "contain" }}>
       <Box sx={muiCustomStyles.box}>
         <Card
           sx={{
@@ -162,14 +163,7 @@ const ChatHistoryDetails = () => {
            </Box> 
         </Card>
       </Box>
-      {/* <h1>Chat Log</h1>
-      <button onClick={handleBackClick}>Back</button>
-      {log.map((message) => (
-        <div key={message.id}>
-          <p>{message.content}</p>
-          <p>{message.sender}</p>
-        </div>
-      ))} */}
+    </div>
     </>
   );
 };

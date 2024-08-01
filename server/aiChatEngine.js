@@ -1,8 +1,11 @@
 const natural = require("natural");
+const TfIdf = natural.TfIdf;
+const stemmer = natural.PorterStemmer;
 
 class AIChatEngine {
   constructor() {
     this.classifier = new natural.BayesClassifier();
+    this.tfIdf = new TfIdf();
     this.initializeClassifier();
     this.conversationState = {
       stage: "initial",
@@ -14,18 +17,6 @@ class AIChatEngine {
   }
 
   initializeClassifier() {
-    // Existing categories
-
-    this.addTrainingData("greeting", [
-      "Hi",
-      "Hello",
-      "Hey",
-      "Good morning",
-      "Good afternoon",
-      "Good evening",
-    ]);
-
-    // New categories based on the new documents
     this.addTrainingData("lying", [
       "My child is lying",
       "How to handle child lying",
@@ -34,6 +25,10 @@ class AIChatEngine {
       "My child is lying to me",
       "They aren't honest with me",
       "What are they hiding?",
+      "My child is being dishonest",
+      "How to encourage truthfulness",
+      "My child keeps telling fibs",
+      "Caught my child in a lie",
     ]);
 
     this.addTrainingData("meltdowns", [
@@ -85,75 +80,27 @@ class AIChatEngine {
     ]);
 
     this.classifier.train();
+
+    Object.entries(this.trainingData).forEach(([category, phrases]) => {
+      phrases.forEach((phrase) => {
+        this.tfIdf.addDocument(this.preprocessText(phrase), category);
+      });
+    });
   }
 
   addTrainingData(category, phrases) {
-    phrases.forEach((phrase) => this.classifier.addDocument(phrase, category));
+    if (!this.trainingData) {
+      this.trainingData = {};
+    }
+    this.trainingData[category] = phrases;
+    phrases.forEach((phrase) =>
+      this.classifier.addDocument(this.preprocessText(phrase), category)
+    );
   }
 
-  //   async generateResponse(message) {
-  //     console.log("Generating response for:", message);
-  //     if (!message || typeof message !== "string") {
-  //       console.error("Invalid message received:", message);
-  //       return {
-  //         text: "I'm sorry, I didn't understand that. Could you please try again?",
-  //         category: "error",
-  //       };
-  //     }
-
-  //     if (!this.classifier) {
-  //       console.error("Classifier is not initialized");
-  //       return {
-  //         text: "I'm sorry, I'm having technical difficulties. Please try again later.",
-  //         category: "error",
-  //       };
-  //     }
-
-  //     const classifications = this.classifier.getClassifications(message);
-  //     console.log("Classifications:", classifications);
-  //     const topClassification = classifications[0];
-
-  //     const category =
-  //       topClassification && topClassification.value > 0.03
-  //         ? {
-  //             category: topClassification.label,
-  //             confidence: topClassification.value,
-  //           }
-  //         : {category: "unknown", confidence: 0};
-  //     console.log("Chosen category:", category);
-
-  //     let response;
-
-  //     switch (category.category) {
-  //       case "greeting":
-  //         response = this.getGreeting();
-  //         break;
-  //       case "lying":
-  //         response = this.getLyingAdvice();
-  //         break;
-  //       case "meltdowns":
-  //         response = this.getMeltdownsAdvice();
-  //         break;
-  //       case "not_listening":
-  //         response = this.getNotListeningAdvice();
-  //         break;
-  //       case "stealing":
-  //         response = this.getStealingAdvice();
-  //         break;
-  //       case "temper_tantrums":
-  //         response = this.getTemperTantrumsAdvice();
-  //         break;
-  //       default:
-  //         response =
-  //           "I'm not sure I understand. Could you please ask a question about parenting, child behavior, sleep, nutrition, or activities for children?";
-  //     }
-
-  //     return {
-  //       text: response,
-  //       category: category.category,
-  //       confidence: category.confidence,
-  //     };
-  //   }
+  preprocessText(text) {
+    return stemmer.tokenizeAndStem(text.toLowerCase());
+  }
 
   async generateResponse(message) {
     console.log("Generating response for:", message);
@@ -165,32 +112,47 @@ class AIChatEngine {
       };
     }
 
-    if (this.conversationState.stage === "initial") {
+    if (
+      this.conversationState.stage === "initial" ||
+      this.conversationState.stage === "providing_advice"
+    ) {
       const classification = this.classifyMessage(message);
-      this.conversationState.category = classification.category;
-      this.conversationState.confidence = classification.confidence;
-      this.conversationState.stage = "asking_child_name";
+      this.conversationState = {
+        stage: "asking_child_name",
+        category: classification.category,
+        confidence: classification.confidence,
+        childName: null,
+        specifics: null,
+        frequency: null,
+      };
+      console.log("Conversation state:", this.conversationState);
       return {
         text: `I understand you're asking about ${this.conversationState.category}. To help you better, could you tell me which child you're concerned about?`,
         category: "Who",
+        confidence: 1,
       };
     } else if (this.conversationState.stage === "asking_child_name") {
       this.conversationState.childName = message;
       this.conversationState.stage = "asking_specifics";
+      console.log("Conversation state:", this.conversationState);
       return {
         text: `Thank you. What specific ${this.conversationState.category} behavior did ${this.conversationState.childName} exhibit?`,
         category: "What",
+        confidence: 1,
       };
     } else if (this.conversationState.stage === "asking_specifics") {
       this.conversationState.specifics = message;
       this.conversationState.stage = "asking_frequency";
+      console.log("Conversation state:", this.conversationState);
       return {
         text: `I see. Has this happened before? If so, how often?`,
         category: "When",
+        confidence: 1,
       };
     } else if (this.conversationState.stage === "asking_frequency") {
       this.conversationState.frequency = message;
       this.conversationState.stage = "providing_advice";
+      console.log("Conversation state:", this.conversationState);
       return this.provideDetailedAdvice();
     }
     // else if (this.conversationState.stage === "providing_advice") {
@@ -218,9 +180,31 @@ class AIChatEngine {
   }
 
   classifyMessage(message) {
-    const classifications = this.classifier.getClassifications(message);
+    const preprocessedMessage = this.preprocessText(message);
+    const classifications =
+      this.classifier.getClassifications(preprocessedMessage);
+
+    // Use TF-IDF to improve classification
+    this.tfIdf.tfidfs(preprocessedMessage, (i, measure, key) => {
+      const category = key;
+      const existingClassification = classifications.find(
+        (c) => c.label === category
+      );
+      if (existingClassification) {
+        existingClassification.value += measure;
+      } else {
+        classifications.push({ label: category, value: measure });
+      }
+    });
+
+    classifications.sort((a, b) => b.value - a.value);
     const topClassification = classifications[0];
-    return topClassification && topClassification.value > 0.03
+
+    // Set a minimum confidence threshold
+    const confidenceThreshold = 0.2;
+
+    console.log("Top classification:", topClassification);
+    return topClassification && topClassification.value > confidenceThreshold
       ? {
           category: topClassification.label,
           confidence: topClassification.value,
@@ -237,9 +221,6 @@ class AIChatEngine {
     switch (this.conversationState.category) {
       case "stealing":
         adviceMessages = this.getDetailedStealingAdvice();
-        break;
-      case "greeting":
-        adviceMessages = this.getDetailedGreetingAdvice();
         break;
       case "lying":
         adviceMessages = this.getDetailedLyingAdvice();
@@ -260,10 +241,6 @@ class AIChatEngine {
         ];
     }
 
-    adviceMessages.unshift(
-      `I understand you're concerned about ${this.conversationState.childName}'s ${this.conversationState.category} behavior. Here's some advice that might help:`
-    );
-
     return {
       messages: adviceMessages,
       category: this.conversationState.category,
@@ -271,21 +248,9 @@ class AIChatEngine {
     };
   }
 
-  getDetailedGreetingAdvice() {
-    return `Hello! Welcome to Parentul. I'm here to help you with any parenting questions or concerns you might have. 
-    
-    Here are some topics I can assist you with:
-    1. Child behavior issues (like tantrums, meltdowns, or not listening)
-    2. Sleep routines and problems
-    3. Nutrition and eating habits
-    4. Educational activities and games
-    5. Dealing with lying or stealing
-
-    What specific area would you like help with regarding ${this.conversationState.childName}?`;
-  }
-
   getDetailedLyingAdvice() {
     return [
+      `I understand you're concerned about ${this.conversationState.childName}'s lying behavior. Here's some advice that might help:`,
       `1. Stay calm and avoid showing strong emotional reactions when you catch ${this.conversationState.childName} in a lie. This helps create a safe space for honesty.`,
       `2. Try to understand the reason behind the lie. Is it fear of punishment, a desire for attention, or an attempt to avoid disappointing you? Understanding the motivation can help address the root cause.`,
       `3. Explain clearly why lying is harmful. Use age-appropriate examples to illustrate how lying can damage trust and relationships.`,
@@ -315,7 +280,8 @@ class AIChatEngine {
 
   getDetailedNotListeningAdvice() {
     return [
-      `I understand you're having difficulties with ${this.conversationState.childName} not listening. Here are some strategies that might help:,``1. Ensure you have ${this.conversationState.childName}'s attention: Get down to their eye level and make gentle eye contact before giving instructions. You might also use a light touch on the shoulder.`,
+      `I understand you're having difficulties with ${this.conversationState.childName} not listening. Here are some strategies that might help:`,
+      `1. Ensure you have ${this.conversationState.childName}'s attention: Get down to their eye level and make gentle eye contact before giving instructions. You might also use a light touch on the shoulder.`,
       `2. Use clear, concise language: Keep instructions simple and direct. Avoid long explanations or multiple steps, especially for younger children.`,
       `3. Give choices: Instead of commands, offer limited choices. For example, "Would you like to put on your shoes now or after you finish your snack?" This gives ${this.conversationState.childName} a sense of control.`,
       `4. Use positive language: Frame instructions in a positive way. Instead of "Don't run," try "Please walk slowly."`,
@@ -350,6 +316,7 @@ class AIChatEngine {
 
   getDetailedStealingAdvice() {
     return [
+      `I understand you're concerned about ${this.conversationState.childName}'s stealing behavior. Here's some advice that might help:`,
       `1. Have a calm, non-judgmental conversation with ${this.conversationState.childName} about the incident. Try to understand their motivations without accusation.`,
       `2. Explain clearly why stealing is wrong and how it affects others. Use age-appropriate examples to illustrate the consequences.`,
       `3. Set clear expectations and boundaries. Before going to the store, remind ${this.conversationState.childName} that you're there to buy specific items and not extras.`,

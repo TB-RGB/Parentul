@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import {
@@ -18,12 +18,23 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import DeleteIcon from '@mui/icons-material/Delete';
 import muiCustomStyles from "../../styles/muiCustomStyles";
 
+
 const ChatHistory = () => {
   const dispatch = useDispatch();
   const { conversations } = useSelector((store) => store.history);
   const history = useHistory();
   const { userId } = useParams();
   const family = useSelector((store) => store.familyReducer);
+
+  const historyStartRef = useRef(null);
+
+  const scrollTop = () => {
+   historyStartRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => { 
+    scrollTop();
+  }, [conversations]);
 
   useEffect(() => {
     dispatch({ type: "FETCH_CONVERSATIONS", payload: { userId: userId } });
@@ -63,6 +74,8 @@ const ChatHistory = () => {
   }
 
   return (
+    <>
+    <div ref={historyStartRef}/>
     <Box sx={muiCustomStyles.box}>
       <Card sx={muiCustomStyles.card}>
         <Typography variant="h4" textAlign={"center"}>
@@ -112,6 +125,7 @@ const ChatHistory = () => {
         </Stack>
       </Card>
     </Box>
+    </>
   );
 };
 

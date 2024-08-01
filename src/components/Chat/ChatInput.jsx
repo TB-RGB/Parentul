@@ -3,7 +3,7 @@ import { TextField, Button, Box, IconButton } from "@mui/material";
 import { Send as SendIcon } from "@mui/icons-material";
 
 
-const ChatInput = ({ onSendMessage, isLoading }) => {
+const ChatInput = ({ onSendMessage, isLoading, disabled }) => {
     const [message, setMessage] = useState("");
 
     const handleSubmit = (event) => {
@@ -21,10 +21,12 @@ const ChatInput = ({ onSendMessage, isLoading }) => {
             placeholder='Type a message'
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className='input input-bordered input-accent w-full'
+            className={disabled ? 'input input-disabled w-full' : 'input input-bordered input-accent w-full'}
             sx={{ mr: 1}}
+            disabled={disabled}
+            
         />
-        <button type='submit' className='btn btn-outline ml-3'>
+        <button disabled={disabled} type='submit' className={disabled ? 'btn btn-disabled ml-3': 'btn btn-outline ml-3'}>
             Ask
         </button>
      </Box>

@@ -1,8 +1,9 @@
 import { useRef, useEffect } from "react";
 import { List, ListItem, ListItemText, Paper, Typography } from "@mui/material";
 
-const MessageList = ({ messages, visibleMessages, setVisibleMessages }) => {
+const MessageList = ({ messages, visibleMessages, setVisibleMessages, setDisabled }) => {
   const messagesEndRef = useRef(null);
+  
  
 
   const scrollToBottom = () => {
@@ -27,7 +28,8 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages }) => {
                   ...prevMessages,
                   { ...newMessage, content: advice }
                 ]);
-              }, (index * newMessage.content.length + adviceIndex) * 5000); // Delay each advice by 5s, staggering start times
+              }, (index * newMessage.content.length + adviceIndex) * 3500); // Delay each advice by 5s, staggering start times
+            setDisabled(true);
             }
           });
         } else {
@@ -53,6 +55,8 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages }) => {
     return String(content);
   };
 
+
+  // ? To handle message arrays (e.g. for AI advice), we need to render each item in the array separately
   const renderMessage = (message, index) => {
     const isUser = message.sender === "user";
     return (
@@ -79,7 +83,7 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages }) => {
   };
 
   return (
-    <Paper elevation={3} sx={{ height: "400px", overflowY: "auto", pt: 2 }}>
+    <Paper elevation={3} sx={{ height: "400px", overflowY: "auto", pt: 2}}>
       <List>
         {visibleMessages.map((message, index) => renderMessage(message, index))}
       </List>
