@@ -107,7 +107,7 @@ const UserPreferences = () => {
                 <IconButton 
                   aria-label="delete"
                   onClick={() => handleDeleteChild(child.id)}
-                  sx={{ position: 'absolute', top: -22, right: -22 }}
+                  sx={{ position: 'absolute', top: -21, right: -21 }}
                   color="error"
                 >
                   <HighlightOffIcon />

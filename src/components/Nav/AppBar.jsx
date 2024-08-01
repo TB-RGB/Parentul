@@ -40,15 +40,15 @@ function Nav() {
 
 
   const pages = user.id ? [
-    {page:'Chat', Link: '/chat'},
-    {page: 'Chat History', Link: `/chathistory/${user.id}`},
-    {page: 'FAQ', Link: '/questions'}] : [];
+    { page: 'Chat', Link: '/chat' },
+    { page: 'Chat History', Link: `/chathistory/${user.id}` },
+    { page: 'FAQ', Link: '/questions' }] : [];
   const settings = user.id ? [
-    {page: 'User Preferences', Link: `/preferences/${user.id}`},
-    {page: 'Logout', Link: '/login'}] : [{page: 'Login', Link: '/login'}];
+    { page: 'User Preferences', Link: `/preferences/${user.id}` },
+    { page: 'Logout', Link: '/login' }] : [{ page: 'Login', Link: '/login' }];
 
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: '#1E1E1E', borderBottom: '2px outset orange' }}>
+    <AppBar position="fixed" sx={{ backgroundColor: '#1E1E1E', borderBottom: '2px ridge orange' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box
@@ -73,7 +73,7 @@ function Nav() {
                 key={index}
                 component={Link}
                 to={page.Link}
-                sx={{ color: 'white', display: 'block', mx: 1 }}
+                sx={{ color: 'white', display: 'flex', mr: 1 }}
               >
                 {page.page}
               </Button>
@@ -81,7 +81,7 @@ function Nav() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open menu">
+            <Tooltip title="Open User menu">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt={user.username} src={user.profile_pic_url} />
               </IconButton>
@@ -105,8 +105,8 @@ function Nav() {
               {user.id && (
                 <Box sx={{ display: { xs: 'block', md: 'none' } }}>
                   {pages.map((page, index) => (
-                    <MenuItem 
-                      key={index} 
+                    <MenuItem
+                      key={index}
                       component={Link}
                       to={page.Link}
                       onClick={handleCloseUserMenu}
@@ -118,7 +118,7 @@ function Nav() {
                 </Box>
               )}
               {(settings).map((setting, index) => (
-                <MenuItem 
+                <MenuItem
                   key={index}
                   component={Link}
                   to={setting.Link}

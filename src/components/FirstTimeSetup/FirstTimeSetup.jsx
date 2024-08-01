@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { Card, Checkbox, FormControlLabel } from '@mui/material';
+import { Card, Checkbox, Divider, Grid, FormControlLabel } from '@mui/material';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
@@ -18,6 +18,7 @@ import muiCustomStyles from '../../styles/muiCustomStyles';
 const FirstTimeSetup = () => {
   const user = useSelector(state => state.user);
   const firstTimeSetup = useSelector(state => state.firstTimeSetupReducer);
+  const redirection = useSelector(state => state.redirectionReducer);
   const family = useSelector(state => state.familyReducer);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -27,6 +28,13 @@ const FirstTimeSetup = () => {
   const [lastName, setLastName] = useState(user.last_name || '');
   const [children, setChildren] = useState([{ name: '', dob: '' }]);
   const [hasDiagnosis, setHasDiagnosis] = useState(false);
+
+  useEffect(() => {
+    if (redirection) {
+      history.push(redirection);
+      dispatch({ type: 'CLEAR_REDIRECTION' });
+    }
+  }, [redirection, history, dispatch]);
 
   useEffect(() => {
     if (family.parent.firstName && family.parent.lastName && family.children && family.children.length > 0) {
@@ -39,7 +47,7 @@ const FirstTimeSetup = () => {
   };
 
   const handleChildChange = (index, field, value) => {
-    const updatedChildren = children.map((child, i) => 
+    const updatedChildren = children.map((child, i) =>
       i === index ? { ...child, [field]: value } : child
     );
     setChildren(updatedChildren);
@@ -57,14 +65,14 @@ const FirstTimeSetup = () => {
         return;
       }
     } else if (activeStep === 2) {
-      
+
     } else if (activeStep === 3) {
-      dispatch({ 
+      dispatch({
         type: 'SET_FIRST_TIME_SETUP_DATA',
         payload: { firstName, lastName, children, hasDiagnosis }
       });
       dispatch({ type: 'FINALIZE_FIRST_TIME_SETUP' });
-      dispatch({ type: 'CREATE_USER_PREFERENCES', payload: { userId: user.id} });
+      dispatch({ type: 'CREATE_USER_PREFERENCES', payload: { userId: user.id } });
       history.push('/chat');
       return;
     }
@@ -130,7 +138,7 @@ const FirstTimeSetup = () => {
             </div>
           ))}
           <IconButton onClick={handleAddChild} color="primary">
-            <AddIcon />
+            <AddIcon sx={{ color: 'orange'}} />
           </IconButton>
         </>
       ),
@@ -154,16 +162,49 @@ const FirstTimeSetup = () => {
       label: 'Verify Your Information',
       content: (
         <>
-          <Typography>Name: {firstName} {lastName}</Typography>
+          <Divider
+            textAlign="center"
+            sx={muiCustomStyles.firstTimeDivider}
+          >
+            Name
+          </Divider>
+         
+            <Typography sx={{ textAlign: 'center', ...muiCustomStyles.medium}}>{firstName} {lastName}</Typography>
           
-          <Typography variant="h6" style={{ marginTop: '16px' }}>Children:</Typography>
-          {children.map((child, index) => (
-            <div key={index}>
-              <Typography>Name: {child.name}</Typography>
-              <Typography>Date of Birth: {child.dob}</Typography>
-            </div>
-          ))}
-          <Typography>Diagnosis in Family: {hasDiagnosis ? 'Yes' : 'No'}</Typography>
+          <Divider
+            textAlign="center"
+            sx={muiCustomStyles.firstTimeDivider}
+          >
+            Children
+          </Divider>
+          
+
+            <Grid container justifyContent="center" spacing={2}>
+              {children.map((child, index) => (
+
+                <Grid item {...muiCustomStyles.childGridItem} key={index}>
+                  <Box sx={{ marginBottom: 0, position: 'relative' }}>
+                    <Card sx={muiCustomStyles.childcard}>
+                      <Typography sx={muiCustomStyles.small}>{child.name}</Typography>
+                      <Typography >{child.dob}</Typography>
+                    </Card>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+         
+
+          <Divider
+            textAlign="center"
+            sx={muiCustomStyles.firstTimeDivider}
+          >
+            Diagnosis in Family
+          </Divider>
+          
+            <Typography sx={{ textAlign: 'center', ...muiCustomStyles.small}}>{hasDiagnosis ? 'Yes ✅' : 'No ❌'}</Typography>
+          
+
+
         </>
       ),
     },
@@ -188,7 +229,7 @@ const FirstTimeSetup = () => {
                 {step.content}
                 <Box sx={{ mb: 2 }}>
                   <div>
-                  <Button
+                    <Button
                       disabled={index === 0}
                       onClick={handleBack}
                       sx={muiCustomStyles.backButton}
@@ -202,7 +243,7 @@ const FirstTimeSetup = () => {
                     >
                       {index === steps.length - 1 ? 'Finish' : 'Continue'}
                     </Button>
-                    
+
                   </div>
                 </Box>
               </StepContent>
