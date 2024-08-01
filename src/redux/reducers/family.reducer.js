@@ -11,6 +11,18 @@ const familyReducer = (state = initialState, action) => {
         },
         children: action.payload.children || []
       };
+      case 'ADD_CHILD_SUCCESS':
+        return {
+          ...state,
+          children: Array.isArray(action.payload) 
+            ? [...state.children, ...action.payload]
+            : [...state.children, action.payload]
+        };
+        case 'UPDATE_CHILDREN_SUCCESS':
+      return {
+        ...state,
+
+      };
     case 'UNSET_FAMILY':
       return initialState;
     default:
