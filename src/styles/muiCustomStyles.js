@@ -163,8 +163,10 @@ export const muiCustomStyles = {
     select: {
         '& .MuiOutlinedInput-root': {
             color: 'white',
+            borderRadius: '1em',
             '& fieldset': {
                 borderColor: 'orange',
+                border: '2px outset orange'
             },
             '&:hover fieldset': {
                 borderColor: 'white',
@@ -187,9 +189,11 @@ export const muiCustomStyles = {
         '& .MuiPaper-root': {
             backgroundColor: '#1E1E1E',
             color: 'white',
+            borderRadius: '1em'
         },
         '& .MuiList-root': {
             padding: 0,
+            borderRadius: '1em'
         },
     },
     menuItem: {
@@ -204,6 +208,8 @@ export const muiCustomStyles = {
                 backgroundColor: 'black',
             },
         },
+        
+            borderRadius: '1em'
     },
     button: {
         backgroundColor: 'orange',
