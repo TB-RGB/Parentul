@@ -53,6 +53,8 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages }) => {
     return String(content);
   };
 
+
+  // ? To handle message arrays (e.g. for AI advice), we need to render each item in the array separately
   const renderMessage = (message, index) => {
     const isUser = message.sender === "user";
     return (
@@ -79,12 +81,14 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages }) => {
   };
 
   return (
-    <Paper elevation={3} sx={{ height: "400px", overflowY: "auto", pt: 2 }}>
+    <div className="chat-container">
+    <Paper elevation={3} sx={{ height: "400px", overflowY: "contain", pt: 2}}>
       <List>
         {visibleMessages.map((message, index) => renderMessage(message, index))}
       </List>
       <div ref={messagesEndRef} />
     </Paper>
+    </div>
   );
 };
 

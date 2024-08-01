@@ -15,12 +15,16 @@ import "./output.css";
 
 const ChatComponent = () => {
   const dispatch = useDispatch();
-  
+
   const { messages, isLoading, currentConversationId } = useSelector(
     (state) => state.chat
   );
   const [visibleMessages, setVisibleMessages] = useState([
-    { sender: "ai", content: "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on." }
+    {
+      sender: "ai",
+      content:
+        "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on.",
+    },
   ]);
   const user = useSelector((state) => state.user);
 
@@ -45,38 +49,39 @@ const ChatComponent = () => {
       dispatch(endConversation(currentConversationId));
       dispatch(clearMessages());
       setVisibleMessages([
-        { sender: "ai", content: "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on." }
+        {
+          sender: "ai",
+          content:
+            "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on.",
+        },
       ]);
     }
   };
 
-
   return (
     <>
       <Box sx={muiCustomStyles.box}>
-<Card sx={muiCustomStyles.card}>
-        
-        
-        <Typography variant="h4" gutterBottom>
-          Parentul Chat
-        </Typography>
+        <Card sx={muiCustomStyles.card}>
+          <Typography variant="h4" gutterBottom>
+            Parentul Chat
+          </Typography>
 
-        <MessageList messages={messages} visibleMessages={visibleMessages} setVisibleMessages={setVisibleMessages} />
-        <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
-        <Box sx={muiCustomStyles.buttonbox}>
-      
-      <Button
-            sx={{mt: 4, ...muiCustomStyles.button}}
-            onClick={handleEndConversation}
-          >
-            End Conversation
-          </Button>
-          
+          <MessageList
+            messages={messages}
+            visibleMessages={visibleMessages}
+            setVisibleMessages={setVisibleMessages}
+          />
+          <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
+          <Box sx={muiCustomStyles.buttonbox}>
+            <Button
+              sx={{ mt: 4, ...muiCustomStyles.button }}
+              onClick={handleEndConversation}
+            >
+              End Conversation
+            </Button>
           </Box>
-        
         </Card>
       </Box>
-     
     </>
   );
 };
