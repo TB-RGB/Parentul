@@ -65,7 +65,7 @@ const ChatHistoryDetails = () => {
     }
     dispatch({
       type: "SEND_FEEDBACK",
-      payload: { userId: user.id, conversationId: chatId, rating: userFeedback, questionText: `This is a question` },
+      payload: { userId: user.id, conversationId: chatId, rating: userFeedback, questionText: userFeedback === true ? "Did using the advice given have a postive impact?" : "What did you find unhelpful about the advice given?" },
     });
     handleBackClick();
   };
