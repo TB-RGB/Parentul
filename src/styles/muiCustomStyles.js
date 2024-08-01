@@ -49,13 +49,20 @@ export const muiCustomStyles = {
             color: '#FFA500',
         },
         padding: .7,
-        
+
         borderRadius: '.15em'
     },
     divider: {
 
         borderColor: 'white',
         my: 2,
+        color: 'white',
+        fontSize: '25px'
+    },
+    firstTimeDivider: {
+
+        '&::before, &::after': { borderColor: 'orange' },
+        my: 1,
         color: 'white',
         fontSize: '25px'
     },
@@ -233,6 +240,7 @@ export const muiCustomStyles = {
         }
     },
     header: {
+        textAlign: 'center',
         fontSize: {
             xs: '35px',
             sm: '40px',
@@ -259,7 +267,7 @@ export const muiCustomStyles = {
         }
     },
     small: {
-        
+
         fontSize: {
             xs: '24px',
             sm: '20px',
@@ -267,7 +275,7 @@ export const muiCustomStyles = {
             lg: '25px',
         },
         fontWeight: '400'
-        
+
     },
     select: {
         '& .MuiOutlinedInput-root': {
@@ -317,8 +325,8 @@ export const muiCustomStyles = {
                 backgroundColor: 'black',
             },
         },
-        
-            borderRadius: '1em'
+
+        borderRadius: '1em'
     },
     button: {
         backgroundColor: 'orange',
@@ -333,7 +341,8 @@ export const muiCustomStyles = {
         boxShadow: "0px 0px 5px #FFA560",
         borderRadius: "1em",
         color: "white",
-    }
+    },
+
 };
 
 
