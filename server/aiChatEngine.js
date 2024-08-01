@@ -16,14 +16,14 @@ class AIChatEngine {
   initializeClassifier() {
     // Existing categories
 
-    this.addTrainingData("greeting", [
-      "Hi",
-      "Hello",
-      "Hey",
-      "Good morning",
-      "Good afternoon",
-      "Good evening",
-    ]);
+    // this.addTrainingData("greeting", [
+    //   "Hi",
+    //   "Hello",
+    //   "Hey",
+    //   "Good morning",
+    //   "Good afternoon",
+    //   "Good evening",
+    // ]);
 
     // New categories based on the new documents
     this.addTrainingData("lying", [
@@ -238,9 +238,9 @@ class AIChatEngine {
       case "stealing":
         adviceMessages = this.getDetailedStealingAdvice();
         break;
-      case "greeting":
-        adviceMessages = this.getDetailedGreetingAdvice();
-        break;
+    //   case "greeting":
+    //     adviceMessages = this.getDetailedGreetingAdvice();
+    //     break;
       case "lying":
         adviceMessages = this.getDetailedLyingAdvice();
         break;
@@ -271,18 +271,18 @@ class AIChatEngine {
     };
   }
 
-  getDetailedGreetingAdvice() {
-    return `Hello! Welcome to Parentul. I'm here to help you with any parenting questions or concerns you might have. 
+//   getDetailedGreetingAdvice() {
+//     return `Hello! Welcome to Parentul. I'm here to help you with any parenting questions or concerns you might have. 
     
-    Here are some topics I can assist you with:
-    1. Child behavior issues (like tantrums, meltdowns, or not listening)
-    2. Sleep routines and problems
-    3. Nutrition and eating habits
-    4. Educational activities and games
-    5. Dealing with lying or stealing
+//     Here are some topics I can assist you with:
+//     1. Child behavior issues (like tantrums, meltdowns, or not listening)
+//     2. Sleep routines and problems
+//     3. Nutrition and eating habits
+//     4. Educational activities and games
+//     5. Dealing with lying or stealing
 
-    What specific area would you like help with regarding ${this.conversationState.childName}?`;
-  }
+//     What specific area would you like help with regarding ${this.conversationState.childName}?`;
+//   }
 
   getDetailedLyingAdvice() {
     return [

@@ -72,6 +72,7 @@ const ChatHistoryDetails = () => {
 
   return (
     <>
+    <div style={{ overflow: "hidden", overscrollBehavior: "contain" }}>
       <Box sx={muiCustomStyles.box}>
         <Card
           sx={{
@@ -162,14 +163,7 @@ const ChatHistoryDetails = () => {
            </Box> 
         </Card>
       </Box>
-      {/* <h1>Chat Log</h1>
-      <button onClick={handleBackClick}>Back</button>
-      {log.map((message) => (
-        <div key={message.id}>
-          <p>{message.content}</p>
-          <p>{message.sender}</p>
-        </div>
-      ))} */}
+    </div>
     </>
   );
 };

@@ -60,6 +60,7 @@ const ChatComponent = () => {
 
   return (
     <>
+    <div style={{ overflow: "hidden" }}>
       <Box sx={muiCustomStyles.box}>
         <Card sx={muiCustomStyles.card}>
           <Typography variant="h4" gutterBottom>
@@ -82,6 +83,7 @@ const ChatComponent = () => {
           </Box>
         </Card>
       </Box>
+    </div>
     </>
   );
 };

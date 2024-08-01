@@ -27,7 +27,7 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages }) => {
                   ...prevMessages,
                   { ...newMessage, content: advice }
                 ]);
-              }, (index * newMessage.content.length + adviceIndex) * 5000); // Delay each advice by 5s, staggering start times
+              }, (index * newMessage.content.length + adviceIndex) * 4000); // Delay each advice by 5s, staggering start times
             }
           });
         } else {
@@ -81,14 +81,12 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages }) => {
   };
 
   return (
-    <div className="chat-container">
-    <Paper elevation={3} sx={{ height: "400px", overflowY: "contain", pt: 2}}>
+    <Paper elevation={3} sx={{ height: "400px", overflowY: "auto", pt: 2}}>
       <List>
         {visibleMessages.map((message, index) => renderMessage(message, index))}
       </List>
       <div ref={messagesEndRef} />
     </Paper>
-    </div>
   );
 };
 
