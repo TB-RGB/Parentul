@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.jsx"],
   theme: {
-    extend: {},
+    extend: { 
+      backgroundColor: {
+        'custom-bg': '#1a1a1a',
+      }
+    },
   },
   plugins: [
     require('daisyui')
