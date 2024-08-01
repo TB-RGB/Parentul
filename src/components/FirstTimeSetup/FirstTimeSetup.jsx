@@ -130,7 +130,7 @@ const FirstTimeSetup = () => {
             </div>
           ))}
           <IconButton onClick={handleAddChild} color="primary">
-            <AddIcon />
+            <AddIcon sx={{ color: 'orange'}} />
           </IconButton>
         </>
       ),
