@@ -15,17 +15,6 @@ class AIChatEngine {
 
   initializeClassifier() {
    
-
-    // this.addTrainingData("greeting", [
-    //   "Hi",
-    //   "Hello",
-    //   "Hey",
-    //   "Good morning",
-    //   "Good afternoon",
-    //   "Good evening",
-    // ]);
-
-    // New categories based on the new documents
     this.addTrainingData("lying", [
       "My child is lying",
       "How to handle child lying",
@@ -91,69 +80,6 @@ class AIChatEngine {
     phrases.forEach((phrase) => this.classifier.addDocument(phrase, category));
   }
 
-  //   async generateResponse(message) {
-  //     console.log("Generating response for:", message);
-  //     if (!message || typeof message !== "string") {
-  //       console.error("Invalid message received:", message);
-  //       return {
-  //         text: "I'm sorry, I didn't understand that. Could you please try again?",
-  //         category: "error",
-  //       };
-  //     }
-
-  //     if (!this.classifier) {
-  //       console.error("Classifier is not initialized");
-  //       return {
-  //         text: "I'm sorry, I'm having technical difficulties. Please try again later.",
-  //         category: "error",
-  //       };
-  //     }
-
-  //     const classifications = this.classifier.getClassifications(message);
-  //     console.log("Classifications:", classifications);
-  //     const topClassification = classifications[0];
-
-  //     const category =
-  //       topClassification && topClassification.value > 0.03
-  //         ? {
-  //             category: topClassification.label,
-  //             confidence: topClassification.value,
-  //           }
-  //         : {category: "unknown", confidence: 0};
-  //     console.log("Chosen category:", category);
-
-  //     let response;
-
-  //     switch (category.category) {
-  //       case "greeting":
-  //         response = this.getGreeting();
-  //         break;
-  //       case "lying":
-  //         response = this.getLyingAdvice();
-  //         break;
-  //       case "meltdowns":
-  //         response = this.getMeltdownsAdvice();
-  //         break;
-  //       case "not_listening":
-  //         response = this.getNotListeningAdvice();
-  //         break;
-  //       case "stealing":
-  //         response = this.getStealingAdvice();
-  //         break;
-  //       case "temper_tantrums":
-  //         response = this.getTemperTantrumsAdvice();
-  //         break;
-  //       default:
-  //         response =
-  //           "I'm not sure I understand. Could you please ask a question about parenting, child behavior, sleep, nutrition, or activities for children?";
-  //     }
-
-  //     return {
-  //       text: response,
-  //       category: category.category,
-  //       confidence: category.confidence,
-  //     };
-  //   }
 
   async generateResponse(message) {
     console.log("Generating response for:", message);
@@ -165,18 +91,25 @@ class AIChatEngine {
       };
     }
 
-    if (this.conversationState.stage === "initial") {
-      const classification = this.classifyMessage(message);
-      this.conversationState.category = classification.category;
-      this.conversationState.confidence = classification.confidence;
-      this.conversationState.stage = "asking_child_name";
-      return {
-        text: `I understand you're asking about ${this.conversationState.category}. To help you better, could you tell me which child you're concerned about?`,
-        category: "Who",
-      };
-    } else if (this.conversationState.stage === "asking_child_name") {
+    if (this.conversationState.stage === "initial" || this.conversationState.stage === "providing_advice") {
+        const classification = this.classifyMessage(message);
+        this.conversationState = {
+          stage: "asking_child_name",
+          category: classification.category,
+          confidence: classification.confidence,
+          childName: null,
+          specifics: null,
+          frequency: null,
+        };
+        console.log("Conversation state:", this.conversationState);
+        return {
+          text: `I understand you're asking about ${this.conversationState.category}. To help you better, could you tell me which child you're concerned about?`,
+          category: "Who",
+        };
+      } else if (this.conversationState.stage === "asking_child_name") {
       this.conversationState.childName = message;
       this.conversationState.stage = "asking_specifics";
+      console.log("Conversation state:", this.conversationState);
       return {
         text: `Thank you. What specific ${this.conversationState.category} behavior did ${this.conversationState.childName} exhibit?`,
         category: "What",
@@ -184,6 +117,7 @@ class AIChatEngine {
     } else if (this.conversationState.stage === "asking_specifics") {
       this.conversationState.specifics = message;
       this.conversationState.stage = "asking_frequency";
+      console.log("Conversation state:", this.conversationState);
       return {
         text: `I see. Has this happened before? If so, how often?`,
         category: "When",
@@ -191,8 +125,9 @@ class AIChatEngine {
     } else if (this.conversationState.stage === "asking_frequency") {
       this.conversationState.frequency = message;
       this.conversationState.stage = "providing_advice";
+      console.log("Conversation state:", this.conversationState);
       return this.provideDetailedAdvice();
-    }
+    } 
     // else if (this.conversationState.stage === "providing_advice") {
     //   if (message.toLowerCase().includes("thumbs up")) {
     //     this.conversationState = { stage: "initial" };
@@ -220,7 +155,8 @@ class AIChatEngine {
   classifyMessage(message) {
     const classifications = this.classifier.getClassifications(message);
     const topClassification = classifications[0];
-    return topClassification && topClassification.value > 0.03
+    console.log("Top classification:", topClassification);
+    return topClassification && topClassification.value > 0.01
       ? {
           category: topClassification.label,
           confidence: topClassification.value,
@@ -238,9 +174,6 @@ class AIChatEngine {
       case "stealing":
         adviceMessages = this.getDetailedStealingAdvice();
         break;
-    //   case "greeting":
-    //     adviceMessages = this.getDetailedGreetingAdvice();
-    //     break;
       case "lying":
         adviceMessages = this.getDetailedLyingAdvice();
         break;
@@ -270,19 +203,6 @@ class AIChatEngine {
       confidence: this.conversationState.confidence,
     };
   }
-
-//   getDetailedGreetingAdvice() {
-//     return `Hello! Welcome to Parentul. I'm here to help you with any parenting questions or concerns you might have. 
-    
-//     Here are some topics I can assist you with:
-//     1. Child behavior issues (like tantrums, meltdowns, or not listening)
-//     2. Sleep routines and problems
-//     3. Nutrition and eating habits
-//     4. Educational activities and games
-//     5. Dealing with lying or stealing
-
-//     What specific area would you like help with regarding ${this.conversationState.childName}?`;
-//   }
 
   getDetailedLyingAdvice() {
     return [

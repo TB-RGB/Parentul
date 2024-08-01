@@ -26,6 +26,7 @@ const ChatComponent = () => {
         "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on.",
     },
   ]);
+  const [disabled, setDisabled] = useState(false);
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -33,8 +34,7 @@ const ChatComponent = () => {
 
     return () => {
       if (currentConversationId) {
-        dispatch(endConversation(currentConversationId));
-        dispatch(clearMessages());
+        handleEndConversation();
       }
     };
   }, [dispatch, user.id]);
@@ -56,6 +56,7 @@ const ChatComponent = () => {
         },
       ]);
     }
+    setDisabled(false);
   };
 
   return (
@@ -71,8 +72,9 @@ const ChatComponent = () => {
             messages={messages}
             visibleMessages={visibleMessages}
             setVisibleMessages={setVisibleMessages}
+            setDisabled={setDisabled}
           />
-          <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
+          <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} disabled={disabled} />
           <Box sx={muiCustomStyles.buttonbox}>
             <Button
               sx={{ mt: 4, ...muiCustomStyles.button }}

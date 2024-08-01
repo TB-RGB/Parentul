@@ -1,8 +1,9 @@
 import { useRef, useEffect } from "react";
 import { List, ListItem, ListItemText, Paper, Typography } from "@mui/material";
 
-const MessageList = ({ messages, visibleMessages, setVisibleMessages }) => {
+const MessageList = ({ messages, visibleMessages, setVisibleMessages, setDisabled }) => {
   const messagesEndRef = useRef(null);
+  
  
 
   const scrollToBottom = () => {
@@ -27,7 +28,8 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages }) => {
                   ...prevMessages,
                   { ...newMessage, content: advice }
                 ]);
-              }, (index * newMessage.content.length + adviceIndex) * 4000); // Delay each advice by 5s, staggering start times
+              }, (index * newMessage.content.length + adviceIndex) * 3000); // Delay each advice by 5s, staggering start times
+            setDisabled(true);
             }
           });
         } else {
