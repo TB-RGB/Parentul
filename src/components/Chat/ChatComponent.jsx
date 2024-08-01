@@ -15,13 +15,18 @@ import "./output.css";
 
 const ChatComponent = () => {
   const dispatch = useDispatch();
-  
+
   const { messages, isLoading, currentConversationId } = useSelector(
     (state) => state.chat
   );
   const [visibleMessages, setVisibleMessages] = useState([
-    { sender: "ai", content: "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on." }
+    {
+      sender: "ai",
+      content:
+        "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on.",
+    },
   ]);
+  const [disabled, setDisabled] = useState(false);
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -29,8 +34,7 @@ const ChatComponent = () => {
 
     return () => {
       if (currentConversationId) {
-        dispatch(endConversation(currentConversationId));
-        dispatch(clearMessages());
+        handleEndConversation();
       }
     };
   }, [dispatch, user.id]);
@@ -45,38 +49,43 @@ const ChatComponent = () => {
       dispatch(endConversation(currentConversationId));
       dispatch(clearMessages());
       setVisibleMessages([
-        { sender: "ai", content: "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on." }
+        {
+          sender: "ai",
+          content:
+            "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on.",
+        },
       ]);
     }
+    setDisabled(false);
   };
-
 
   return (
     <>
+    <div style={{ overflow: "hidden" }}>
       <Box sx={muiCustomStyles.box}>
-<Card sx={muiCustomStyles.card}>
-        
-        
-        <Typography variant="h4" gutterBottom>
-          Parentul Chat
-        </Typography>
+        <Card sx={muiCustomStyles.card}>
+          <Typography variant="h4" gutterBottom>
+            Parentul Chat
+          </Typography>
 
-        <MessageList messages={messages} visibleMessages={visibleMessages} setVisibleMessages={setVisibleMessages} />
-        <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
-        <Box sx={muiCustomStyles.buttonbox}>
-      
-      <Button
-            sx={{mt: 4, ...muiCustomStyles.button}}
-            onClick={handleEndConversation}
-          >
-            End Conversation
-          </Button>
-          
+          <MessageList
+            messages={messages}
+            visibleMessages={visibleMessages}
+            setVisibleMessages={setVisibleMessages}
+            setDisabled={setDisabled}
+          />
+          <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} disabled={disabled} />
+          <Box sx={muiCustomStyles.buttonbox}>
+            <Button
+              sx={{ mt: 4, ...muiCustomStyles.button }}
+              onClick={handleEndConversation}
+            >
+              End Conversation
+            </Button>
           </Box>
-        
         </Card>
       </Box>
-     
+    </div>
     </>
   );
 };
