@@ -32,10 +32,23 @@ function* sendFeedback(action) {
     }
 }
 
+function* deleteConversation(action) {
+  try {
+    yield axios.delete(`/api/chat/conversation/${action.payload.conversationId}`);
+    yield put({ 
+      type: "FETCH_CONVERSATIONS", 
+      payload: { userId: action.payload.userId } 
+    });
+  } catch (err) {
+    console.error("Error deleting conversation:", err);
+  }
+}
+
 const historySaga = function* historySaga() {
   yield takeLatest("FETCH_CONVERSATIONS", fetchConversations);
   yield takeLatest("FETCH_LOG", fetchLog);
   yield takeLatest('SEND_FEEDBACK', sendFeedback);
+  yield takeLatest('DELETE_CONVERSATION', deleteConversation)
 };
 
 export default historySaga;

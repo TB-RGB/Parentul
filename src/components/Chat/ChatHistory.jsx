@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import {
   Stack,
   Box,
@@ -11,11 +10,12 @@ import {
   AccordionActions,
   AccordionSummary,
   AccordionDetails,
-  IconButton,
-  Button
+  Button,
+  IconButton
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FirstPageIcon from '@mui/icons-material/FirstPage';
+import DeleteIcon from '@mui/icons-material/Delete';
 import muiCustomStyles from "../../styles/muiCustomStyles";
 
 const ChatHistory = () => {
@@ -27,7 +27,7 @@ const ChatHistory = () => {
 
   useEffect(() => {
     dispatch({ type: "FETCH_CONVERSATIONS", payload: { userId: userId } });
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
   const handleLogClick = (conversationId) => {
     history.push(`/chatlog/${conversationId}`);
@@ -39,6 +39,15 @@ const ChatHistory = () => {
 
   const handleBackClick = () => {
     history.push("/chat");
+  };
+
+  const handleDeleteClick = (conversationId) => {
+    if (window.confirm("Are you sure you want to delete this conversation?")) {
+      dispatch({
+        type: "DELETE_CONVERSATION",
+        payload: { conversationId: conversationId, userId: userId },
+      });
+    }
   };
 
   function formatDate(dateString) {
@@ -54,46 +63,55 @@ const ChatHistory = () => {
   }
 
   return (
-    <>
-      <Box sx={{ maxWidth: 800, margin: "auto", padding: 2 }}>
-        <Card
-          sx={muiCustomStyles.card}
+    <Box sx={muiCustomStyles.box}>
+      <Card sx={muiCustomStyles.card}>
+        <Typography variant="h4" textAlign={"center"}>
+          Chat History
+        </Typography>
+        <Button sx={muiCustomStyles.backButton} onClick={handleBackClick} startIcon={<FirstPageIcon />}>
+          To Chat
+        </Button>
+        <Stack
+          direction="column"
+          justifyContent="flex-start"
+          alignItems="stretch"
+          spacing={2}
         >
-          <Typography variant="h4" textAlign={"center"}>
-            Chat History
-          </Typography>
-          <Button variant="outlined" sx={muiCustomStyles.backButton} onClick={handleBackClick} startIcon={<FirstPageIcon />}>
-            To Chat
-          </Button>
-          <Stack
-            direction="column"
-            justifyContent="flex-start"
-            alignItems="stretch"
-            spacing={2}
-          >
-            {conversations.map((conversation) => (
-              <Accordion
-                sx={muiCustomStyles.accordion}
-                key={conversation.id}
-              >
-                <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}>
-                  {formatDate(conversation.start_time)} {conversation.user_rating != null ? ` - Was this helpful? ${conversation.user_rating}` : ""}
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography><strong>{!family.parent.firstName ? "User": `${family.parent.firstName}'s`} Message:</strong> {conversation.user_message}</Typography>
-                  <Typography><strong>Parentul's Response:</strong> {conversation.ai_response}</Typography>
-                </AccordionDetails>
-                <AccordionActions>
-                  <button onClick={() => handleLogClick(conversation.id)}>
-                    View Log
-                  </button>
-                </AccordionActions>
-              </Accordion>
-            ))}
-          </Stack>
-        </Card>
-      </Box>
-    </>
+          {conversations.map((conversation) => (
+            <Accordion
+              sx={muiCustomStyles.accordion}
+              key={conversation.id}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}>
+                {formatDate(conversation.start_time)} {conversation.user_rating != null ? ` - Was this helpful? ${conversation.user_rating}` : ""}
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography><strong>{!family.parent.firstName ? "User": `${family.parent.firstName}'s`} Message:</strong> {conversation.user_message}</Typography>
+                <Typography><strong>Parentul's Response:</strong> {conversation.ai_response}</Typography>
+              </AccordionDetails>
+              <AccordionActions>
+                <Button 
+                sx={muiCustomStyles.backButton}
+                onClick={() => handleLogClick(conversation.id)}>
+                  View Log
+                </Button>
+                
+                <IconButton 
+                sx={muiCustomStyles.deleteButton}
+                  onClick={() => handleDeleteClick(conversation.id)}
+                  aria-label="delete"
+                  color="error"
+                >
+                  
+                  <DeleteIcon />
+                </IconButton>
+                
+              </AccordionActions>
+            </Accordion>
+          ))}
+        </Stack>
+      </Card>
+    </Box>
   );
 };
 

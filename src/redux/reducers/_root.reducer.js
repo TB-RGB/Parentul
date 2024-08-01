@@ -6,6 +6,7 @@ import history from './chatHistory.reducer';
 import firstTimeSetupReducer from './firsttimesetup.reducer';
 import familyReducer from './family.reducer';
 import preferences from './preferences.reducer';
+import faqReducer from './faq.reducer';
 
 
 // rootReducer is the primary reducer for our entire project
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   firstTimeSetupReducer,
   familyReducer,
   preferences, // will have an array of user preferences
+  faqReducer,
 
 });
 
