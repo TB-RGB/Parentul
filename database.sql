@@ -50,12 +50,14 @@ CREATE TABLE user_feedback (
     conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE,
     user_id INTEGER REFERENCES users(id),
     rating BOOLEAN NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create follow_ups table with ON DELETE CASCADE
 CREATE TABLE follow_ups (
     id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
     conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE,
     question_text TEXT NOT NULL,
     is_asked BOOLEAN DEFAULT FALSE,
@@ -69,7 +71,7 @@ CREATE TABLE user_preferences (
     user_id INTEGER PRIMARY KEY REFERENCES users(id),
     notifications_email BOOLEAN DEFAULT TRUE,
     notifications_sms BOOLEAN DEFAULT FALSE,
-    phone_num VARCHAR(15) DEFAULT NULL
+    phone_number VARCHAR(20) DEFAULT NULL
     notifications_push BOOLEAN DEFAULT FALSE,
     notifications_freq VARCHAR(10) DEFAULT '24',
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
