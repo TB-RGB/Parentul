@@ -64,6 +64,7 @@ router.put("/:id", (req, res) => {
   SET 
     "notifications_email" = $1,
     "notifications_sms" = $2,
+    "phone_number" = $5,
     "notifications_freq" = $3,
     "updated_at" = NOW()
   WHERE 
@@ -75,6 +76,7 @@ router.put("/:id", (req, res) => {
     req.body.notifications_sms,
     req.body.notifications_freq,
     updateId,
+    req.body.phone_number
   ];
 
   pool
