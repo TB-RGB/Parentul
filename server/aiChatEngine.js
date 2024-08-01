@@ -14,7 +14,7 @@ class AIChatEngine {
   }
 
   initializeClassifier() {
-    // Existing categories
+   
 
     // this.addTrainingData("greeting", [
     //   "Hi",
