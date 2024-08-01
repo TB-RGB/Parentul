@@ -28,7 +28,7 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages, setDisable
                   ...prevMessages,
                   { ...newMessage, content: advice }
                 ]);
-              }, (index * newMessage.content.length + adviceIndex) * 3000); // Delay each advice by 5s, staggering start times
+              }, (index * newMessage.content.length + adviceIndex) * 3500); // Delay each advice by 5s, staggering start times
             setDisabled(true);
             }
           });

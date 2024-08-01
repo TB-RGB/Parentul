@@ -193,9 +193,6 @@ class AIChatEngine {
         ];
     }
 
-    adviceMessages.unshift(
-      `I understand you're concerned about ${this.conversationState.childName}'s ${this.conversationState.category} behavior. Here's some advice that might help:`
-    );
 
     return {
       messages: adviceMessages,
@@ -206,6 +203,7 @@ class AIChatEngine {
 
   getDetailedLyingAdvice() {
     return [
+      `I understand you're concerned about ${this.conversationState.childName}'s lying behavior. Here's some advice that might help:`,
       `1. Stay calm and avoid showing strong emotional reactions when you catch ${this.conversationState.childName} in a lie. This helps create a safe space for honesty.`,
       `2. Try to understand the reason behind the lie. Is it fear of punishment, a desire for attention, or an attempt to avoid disappointing you? Understanding the motivation can help address the root cause.`,
       `3. Explain clearly why lying is harmful. Use age-appropriate examples to illustrate how lying can damage trust and relationships.`,
@@ -235,7 +233,8 @@ class AIChatEngine {
 
   getDetailedNotListeningAdvice() {
     return [
-      `I understand you're having difficulties with ${this.conversationState.childName} not listening. Here are some strategies that might help:,``1. Ensure you have ${this.conversationState.childName}'s attention: Get down to their eye level and make gentle eye contact before giving instructions. You might also use a light touch on the shoulder.`,
+      `I understand you're having difficulties with ${this.conversationState.childName} not listening. Here are some strategies that might help:`,
+      `1. Ensure you have ${this.conversationState.childName}'s attention: Get down to their eye level and make gentle eye contact before giving instructions. You might also use a light touch on the shoulder.`,
       `2. Use clear, concise language: Keep instructions simple and direct. Avoid long explanations or multiple steps, especially for younger children.`,
       `3. Give choices: Instead of commands, offer limited choices. For example, "Would you like to put on your shoes now or after you finish your snack?" This gives ${this.conversationState.childName} a sense of control.`,
       `4. Use positive language: Frame instructions in a positive way. Instead of "Don't run," try "Please walk slowly."`,
@@ -270,6 +269,7 @@ class AIChatEngine {
 
   getDetailedStealingAdvice() {
     return [
+      `I understand you're concerned about ${this.conversationState.childName}'s stealing behavior. Here's some advice that might help:`,
       `1. Have a calm, non-judgmental conversation with ${this.conversationState.childName} about the incident. Try to understand their motivations without accusation.`,
       `2. Explain clearly why stealing is wrong and how it affects others. Use age-appropriate examples to illustrate the consequences.`,
       `3. Set clear expectations and boundaries. Before going to the store, remind ${this.conversationState.childName} that you're there to buy specific items and not extras.`,
