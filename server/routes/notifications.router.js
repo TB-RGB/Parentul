@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { sendSMS } = require('../services/twilio-sms');
+const sendEmail = require('../services/sendGrid')
 const pool = require("../modules/pool");
 
 router.post('/send-sms', async (req, res) => {
@@ -41,6 +42,17 @@ async function getUserPreferences(userId) {
   return result.rows[0];
 }
 
+
+router.post('/test-email', async (req, res) => {
+    const { to, subject, text } = req.body;
+    try {
+        await sendEmail(to, subject, text);
+        res.status(200).json({ message: 'Email sent successfully' });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ error: 'Failed to send email' });
+    }
+});
 
 
 module.exports = router;
