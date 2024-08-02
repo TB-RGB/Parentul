@@ -209,7 +209,7 @@ const UserPreferences = () => {
     horizontal: 'center',
   }}
   open={snackbarOpen}
-  autoHideDuration={3000}
+  autoHideDuration={1000}
   onClose={handleSnackbarClose}
 >
   <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
