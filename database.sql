@@ -14,13 +14,13 @@ CREATE TABLE users (
 -- Create children table
 CREATE TABLE children (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     name VARCHAR(100) NOT NULL,
     dob DATE NOT NULL
 );
 CREATE TABLE conversations (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     start_time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     end_time TIMESTAMP WITH TIME ZONE
 );
@@ -48,7 +48,7 @@ CREATE TABLE ai_responses (
 CREATE TABLE user_feedback (
     id SERIAL PRIMARY KEY,
     conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE,
-    user_id INTEGER REFERENCES users(id),
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     rating BOOLEAN NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -57,7 +57,7 @@ CREATE TABLE user_feedback (
 -- Create follow_ups table with ON DELETE CASCADE
 CREATE TABLE follow_ups (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE,
     question_text TEXT NOT NULL,
     is_asked BOOLEAN DEFAULT FALSE,
@@ -68,10 +68,10 @@ CREATE TABLE follow_ups (
 
 -- Create user_preferences table
 CREATE TABLE user_preferences (
-    user_id INTEGER PRIMARY KEY REFERENCES users(id),
+    user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
     notifications_email BOOLEAN DEFAULT TRUE,
     notifications_sms BOOLEAN DEFAULT FALSE,
-    phone_number VARCHAR(20) DEFAULT NULL
+    phone_number VARCHAR(20) DEFAULT NULL,
     notifications_push BOOLEAN DEFAULT FALSE,
     notifications_freq VARCHAR(10) DEFAULT '24',
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
