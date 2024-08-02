@@ -38,9 +38,11 @@ export const muiCustomStyles = {
         borderRadius: '1em',
         margin: theme.spacing(0, 0),
         padding: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
         boxShadow: '0px 0px 5px #FFA560',
         border: '1px outset #FFA500',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     deleteButton: {
         border: '1px outset orange',
@@ -266,7 +268,7 @@ export const muiCustomStyles = {
             md: '25px',
             lg: '25px',
         },
-        fontWeight: '400'
+        fontWeight: '400',
         
     },
     select: {

@@ -15,7 +15,7 @@ const ChatInput = ({ onSendMessage, isLoading, disabled }) => {
     };
     return (
         <>
-   <Box component='form' onSubmit={handleSubmit} sx={{ mt: 2, display: 'flex' }}>
+   <Box component='form' onSubmit={handleSubmit} sx={{ mt: 2, display: 'flex', fontFamily: "Montserrat" }}>
         <input 
             type='text'
             placeholder='Type a message'
@@ -26,7 +26,7 @@ const ChatInput = ({ onSendMessage, isLoading, disabled }) => {
             disabled={disabled}
             
         />
-        <button disabled={disabled} type='submit' className={disabled ? 'btn btn-disabled ml-3': 'btn btn-outline ml-3'}>
+        <button  disabled={disabled} type='submit' className={disabled ? 'btn btn-disabled ml-3': 'btn btn-outline ml-3'}>
             Ask
         </button>
      </Box>
