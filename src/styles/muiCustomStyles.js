@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme();
 
-export const muiCustomStyles = {
+const muiCustomStyles = {
     box: {
         width: {
             xs: '100vw',
@@ -73,10 +73,10 @@ export const muiCustomStyles = {
         lg: 6,
     },
     childGridItem: {
-        xs: 6,
-        sm: 4,
-        md: 3,
-        lg: 3,
+        xs: 12,
+        sm: 6,
+        md: 4,
+        lg: 4,
     },
     buttonbox: {
         maxWidth: 800,
@@ -341,7 +341,25 @@ export const muiCustomStyles = {
         boxShadow: "0px 0px 5px #FFA560",
         borderRadius: "1em",
         color: "white",
+        '&:first-of-type': {
+            borderTopLeftRadius: '1em',
+            borderTopRightRadius: '1em',
+        },
+        '&:last-of-type': {
+            borderBottomLeftRadius: '1em',
+            borderBottomRightRadius: '1em',
+        },
+        '&:before': {
+            display: 'none',
+        },
     },
+    accordionSummary: {
+        borderRadius: '1em',
+    },
+    accordionDetails: {
+        borderTop: '1px solid rgba(255, 165, 0, 0.5)',
+    },
+
 
 };
 

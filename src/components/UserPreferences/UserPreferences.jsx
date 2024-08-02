@@ -16,7 +16,7 @@ const UserPreferences = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [notificationType, setNotificationType] = useState('');
-  const [notifFreq, setNotifFreq] = useState('');
+  const [notificationFreq, setNotificationFreq] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -37,7 +37,7 @@ const UserPreferences = () => {
   useEffect(() => {
     if (preferences) {
       setNotificationType(preferences.notifications_email ? 'email' : 'sms');
-      setNotifFreq(preferences.notifications_freq || '');
+      setNotificationFreq(preferences.notifications_freq || '');
       setPhoneNumber(preferences.phone_number || '');
     }
   }, [preferences]);
@@ -49,13 +49,13 @@ const UserPreferences = () => {
     const updatedPreferences = {
       notifications_email: notificationType === 'email',
       notifications_sms: notificationType === 'sms',
-      notifications_freq: notifFreq,
+      notifications_freq: notificationFreq,
       phone_number: phoneNumber
     };
     console.log('Updating preferences:', updatedPreferences);
     dispatch({ type: "UPDATE_USER_PREFERENCES", payload: { userId, preferences: updatedPreferences } });
     const notificationMethod = notificationType === 'email' ? 'Email' : 'SMS';
-    const frequencyText = notifFreq === '24' ? 'Daily' : notifFreq === '48' ? '48 hours' : 'None';
+    const frequencyText = notificationFreq === '24' ? 'Daily' : notificationFreq === '48' ? '48 hours' : 'None';
     const message = `Preferences updated: 
     Notification Method: ${notificationMethod}
     Frequency: ${frequencyText}
@@ -174,8 +174,8 @@ const UserPreferences = () => {
           <FormControl fullWidth sx={{ mt: 2, ...muiCustomStyles.select }}>
             <InputLabel>Notification Frequency</InputLabel>
             <Select
-              value={notifFreq}
-              onChange={(e) => setNotifFreq(e.target.value)}
+              value={notificationFreq}
+              onChange={(e) => setNotificationFreq(e.target.value)}
               label="Notification Frequency"
               MenuProps={{ sx: muiCustomStyles.menu }}
             >
@@ -209,7 +209,7 @@ const UserPreferences = () => {
     horizontal: 'center',
   }}
   open={snackbarOpen}
-  autoHideDuration={1000}
+  autoHideDuration={2500}
   onClose={handleSnackbarClose}
 >
   <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>

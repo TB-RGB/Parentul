@@ -65,7 +65,7 @@ const ChatComponent = () => {
       <Box sx={muiCustomStyles.box}>
         <Card sx={muiCustomStyles.card}>
           <Typography variant="h4" gutterBottom>
-            Parentul Chat
+            Parentül Chat
           </Typography>
 
           <MessageList
