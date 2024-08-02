@@ -29,6 +29,7 @@ const preferencesRouter = require('./routes/preferences.router');
 const faqRouter = require('./routes/faq.router.js');
 const childrenRouter = require('./routes/children.router');
 const followupRouter = require('./routes/followup.router');
+const notificationsRouter = require('./routes/notifications.router.js')
 
 
 // Express Middleware
@@ -58,6 +59,7 @@ app.use('/api/preferences', preferencesRouter);
 app.use('/api/faq', faqRouter);
 app.use('/api/child', childrenRouter);
 app.use('/api/followup', followupRouter);
+app.use('/api/notifications', notificationsRouter)
 
 
 

@@ -227,7 +227,7 @@ const FirstTimeSetup = () => {
               </StepLabel>
               <StepContent>
                 {step.content}
-                <Box sx={{ mb: 2 }}>
+                <Box sx={{ mb: 2 , display: 'flex', justifyContent: 'center'}}>
                   <div>
                     <Button
                       disabled={index === 0}
