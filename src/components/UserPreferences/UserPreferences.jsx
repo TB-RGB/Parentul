@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Box, Card, Typography, CircularProgress, Grid, Select, MenuItem, FormControl, InputLabel, Button, TextField, IconButton } from "@mui/material";
+import { Alert, Box, Card, Typography, CircularProgress, Grid, Select, MenuItem, FormControl, InputLabel, Button, TextField, IconButton, Snackbar } from "@mui/material";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import muiCustomStyles from "../../styles/muiCustomStyles";
 import UpdateFamilyModal from "./UpdateFamilyModal";
@@ -18,7 +18,8 @@ const UserPreferences = () => {
   const [notificationType, setNotificationType] = useState('');
   const [notifFreq, setNotifFreq] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [addChildModalOpen, setAddChildModalOpen] = useState(false);
 
@@ -53,6 +54,21 @@ const UserPreferences = () => {
     };
     console.log('Updating preferences:', updatedPreferences);
     dispatch({ type: "UPDATE_USER_PREFERENCES", payload: { userId, preferences: updatedPreferences } });
+    const notificationMethod = notificationType === 'email' ? 'Email' : 'SMS';
+    const frequencyText = notifFreq === '24' ? 'Daily' : notifFreq === '48' ? '48 hours' : 'None';
+    const message = `Preferences updated: 
+    Notification Method: ${notificationMethod}
+    Frequency: ${frequencyText}
+    ${notificationType === 'sms' ? `Phone Number: ${phoneNumber}` : ''}`;
+
+    setSnackbarMessage(message);
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
   };
 
   const handleDeleteChild = (childId) => {
@@ -82,65 +98,65 @@ const UserPreferences = () => {
   return (
     <Box sx={muiCustomStyles.box}>
       <Card sx={muiCustomStyles.card}>
-        
+
         <Typography sx={muiCustomStyles.header}>User Preferences</Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}> 
-        <Button 
-          variant="outlined" 
-          onClick={() => setUpdateModalOpen(true)} 
-          sx={{ mt: 2, ...muiCustomStyles.backButton }}
-        >
-          Update Family Information
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Button
+            variant="outlined"
+            onClick={() => setUpdateModalOpen(true)}
+            sx={{ mt: 2, ...muiCustomStyles.backButton }}
+          >
+            Update Family Information
+          </Button>
         </Box>
         <Typography sx={muiCustomStyles.large}>{user.first_name} {user.last_name}</Typography>
-        
-        
+
+
         <Grid container justifyContent="center" spacing={2}>
-        {family.children && family.children.length > 0 ? (
-          family.children.map((child, index) => (
-            <Grid item {...muiCustomStyles.childGridItem} key={index}>
-            <Box sx={{ marginBottom: 0, position: 'relative' }}>
-              <Card sx={muiCustomStyles.childcard}> 
-                <Typography sx={muiCustomStyles.small}>{child.name}</Typography>
-                <Typography sx={muiCustomStyles.small}>Age: {currentYear - getBirthYear(child.dob)}</Typography>
-                {family.children.length > 1 && (
-                  <IconButton 
-                    aria-label="delete"
-                    onClick={() => handleDeleteChild(child.id)}
-                    sx={{ position: 'absolute', top: -21, right: -21 }}
-                    color="error"
-                  >
-                    <HighlightOffIcon />
-                  </IconButton>
-                )}
-              </Card>
-            </Box>
-            </Grid>
-          ))
-        ) : (
-          <Typography>No children information available.</Typography>
-        )}
+          {family.children && family.children.length > 0 ? (
+            family.children.map((child, index) => (
+              <Grid item {...muiCustomStyles.childGridItem} key={index}>
+                <Box sx={{ marginBottom: 0, position: 'relative' }}>
+                  <Card sx={muiCustomStyles.childcard}>
+                    <Typography sx={muiCustomStyles.small}>{child.name}</Typography>
+                    <Typography sx={muiCustomStyles.small}>Age: {currentYear - getBirthYear(child.dob)}</Typography>
+                    {family.children.length > 1 && (
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => handleDeleteChild(child.id)}
+                        sx={{ position: 'absolute', top: -21, right: -21 }}
+                        color="error"
+                      >
+                        <HighlightOffIcon />
+                      </IconButton>
+                    )}
+                  </Card>
+                </Box>
+              </Grid>
+            ))
+          ) : (
+            <Typography>No children information available.</Typography>
+          )}
         </Grid>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}> 
-        <Button 
-          
-          onClick={() => setAddChildModalOpen(true)} 
-          sx={{ mt: 2, ...muiCustomStyles.backButton }}
-        >
-          Add Child
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Button
+
+            onClick={() => setAddChildModalOpen(true)}
+            sx={{ mt: 2, ...muiCustomStyles.backButton }}
+          >
+            Add Child
+          </Button>
         </Box>
 
         <Box sx={{ marginTop: 4 }}>
           <Typography sx={muiCustomStyles.medium}>Notifications</Typography>
           <FormControl fullWidth sx={{ mt: 2, ...muiCustomStyles.select }}>
             <InputLabel>Notification Type</InputLabel>
-            <Select 
-              value={notificationType} 
-              onChange={(e) => setNotificationType(e.target.value)} 
+            <Select
+              value={notificationType}
+              onChange={(e) => setNotificationType(e.target.value)}
               label="Notification Type"
-              MenuProps={{ sx: muiCustomStyles.menu}}
+              MenuProps={{ sx: muiCustomStyles.menu }}
             >
               <MenuItem value="email" sx={muiCustomStyles.menuItem}>Email</MenuItem>
               <MenuItem value="sms" sx={muiCustomStyles.menuItem}>SMS</MenuItem>
@@ -152,25 +168,25 @@ const UserPreferences = () => {
               label="Phone Number"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              sx={{ mt: 2, ...muiCustomStyles.textField}}
+              sx={{ mt: 2, ...muiCustomStyles.textField }}
             />
           )}
           <FormControl fullWidth sx={{ mt: 2, ...muiCustomStyles.select }}>
             <InputLabel>Notification Frequency</InputLabel>
-            <Select 
-              value={notifFreq} 
-              onChange={(e) => setNotifFreq(e.target.value)} 
+            <Select
+              value={notifFreq}
+              onChange={(e) => setNotifFreq(e.target.value)}
               label="Notification Frequency"
-              MenuProps={{ sx: muiCustomStyles.menu}}
+              MenuProps={{ sx: muiCustomStyles.menu }}
             >
               <MenuItem value="24" sx={muiCustomStyles.menuItem}>Daily</MenuItem>
               <MenuItem value="48" sx={muiCustomStyles.menuItem}>48 hrs</MenuItem>
               <MenuItem value="none" sx={muiCustomStyles.menuItem}>None</MenuItem>
             </Select>
           </FormControl>
-          <Button 
-            variant="contained" 
-            onClick={handleSubmit} 
+          <Button
+            variant="contained"
+            onClick={handleSubmit}
             sx={{ mt: 2, ...muiCustomStyles.button }}
           >
             Update Preferences
@@ -178,15 +194,30 @@ const UserPreferences = () => {
         </Box>
       </Card>
 
-      <UpdateFamilyModal 
-        open={updateModalOpen} 
-        handleClose={() => setUpdateModalOpen(false)} 
+      <UpdateFamilyModal
+        open={updateModalOpen}
+        handleClose={() => setUpdateModalOpen(false)}
       />
 
-      <AddChildModal 
-        open={addChildModalOpen} 
-        handleClose={() => setAddChildModalOpen(false)} 
+      <AddChildModal
+        open={addChildModalOpen}
+        handleClose={() => setAddChildModalOpen(false)}
       />
+      <Snackbar
+  anchorOrigin={{
+    vertical: 'bottom',
+    horizontal: 'center',
+  }}
+  open={snackbarOpen}
+  autoHideDuration={3000}
+  onClose={handleSnackbarClose}
+>
+  <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+    <Typography variant="body2" style={{ whiteSpace: 'pre-line' }}>
+      {snackbarMessage}
+    </Typography>
+  </Alert>
+</Snackbar>
     </Box>
   );
 };
