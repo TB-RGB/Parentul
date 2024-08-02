@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme();
 
-export const muiCustomStyles = {
+const muiCustomStyles = {
     box: {
         width: {
             xs: '100vw',
@@ -342,24 +342,24 @@ export const muiCustomStyles = {
         borderRadius: "1em",
         color: "white",
         '&:first-of-type': {
-          borderTopLeftRadius: '1em',
-          borderTopRightRadius: '1em',
+            borderTopLeftRadius: '1em',
+            borderTopRightRadius: '1em',
         },
         '&:last-of-type': {
-          borderBottomLeftRadius: '1em',
-          borderBottomRightRadius: '1em',
+            borderBottomLeftRadius: '1em',
+            borderBottomRightRadius: '1em',
         },
         '&:before': {
-          display: 'none',
+            display: 'none',
         },
-      },
-      accordionSummary: {
+    },
+    accordionSummary: {
         borderRadius: '1em',
-      },
-      accordionDetails: {
+    },
+    accordionDetails: {
         borderTop: '1px solid rgba(255, 165, 0, 0.5)',
-      },
-   
+    },
+
 
 };
 

@@ -23,7 +23,7 @@ const ChatInput = ({ onSendMessage, isLoading, disabled }) => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             className={disabled ? 'w-full' : 'w-full'}
-            sx={{ mr: 1, ...muiCustomStyles.textField}}
+            sx={{ color: 'white', mr: 1, ...muiCustomStyles.textField}}
             disabled={disabled}
             
         />
