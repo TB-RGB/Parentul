@@ -271,8 +271,9 @@ const ChatComponent = () => {
             </Box>
           </Card>
         </Box>
-        <div onClick={toggleSimulation}>
-          {isSimulating ? "Pause Simulation" : "Start Simulation"}
+        <div className="btn btn-ghost btn-sm" onClick={toggleSimulation}>
+          {/* {isSimulating ? "Pause Simulation" : "Start Simulation"} */}
+          {''}
         </div>
       </div>
     </>
