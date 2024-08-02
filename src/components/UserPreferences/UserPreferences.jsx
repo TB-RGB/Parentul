@@ -104,14 +104,16 @@ const UserPreferences = () => {
               <Card sx={muiCustomStyles.childcard}> 
                 <Typography sx={muiCustomStyles.small}>{child.name}</Typography>
                 <Typography sx={muiCustomStyles.small}>Age: {currentYear - getBirthYear(child.dob)}</Typography>
-                <IconButton 
-                  aria-label="delete"
-                  onClick={() => handleDeleteChild(child.id)}
-                  sx={{ position: 'absolute', top: -21, right: -21 }}
-                  color="error"
-                >
-                  <HighlightOffIcon />
-                </IconButton>
+                {family.children.length > 1 && (
+                  <IconButton 
+                    aria-label="delete"
+                    onClick={() => handleDeleteChild(child.id)}
+                    sx={{ position: 'absolute', top: -21, right: -21 }}
+                    color="error"
+                  >
+                    <HighlightOffIcon />
+                  </IconButton>
+                )}
               </Card>
             </Box>
             </Grid>
