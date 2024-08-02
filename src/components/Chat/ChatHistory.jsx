@@ -111,7 +111,7 @@ const ChatHistory = () => {
                       <ThumbUpAltIcon sx={{ color: "orange", ml:3 }} />
                     )}
                     {conversation.user_rating === false && (
-                      <ThumbDownAltIcon sx={{ color: "orange" , ml:3 }} />
+                      <ThumbDownAltIcon sx={{ color: "orange" , ml:2 }} />
                     )}
                   </Box>
                 </AccordionSummary>
