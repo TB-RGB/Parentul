@@ -120,3 +120,10 @@ input {
 .nopadding {
   border: 2px outset #8a2513;
 }
+
+.montserrat-500 {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}

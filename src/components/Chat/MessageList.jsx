@@ -85,7 +85,7 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages, setDisable
   return (
     <Paper elevation={3} sx={{ height: "400px", overflowY: "auto", pt: 2}}>
       <List>
-        {visibleMessages.map((message, index) => renderMessage(message, index))}
+        {messages.map((message, index) => renderMessage(message, index))}
       </List>
       <div ref={messagesEndRef} />
     </Paper>

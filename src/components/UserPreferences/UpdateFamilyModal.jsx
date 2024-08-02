@@ -61,7 +61,7 @@ const UpdateFamilyModal = ({ open, handleClose }) => {
       }}
     >
       <form onSubmit={handleSubmit}>
-        <DialogTitle>Update Family Information</DialogTitle>
+        <DialogTitle fontFamily={"Montserrat"}>Update Family Information</DialogTitle>
         <DialogContent>
           <Card sx={muiCustomStyles.childcard}>
           <TextField

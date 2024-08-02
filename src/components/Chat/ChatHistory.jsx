@@ -78,7 +78,7 @@ const ChatHistory = () => {
     <div ref={historyStartRef}/>
     <Box sx={muiCustomStyles.box}>
       <Card sx={muiCustomStyles.card}>
-        <Typography variant="h4" textAlign={"center"}>
+        <Typography variant="h4" textAlign={"center"} fontFamily={"Montserrat"}>
           Chat History
         </Typography>
         <Button sx={muiCustomStyles.backButton} onClick={handleBackClick} startIcon={<FirstPageIcon />}>
@@ -95,16 +95,16 @@ const ChatHistory = () => {
               sx={muiCustomStyles.accordion}
               key={conversation.id}
             >
-              <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "white", fontFamily: 'Montserrat' }}  />}>
                 {formatDate(conversation.start_time)} {conversation.user_rating != null ? ` - Was this helpful? ${conversation.user_rating}` : ""}
               </AccordionSummary>
               <AccordionDetails>
-                <Typography><strong>{!family.parent.firstName ? "User": `${family.parent.firstName}'s`} Message:</strong> {conversation.user_message}</Typography>
-                <Typography><strong>Parentul's Response:</strong> {conversation.ai_response}</Typography>
+                <Typography fontFamily={'Montserrat'}><strong>{!family.parent.firstName ? "User": `${family.parent.firstName}'s`} Message:</strong> {conversation.user_message}</Typography>
+                <Typography fontFamily={'Montserrat'}><strong>Parentul's Response:</strong> {conversation.ai_response}</Typography>
               </AccordionDetails>
               <AccordionActions>
                 <Button 
-                sx={muiCustomStyles.backButton}
+                sx={{... muiCustomStyles.backButton, fontFamily: 'Montserrat'}}
                 onClick={() => handleLogClick(conversation.id)}>
                   View Log
                 </Button>

@@ -58,7 +58,7 @@ const AddChildModal = ({ open, handleClose }) => {
       }}
     >
         <form onSubmit={handleSubmit}>
-      <DialogTitle>Add New Children</DialogTitle>
+      <DialogTitle fontFamily={"Montserrat"}>Add New Children</DialogTitle>
       <DialogContent>
         {children.map((child, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -92,7 +92,7 @@ const AddChildModal = ({ open, handleClose }) => {
         </IconButton>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} sx={muiCustomStyles.backButton}>Cancel</Button>
+        <Button onClick={handleClose} sx={{... muiCustomStyles.backButton, fontFamily: "Montserrat"}}>Cancel</Button>
         <Button type='submit' variant="contained" color="primary" sx={muiCustomStyles.button}>
           Add Children
         </Button>

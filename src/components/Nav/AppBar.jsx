@@ -73,7 +73,8 @@ function Nav() {
                 key={index}
                 component={Link}
                 to={page.Link}
-                sx={{ color: 'white', display: 'block', mx: 1 }}
+                sx={{ color: 'white', display: 'block', mx: 1, fontFamily: 'Montserrat' }}
+                
               >
                 {page.page}
               </Button>
@@ -133,7 +134,7 @@ function Nav() {
                     }
                   }}
                 >
-                  <Typography textAlign="center">{setting.page}</Typography>
+                  <Typography fontFamily={'Montserrat'} textAlign="center">{setting.page}</Typography>
                 </MenuItem>
               ))}
             </Menu>

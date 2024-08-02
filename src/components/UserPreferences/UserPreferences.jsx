@@ -83,17 +83,17 @@ const UserPreferences = () => {
     <Box sx={muiCustomStyles.box}>
       <Card sx={muiCustomStyles.card}>
         
-        <Typography sx={muiCustomStyles.header}>User Preferences</Typography>
+        <Typography textAlign={"center"} fontFamily={'Montserrat'} sx={muiCustomStyles.header}>User Preferences</Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}> 
         <Button 
           variant="outlined" 
           onClick={() => setUpdateModalOpen(true)} 
-          sx={{ mt: 2, ...muiCustomStyles.backButton }}
+          sx={{ fontFamily: "Montserrat", mt: 2, ...muiCustomStyles.backButton }}
         >
           Update Family Information
         </Button>
         </Box>
-        <Typography sx={muiCustomStyles.large}>{user.first_name} {user.last_name}</Typography>
+        <Typography fontFamily={'Montserrat'} sx={muiCustomStyles.large}>{user.first_name} {user.last_name}</Typography>
         
         
         <Grid container justifyContent="center" spacing={2}>
@@ -102,8 +102,8 @@ const UserPreferences = () => {
             <Grid item {...muiCustomStyles.childGridItem} key={index}>
             <Box sx={{ marginBottom: 0, position: 'relative' }}>
               <Card sx={muiCustomStyles.childcard}> 
-                <Typography sx={muiCustomStyles.small}>{child.name}</Typography>
-                <Typography sx={muiCustomStyles.small}>Age: {currentYear - getBirthYear(child.dob)}</Typography>
+                <Typography fontFamily={'Montserrat'} sx={muiCustomStyles.small}>{child.name}</Typography>
+                <Typography fontFamily={'Montserrat'} sx={muiCustomStyles.small}>Age: {currentYear - getBirthYear(child.dob)}</Typography>
                 <IconButton 
                   aria-label="delete"
                   onClick={() => handleDeleteChild(child.id)}
@@ -124,14 +124,14 @@ const UserPreferences = () => {
         <Button 
           
           onClick={() => setAddChildModalOpen(true)} 
-          sx={{ mt: 2, ...muiCustomStyles.backButton }}
+          sx={{fontFamily: "Montserrat" , mt: 2, ...muiCustomStyles.backButton }}
         >
           Add Child
         </Button>
         </Box>
 
         <Box sx={{ marginTop: 4 }}>
-          <Typography sx={muiCustomStyles.medium}>Notifications</Typography>
+          <Typography fontFamily={'Montserrat'} sx={muiCustomStyles.medium}>Notifications</Typography>
           <FormControl fullWidth sx={{ mt: 2, ...muiCustomStyles.select }}>
             <InputLabel>Notification Type</InputLabel>
             <Select 
@@ -140,8 +140,8 @@ const UserPreferences = () => {
               label="Notification Type"
               MenuProps={{ sx: muiCustomStyles.menu}}
             >
-              <MenuItem value="email" sx={muiCustomStyles.menuItem}>Email</MenuItem>
-              <MenuItem value="sms" sx={muiCustomStyles.menuItem}>SMS</MenuItem>
+              <MenuItem value="email" sx={{...muiCustomStyles.menuItem, fontFamily: "Montserrat"}}>Email</MenuItem>
+              <MenuItem value="sms" sx={{...muiCustomStyles.menuItem, fontFamily: "Montserrat"}}>SMS</MenuItem>
             </Select>
           </FormControl>
           {notificationType === 'sms' && (
@@ -150,7 +150,7 @@ const UserPreferences = () => {
               label="Phone Number"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              sx={{ mt: 2, ...muiCustomStyles.textField}}
+              sx={{fontFamily: "Montserrat", mt: 2, ...muiCustomStyles.textField}}
             />
           )}
           <FormControl fullWidth sx={{ mt: 2, ...muiCustomStyles.select }}>
@@ -169,7 +169,7 @@ const UserPreferences = () => {
           <Button 
             variant="contained" 
             onClick={handleSubmit} 
-            sx={{ mt: 2, ...muiCustomStyles.button }}
+            sx={{ fontFamily: "Montserrat", mt: 2, ...muiCustomStyles.button }}
           >
             Update Preferences
           </Button>

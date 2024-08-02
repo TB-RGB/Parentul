@@ -85,12 +85,12 @@ const ChatHistoryDetails = () => {
             border: "2px outset orange",
           }}
         >
-          <Typography variant="h4" textAlign={"center"}>
+          <Typography fontFamily={'Montserrat'} variant="h4" textAlign={"center"}>
             Chat Log
           </Typography>
           <Button
             variant="outlined"
-            sx={muiCustomStyles.backButton}
+            sx={{... muiCustomStyles.backButton, fontFamily: 'Montserrat'}}
             onClick={handleBackClick}
             startIcon={<FirstPageIcon />}
           >
@@ -139,7 +139,7 @@ const ChatHistoryDetails = () => {
             </List>
             <div ref={messagesEndRef} />
           </Paper>
-          <Typography variant="h6" textAlign={'center'} sx={{ marginTop: 2 }}>
+          <Typography fontFamily={'Montserrat'} variant="h6" textAlign={'center'} sx={{ marginTop: 2 }}>
               Was this helpful?
             </Typography>
           <Box
@@ -157,7 +157,7 @@ const ChatHistoryDetails = () => {
             </IconButton>
           </Box>
           <Box sx={{display: 'flex', justifyContent: 'center', marginTop: 2}}>
-          <Button variant="outlined" sx={muiCustomStyles.backButton} endIcon={<LibraryAddIcon />} onClick={sendFeedback}>
+          <Button variant="outlined" sx={{...muiCustomStyles.backButton, fontFamily: 'Montserrat'}} endIcon={<LibraryAddIcon />} onClick={sendFeedback}>
                 Save Feedback
             </Button>
            </Box> 
