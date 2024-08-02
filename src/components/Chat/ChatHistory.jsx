@@ -65,10 +65,10 @@ const ChatHistory = () => {
   function formatDate(dateString) {
     const date = new Date(dateString);
     const options = {
-      year: "numeric",
-      month: "long",
+      year: "2-digit",
+      month: "numeric",
       day: "numeric",
-      hour: "2-digit",
+      hour: "numeric",
       minute: "2-digit",
     };
     return date.toLocaleDateString("en-US", options);
@@ -104,14 +104,19 @@ const ChatHistory = () => {
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
+                      alignItems: "center",
+                      width: "100%", // Ensure the Box takes full width
                     }}
                   >
-                    {formatDate(conversation.start_time)}{" "}
-                    {conversation.user_rating === true && (
-                      <ThumbUpAltIcon sx={{ color: "orange", ml:3 }} />
-                    )}
-                    {conversation.user_rating === false && (
-                      <ThumbDownAltIcon sx={{ color: "orange" , ml:3 }} />
+                    <Typography>{formatDate(conversation.start_time)}</Typography>
+                    {conversation.user_rating !== null && (
+                      <Box> {/* Ensure consistent space for icon */}
+                        {conversation.user_rating === true ? (
+                          <ThumbUpAltIcon sx={{ color: "orange", mr: 1 }} />
+                        ) : (
+                          <ThumbDownAltIcon sx={{ color: "orange", mr: 1 }} />
+                        )}
+                      </Box>
                     )}
                   </Box>
                 </AccordionSummary>
