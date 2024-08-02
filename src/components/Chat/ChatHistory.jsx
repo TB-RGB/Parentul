@@ -11,13 +11,14 @@ import {
   AccordionSummary,
   AccordionDetails,
   Button,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import DeleteIcon from '@mui/icons-material/Delete';
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import DeleteIcon from "@mui/icons-material/Delete";
 import muiCustomStyles from "../../styles/muiCustomStyles";
-
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 
 const ChatHistory = () => {
   const dispatch = useDispatch();
@@ -29,10 +30,10 @@ const ChatHistory = () => {
   const historyStartRef = useRef(null);
 
   const scrollTop = () => {
-   historyStartRef.current?.scrollIntoView({ behavior: "smooth" });
+    historyStartRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     scrollTop();
   }, [conversations]);
 
@@ -63,68 +64,94 @@ const ChatHistory = () => {
 
   function formatDate(dateString) {
     const date = new Date(dateString);
-    const options = { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric', 
-      hour: '2-digit', 
-      minute: '2-digit' 
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     };
-    return date.toLocaleDateString('en-US', options);
+    return date.toLocaleDateString("en-US", options);
   }
 
   return (
     <>
-    <div ref={historyStartRef}/>
-    <Box sx={muiCustomStyles.box}>
-      <Card sx={muiCustomStyles.card}>
-        <Typography variant="h4" textAlign={"center"}>
-          Chat History
-        </Typography>
-        <Button sx={muiCustomStyles.backButton} onClick={handleBackClick} startIcon={<FirstPageIcon />}>
-          To Chat
-        </Button>
-        <Stack
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="stretch"
-          spacing={2}
-        >
-          {conversations.map((conversation) => (
-            <Accordion
-              sx={muiCustomStyles.accordion}
-              key={conversation.id}
-            >
-              <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}>
-                {formatDate(conversation.start_time)} {conversation.user_rating != null ? ` - Was this helpful? ${conversation.user_rating}` : ""}
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography><strong>{!family.parent.firstName ? "User": `${family.parent.firstName}'s`} Message:</strong> {conversation.user_message}</Typography>
-                <Typography><strong>Parentul's Response:</strong> {conversation.ai_response}</Typography>
-              </AccordionDetails>
-              <AccordionActions>
-                <Button 
-                sx={muiCustomStyles.backButton}
-                onClick={() => handleLogClick(conversation.id)}>
-                  View Log
-                </Button>
-                
-                <IconButton 
-                sx={muiCustomStyles.deleteButton}
-                  onClick={() => handleDeleteClick(conversation.id)}
-                  aria-label="delete"
-                  color="error"
+      <div ref={historyStartRef} />
+      <Box sx={muiCustomStyles.box}>
+        <Card sx={muiCustomStyles.card}>
+          <Typography variant="h4" textAlign={"center"}>
+            Chat History
+          </Typography>
+          <Button
+            sx={muiCustomStyles.backButton}
+            onClick={handleBackClick}
+            startIcon={<FirstPageIcon />}
+          >
+            To Chat
+          </Button>
+          <Stack
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="stretch"
+            spacing={2}
+          >
+            {conversations.map((conversation) => (
+              <Accordion sx={muiCustomStyles.accordion} key={conversation.id}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
                 >
-                  
-                  <DeleteIcon />
-                </IconButton>
-                
-              </AccordionActions>
-            </Accordion>
-          ))}
-        </Stack>
-      </Card>
-    </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    {formatDate(conversation.start_time)}{" "}
+                    {conversation.user_rating === true && (
+                      <ThumbUpAltIcon sx={{ color: "orange", ml:3 }} />
+                    )}
+                    {conversation.user_rating === false && (
+                      <ThumbDownAltIcon sx={{ color: "orange" , ml:3 }} />
+                    )}
+                  </Box>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    <strong>
+                      {!family.parent.firstName
+                        ? "User"
+                        : `${family.parent.firstName}'s`}{" "}
+                      Message:
+                    </strong>{" "}
+                    {conversation.user_message}
+                  </Typography>
+                  <Typography>
+                    <strong>Parentul's Response:</strong>{" "}
+                    {conversation.ai_response}
+                  </Typography>
+                </AccordionDetails>
+                <AccordionActions>
+                  <Button
+                    sx={muiCustomStyles.backButton}
+                    onClick={() => handleLogClick(conversation.id)}
+                  >
+                    View Log
+                  </Button>
+
+                  <IconButton
+                    sx={muiCustomStyles.deleteButton}
+                    onClick={() => handleDeleteClick(conversation.id)}
+                    aria-label="delete"
+                    color="error"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </AccordionActions>
+              </Accordion>
+            ))}
+          </Stack>
+        </Card>
+      </Box>
     </>
   );
 };
