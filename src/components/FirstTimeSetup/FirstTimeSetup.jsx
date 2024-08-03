@@ -73,7 +73,7 @@ const FirstTimeSetup = () => {
       });
       dispatch({ type: 'FINALIZE_FIRST_TIME_SETUP' });
       dispatch({ type: 'CREATE_USER_PREFERENCES', payload: { userId: user.id } });
-      history.push('/chat');
+      history.push(`/preferences/${user.id}`);
       return;
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);

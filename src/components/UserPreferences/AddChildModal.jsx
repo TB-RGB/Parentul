@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, IconButton, Box } from '@mui/material';
+import { Card, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, IconButton, Box, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import muiCustomStyles from '../../styles/muiCustomStyles';
@@ -58,45 +58,60 @@ const AddChildModal = ({ open, handleClose }) => {
       }}
     >
         <form onSubmit={handleSubmit}>
-      <DialogTitle>Add New Children</DialogTitle>
-      <DialogContent>
-        {children.map((child, index) => (
-          <Box key={index} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Child's Name"
-              value={child.name}
-              onChange={(e) => handleChildChange(index, 'name', e.target.value)}
-              sx={muiCustomStyles.textField}
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              type="date"
-              label="Date of Birth"
-              value={child.dob}
-              onChange={(e) => handleChildChange(index, 'dob', e.target.value)}
-              InputLabelProps={{ shrink: true }}
-              sx={muiCustomStyles.textField}
-            />
-            {index > 0 && (
-              <IconButton onClick={() => handleRemoveChild(index)}>
-                <DeleteIcon sx={{color: 'red'}}/>
-              </IconButton>
-            )}
+        <DialogTitle>Add New Children</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2}>
+            {children.map((child, index) => (
+              <Grid item xs={12} key={index}>
+                <Card sx={muiCustomStyles.faqcard}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Child's Name"
+                        value={child.name}
+                        onChange={(e) => handleChildChange(index, 'name', e.target.value)}
+                        sx={muiCustomStyles.textField}
+                      />
+                    </Grid>
+                    <Grid item xs={children.length > 1 && index !== 0 ? 11 : 12}>
+                      <TextField
+                        fullWidth
+                        type="date"
+                        label="Date of Birth"
+                        value={child.dob}
+                        onChange={(e) => handleChildChange(index, 'dob', e.target.value)}
+                        InputLabelProps={{ shrink: true }}
+                        sx={muiCustomStyles.textField}
+                      />
+                    </Grid>
+                    {children.length > 1 && index !== 0 && (
+                      <Grid item xs={1}>
+                        <IconButton 
+                          onClick={() => handleRemoveChild(index)}
+                          sx={{ color: 'red' }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Grid>
+                    )}
+                  </Grid>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+            <IconButton onClick={handleAddChild} color="primary">
+              <AddIcon sx={{color: 'orange'}}/>
+            </IconButton>
           </Box>
-        ))}
-        <IconButton onClick={handleAddChild} color="primary">
-          <AddIcon sx={{color: 'orange'}}/>
-        </IconButton>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} sx={muiCustomStyles.backButton}>Cancel</Button>
-        <Button type='submit' variant="contained" color="primary" sx={muiCustomStyles.button}>
-          Add Children
-        </Button>
-      </DialogActions>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} sx={muiCustomStyles.backButton}>Cancel</Button>
+          <Button type='submit' variant="contained" color="primary" sx={muiCustomStyles.button}>
+            Add Children
+          </Button>
+        </DialogActions>
       </form>
     </Dialog>
   );

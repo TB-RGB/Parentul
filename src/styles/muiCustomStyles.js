@@ -27,7 +27,7 @@ const muiCustomStyles = {
         color: 'white',
         backgroundColor: '#1E1E1E',
         borderRadius: '1em',
-        margin: theme.spacing(2, 0),
+        margin: theme.spacing(1, 0, 0, 0),
         padding: theme.spacing(4),
         boxShadow: '0px 0px 5px #FFA560',
         border: '1px outset #FFA500'

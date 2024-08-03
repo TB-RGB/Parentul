@@ -25,7 +25,7 @@ const rootReducer = combineReducers({
   familyReducer,
   preferences, // will have an array of user preferences
   faqReducer,
-  redirectionReducer
+
 
 });
 
