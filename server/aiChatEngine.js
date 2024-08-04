@@ -241,6 +241,9 @@ class AIChatEngine {
         ];
     }
 
+    adviceMessages.push(`I look forward to hearing if this advice helps you. You can end this conversation now, and give it a thumbs up or down, and I'll send a follow up message so we can touch base about it soon. I'd love to know either way if this advice had an impact on your parenting journey.`);
+    adviceMessages.push("Any time, if there is any additional help I can provide to assist you with parenting, come back and we can chat again.")
+
     return {
       messages: adviceMessages,
       category: this.conversationState.category,

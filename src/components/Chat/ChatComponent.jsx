@@ -15,7 +15,7 @@ import "./output.css";
 
 const ChatComponent = () => {
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const { messages, isLoading, currentConversationId } = useSelector(
     (state) => state.chat
   );
@@ -57,6 +57,7 @@ const ChatComponent = () => {
       ]);
     }
     setDisabled(false);
+    history.push(`/chatlog/${currentConversationId}`);
   };
 
   return (
