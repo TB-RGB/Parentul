@@ -1,124 +1,201 @@
-# Prime Solo Project - Starting Repo
+# Parentul
 
-This version uses React, Redux, Express, Passport, and PostgreSQL (a full list of dependencies can be found in `package.json`).
+Parentul is a mobile-optimized application designed to provide real-time parenting advice, primarily targeting foster and adoptive parents, as well as parents in need of additional support. The app utilizes generative AI to offer evidence-based recommendations and employs a choose-your-own-adventure style to engage users.
 
-We **STRONGLY** recommend following these instructions carefully. It's a lot, and will take some time to set up, but your life will be much easier this way in the long run.
+## Table of Contents
 
-## Use the Template for This Repository (Don't Clone)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Database Setup](#database-setup)
+- [Database Schema](#database-schema)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
 
-- Don't Fork or Clone. Instead, click the `Use this Template` button, and make a copy to your personal account. Make the project `PUBLIC`!
+## Features
 
-## Prerequisites
+1. **AI-Powered Chat Interface**: 
+   - Real-time interaction with an AI assistant trained on parenting advice
+   - Natural language processing for understanding user queries
+   - Evidence-based recommendations tailored to specific parenting challenges
 
-Before you get started, make sure you have the following software installed on your computer:
+2. **User Authentication**: 
+   - Secure login and registration system
+   - Google OAuth integration for easy sign-up and login
 
-- [Node.js](https://nodejs.org/en)
-- [PostgreSQL](https://www.postgresql.org)
-- [Nodemon](https://nodemon.io)
+3. **User Profile Management**:
+   - Ability to create and edit family profiles
+   - Add and manage information about children
 
-## Create Database and Table
+4. **Customized Advice**:
+   - Tailored recommendations based on the age and specific needs of each child
+   - Separate advice tracks for parents of children with and without diagnosed neurological disorders or trauma-related behaviors
 
-Create a new database called `prime_app` and create a `user` table:
+5. **Chat History and Feedback**:
+   - Logging of chat interactions for future reference
+   - Ability to review past conversations
+   - Option to provide feedback on the helpfulness of advice
 
-```SQL
-CREATE TABLE "user" (
-    "id" SERIAL PRIMARY KEY,
-    "username" VARCHAR (80) UNIQUE NOT NULL,
-    "password" VARCHAR (1000) NOT NULL
-);
-```
+6. **Mobile-Optimized Design**:
+   - Responsive interface for seamless use on various devices
+   - Optimized for mobile use with touch-friendly controls
 
-If you would like to name your database something else, you will need to change `prime_app` to the name of your new database name in `server/modules/pool.js`.
+7. **Follow-up System**:
+   - Scheduled follow-ups to check on the effectiveness of provided advice
+   - Option for email, SMS, or in-app notifications
 
-## Development Setup Instructions
+## Technologies Used
 
-- Run `npm install`.
-    - Be sure to take stock of `package.json` to see which dependencies you'll need to add.
-- Create a `.env` file at the root of the project and paste this line into the file:
+- Frontend:
+  - React
+  - Redux
+  - Redux-Saga
+  - Axios
+  - Socket.io-client
+- Backend:
+  - Node.js
+  - Express
+  - PostgreSQL
+  - Socket.io
+  - Natural (NLP library)
+  - Twillio
 
-```plaintext
-SERVER_SESSION_SECRET=superDuperSecret
-```
+## Getting Started
 
-While you're in your new `.env` file, take the time to replace `superDuperSecret` with some long random string like `25POUbVtx6RKVNWszd9ERB9Bb6` to keep your application secure. Here's a site that can help you: [Password Generator Plus](https://passwordsgenerator.net). If you don't do this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you will get a warning.
+### Prerequisites
 
-- Start postgres if not running already by using opening up the [Postgres.app](https://postgresapp.com), or if using [Homebrew](https://brew.sh) you can use the command `brew services start postgresql`.
-- Run `npm run server` to start the server.
-- Run `npm run client` to start the client.
-- Navigate to `localhost:5173`.
+- Node.js (v14 or later)
+- npm (v6 or later)
+- PostgreSQL (v12 or later)
 
-## Debugging
+### Installation
 
-To debug, you will need to run the client-side separately from the server. Start the client by running the command `npm run client`. Start the debugging server by selecting the Debug button.
+1. Clone the repository:
+   ```
+   git clone https://github.com/your-repo/parentul.git
+   cd parentul
+   ```
 
-![VSCode Toolbar](documentation/images/vscode-toolbar.png)
+2. Install dependencies:
+   ```
+   npm install
+   ```
 
-Then make sure `Launch Program` is selected from the dropdown, then click the green play arrow.
+3. Set up environment variables:
+   - Create a `.env` file in the `server` directory
+   - Add the following variables:
+     ```
+     DATABASE_URL=postgresql://username:password@localhost:5432/parentul
+     JWT_SECRET=your_jwt_secret
+     GOOGLE_CLIENT_ID=your_google_client_id
+     GOOGLE_CLIENT_SECRET=your_google_client_secret
+     ```
 
-![VSCode Debug Bar](documentation/images/vscode-debug-bar.png)
+4. Start the backend server:
+   ```
+   npm run server
+   ```
 
-## Testing Routes with Postman
+5. Start the frontend development server:
+   ```
+   npm run client
+   ```
 
-To use Postman with this repo, you will need to set up requests in Postman to register a user and login a user at a minimum.
+6. Visit in browers `localhost:5173`
 
-Keep in mind that once you using the login route, Postman will manage your session cookie for you just like a browser, ensuring it is sent with each subsequent request. If you delete the `localhost` cookie in Postman, it will effectively log you out.
+### Database Setup
 
-1. Run `npm run server` to start the server.
-2. Import the sample routes JSON file [v2](./PostmanPrimeSoloRoutesv2.json) by clicking `Import` in Postman. Select the file.
-3. Click `Collections` and `Send` the following three calls in order:
-   1. `POST /api/user/register` registers a new user, see body to change username/password.
-   2. `POST /api/user/login` will login a user, see body to change username/password.
-   3. `GET /api/user` will get user information, by default it's not very much.
+1. Create a new PostgreSQL database titled `parentul`
 
-After running the login route above, you can try any other route you've created that requires a logged in user!
 
-## Production Build
+2. Run the database setup queries in `database.sql`
+   
 
-Before pushing to Heroku, run `npm run build` in terminal. This will create a build folder that contains the code Heroku will be pointed at. You can test this build by typing `npm start`. Keep in mind that `npm start` will let you preview the production build but will **not** auto update.
+This will create all the necessary tables and populate the `faq` table with initial data covering various parenting topics such as Temper Tantrums, Lying, Meltdowns, Not Listening, Stealing, Arguing, Bedtime, Disobedience, Hitting/Aggression, and Screaming. The FAQ entries are tailored for both children with and without developmental diagnoses.
 
-- Start postgres if not running already by using opening up the [Postgres.app](https://postgresapp.com), or if using [Homebrew](https://brew.sh) you can use the command `brew services start postgresql`.
-- Run `npm start`.
-- Navigate to `localhost:5173`.
+## Database Schema
 
-## Lay of the Land
+The Parentul application uses the following main tables:
 
-There are a few videos linked below that show a walkthrough the client and sever setup to help acclimatize to the boilerplate. Please take some time to watch the videos in order to get a better understanding of what the boilerplate is like.
+1. `users`: Stores user account information
+   - `id` (Primary Key)
+   - `email`
+   - `password_hash`
+   - `first_name`
+   - `last_name`
+   - `has_diag_in_family` (Boolean)
+   - `google_id`
+   - `profile_pic_url`
+   - `created_at`
+   - `updated_at`
 
-- [Initial Set](https://vimeo.com/453297271)
-- [Server Walkthrough](https://vimeo.com/453297212)
-- [Client Walkthrough](https://vimeo.com/453297124)
+2. `children`: Stores information about children
+   - `id` (Primary Key)
+   - `user_id` (Foreign Key to users)
+   - `name`
+   - `dob`
 
-Directory Structure:
+3. `conversations`: Tracks chat sessions
+   - `id` (Primary Key)
+   - `user_id` (Foreign Key to users)
+   - `start_time`
+   - `end_time`
 
-- `src/` contains the React application.
-- `public/` contains static assets for the client-side.
-- `build/` after you build the project, contains the transpiled code from `src/` and `public/` that will be viewed on the production site.
-- `server/` contains the Express App.
+4. `messages`: Stores individual messages within conversations
+   - `id` (Primary Key)
+   - `conversation_id` (Foreign Key to conversations)
+   - `sender_type`
+   - `content`
+   - `timestamp`
 
-This code is also heavily commented. We recommend reading through the comments, getting a lay of the land, and becoming comfortable with how the code works before you start making too many changes. If you're wondering where to start, consider reading through component file comments in the following order:
+5. `ai_responses`: Stores details about AI responses
+   - `id` (Primary Key)
+   - `message_id` (Foreign Key to messages)
+   - `response_type`
+   - `confidence_score`
+   - `processing_time`
+   - `created_at`
 
-- src/components
-  - App/App
-  - Footer/Footer
-  - Nav/Nav
-  - AboutPage/AboutPage
-  - InfoPage/InfoPage
-  - UserPage/UserPage
-  - LoginPage/LoginPage
-  - RegisterPage/RegisterPage
-  - LogOutButton/LogOutButton
-  - ProtectedRoute/ProtectedRoute
+6. `user_feedback`: Stores user feedback on conversations
+   - `id` (Primary Key)
+   - `conversation_id` (Foreign Key to conversations)
+   - `user_id` (Foreign Key to users)
+   - `rating` (Boolean)
+   - `created_at`
+   - `updated_at`
 
-## Deployment
+7. `follow_ups`: Manages follow-up questions
+   - `id` (Primary Key)
+   - `user_id` (Foreign Key to users)
+   - `conversation_id` (Foreign Key to conversations)
+   - `question_text`
+   - `is_asked` (Boolean)
+   - `created_at`
+   - `updated_at`
 
-1. Create a new Heroku project.
-1. Link the Heroku project to the project GitHub Repo.
-1. Create an Heroku Postgres database.
-1. Connect to the Heroku Postgres database from Postico.
-1. Create the necessary tables.
-1. Add an environment variable for `SERVER_SESSION_SECRET` with a nice random string for security.
-1. In the deploy section, select manual deploy.
+8. `user_preferences`: Stores user-specific settings
+   - `user_id` (Primary Key, Foreign Key to users)
+   - `notifications_email` (Boolean)
+   - `notifications_sms` (Boolean)
+   - `phone_number`
+   - `notifications_push` (Boolean)
+   - `notifications_freq`
+   - `updated_at`
 
-## Update Documentation
+9. `faq`: Stores frequently asked questions and answers
+   - `id` (Primary Key)
+   - `category`
+   - `has_developmental_diagnosis` (Boolean)
+   - `question`
+   - `answer`
 
-Customize this ReadMe and the code comments in this project to read less like a starter repo and more like a project. Here is an example: https://gist.github.com/PurpleBooth/109311bb0361f32d87a2.
+## Project Structure
+
+overview of the project's folder structure
+
+## API Documentation
+
+Endpoints and their descriptions
+
