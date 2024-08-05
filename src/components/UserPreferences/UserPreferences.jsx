@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Alert, Box, Card, Typography, CircularProgress, Grid, Select, MenuItem, FormControl, InputLabel, Button, TextField, IconButton, Snackbar } from "@mui/material";
+import Swal from "sweetalert2";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import muiCustomStyles from "../../styles/muiCustomStyles";
 import UpdateFamilyModal from "./UpdateFamilyModal";
@@ -81,9 +82,42 @@ const UserPreferences = () => {
   };
 
   const handleDeleteChild = (childId) => {
-    if (window.confirm('Are you sure you want to delete this child?')) {
-      dispatch({ type: 'DELETE_CHILD', payload: { childId } });
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+            color: 'white',
+            background: '#1A1A1A',
+            showCancelButton: true,
+            cancelButtonText: 'CANCEL',
+            confirmButtonText: 'DELETE!',
+
+            customClass: {
+                confirmButton: 'custom-confirm-button',
+                cancelButton: 'custom-cancel-button',
+
+                popup: 'custom-popup',
+
+            }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch({ type: 'DELETE_CHILD', payload: { childId } });
+        Swal.fire({
+          
+          text: `Deleted`,
+          icon: 'success',
+          color: 'white',
+          background: '#1A1A1A',
+
+          customClass: {
+              confirmButton: 'custom-confirm-button',
+              popup: 'custom-popup'
+
+          }
+
+      })
+      }
+    });
   };
 
   const handleCheckJobStatus = () => {
