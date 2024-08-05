@@ -117,11 +117,11 @@ notificationQueue.process(async (job) => {
 
   async function checkJobStatus() {
     const jobCounts = await notificationQueue.getJobCounts();
-    const waitingJobs = await notificationQueue.getWaiting(); // Get first 10 waiting jobs
-    const activeJobs = await notificationQueue.getActive(); // Get first 10 active jobs
-    const delayedJobs = await notificationQueue.getDelayed(); // Get first 10 delayed jobs
-    const completedJobs = await notificationQueue.getCompleted(); // Get first 10 completed jobs
-    const failedJobs = await notificationQueue.getFailed(); // Get first 10 failed jobs
+    const waitingJobs = await notificationQueue.getWaiting(); 
+    const activeJobs = await notificationQueue.getActive(); 
+    const delayedJobs = await notificationQueue.getDelayed();
+    const completedJobs = await notificationQueue.getCompleted(); 
+    const failedJobs = await notificationQueue.getFailed();
   
     return {
       counts: jobCounts,
