@@ -1547,7 +1547,7 @@ html {
 }
 
 .swal2-confirm.custom-confirm-button {
-  background-color: #fb8787 !important;
+  background-color: orange !important;
   border: 3px outset black !important;
   border-radius: 0.6em !important;
   color: white !important;
@@ -1556,7 +1556,7 @@ html {
 }
 
 .swal2-cancel.custom-cancel-button {
-  background: #1b2961 !important;
+  background: #1b296100 !important;
   border: 3px outset black !important;
   border-radius: 0.6em !important;
   color: white !important;

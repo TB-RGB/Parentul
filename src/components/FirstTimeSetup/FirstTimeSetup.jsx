@@ -28,6 +28,7 @@ const FirstTimeSetup = () => {
   const [lastName, setLastName] = useState(user.last_name || '');
   const [children, setChildren] = useState([{ name: '', dob: '' }]);
   const [hasDiagnosis, setHasDiagnosis] = useState(false);
+  const [showAutoFill, setShowAutoFill] = useState(false);
 
   useEffect(() => {
     if (redirection) {
@@ -82,7 +83,26 @@ const FirstTimeSetup = () => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+  const handleAutoFill = () => {
+    const autoFilledChildren = [
+      { name: 'Jimmy', dob: '2018-05-15' },
+      { name: 'Billy', dob: '2020-09-22' }
+    ];
+    setChildren(autoFilledChildren);
+  };
 
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.ctrlKey && event.shiftKey && event.key === 'A') {
+        setShowAutoFill(prev => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
   const steps = [
     {
       label: 'Your Name',
@@ -135,6 +155,7 @@ const FirstTimeSetup = () => {
                 InputLabelProps={{ shrink: true }}
                 required
               />
+              
             </div>
           ))}
           <IconButton onClick={handleAddChild} color="primary">
@@ -211,7 +232,16 @@ const FirstTimeSetup = () => {
   ];
 
   return (
-    <Box sx={muiCustomStyles.box}>
+    <>
+     {showAutoFill && (
+            <Button
+              onClick={handleAutoFill}
+              sx={{ ...muiCustomStyles.backButton, marginLeft: 2 }}
+            >
+              
+            </Button>
+          )}
+        <Box sx={muiCustomStyles.box}>
       <Card sx={muiCustomStyles.card}>
         <Typography variant="h4" gutterBottom>
           First Time Setup
@@ -253,6 +283,7 @@ const FirstTimeSetup = () => {
         </Stepper>
       </Card>
     </Box>
+    </>
   );
 };
 

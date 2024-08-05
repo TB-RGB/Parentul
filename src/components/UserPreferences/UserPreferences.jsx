@@ -240,13 +240,13 @@ const UserPreferences = () => {
             Update Preferences
           </Button>
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-          <Button
+          {/* <Button
             variant="contained"
             onClick={handleCheckJobStatus}
             sx={{ mt: 2, ...muiCustomStyles.button }}
           >
             Check Job Status
-          </Button>
+          </Button> */}
         </Box>
         </Box>
       </Card>
