@@ -31,8 +31,6 @@ function* sendFeedback(action) {
           userId: action.payload.userId, 
           questionText: action.payload.questionText,
       });
-      
-      yield put({ type: "FEEDBACK_SUCCESS" });
   } catch (err) {
       console.error("Error sending feedback:", err);
       if (err.response && err.response.data && err.response.data.error) {

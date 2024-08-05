@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Alert, Box, Card, Typography, CircularProgress, Grid, Select, MenuItem, FormControl, InputLabel, Button, TextField, IconButton, Snackbar } from "@mui/material";
+import { Alert, Box, Card, Typography, CircularProgress, Grid, Select, MenuItem, FormControl, InputLabel, Button, TextField, IconButton, Snackbar, Tooltip } from "@mui/material";
 import Swal from "sweetalert2";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+
 import muiCustomStyles from "../../styles/muiCustomStyles";
 import UpdateFamilyModal from "./UpdateFamilyModal";
 import AddChildModal from "./AddChildModal";
@@ -24,6 +26,12 @@ const UserPreferences = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [addChildModalOpen, setAddChildModalOpen] = useState(false);
+
+  const frequencyTooltips = {
+    "24": "You will receive one notification per chat feedback, after 24 hours",
+    "48": "You will receive one notification per chat feedback, after 48 hours",
+    "none": "You will not receive any automated notifications"
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,20 +110,7 @@ const UserPreferences = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch({ type: 'DELETE_CHILD', payload: { childId } });
-        Swal.fire({
-          
-          text: `Deleted`,
-          icon: 'success',
-          color: 'white',
-          background: '#1A1A1A',
-
-          customClass: {
-              confirmButton: 'custom-confirm-button',
-              popup: 'custom-popup'
-
-          }
-
-      })
+        
       }
     });
   };
@@ -219,19 +214,26 @@ const UserPreferences = () => {
               sx={{ mt: 2, ...muiCustomStyles.textField }}
             />
           )}
-          <FormControl fullWidth sx={{ mt: 2, ...muiCustomStyles.select }}>
-            <InputLabel>Notification Frequency</InputLabel>
-            <Select
-              value={notificationFreq}
-              onChange={(e) => setNotificationFreq(e.target.value)}
-              label="Notification Frequency"
-              MenuProps={{ sx: muiCustomStyles.menu }}
-            >
-              <MenuItem value="24" sx={muiCustomStyles.menuItem}>Daily</MenuItem>
-              <MenuItem value="48" sx={muiCustomStyles.menuItem}>48 hrs</MenuItem>
-              <MenuItem value="none" sx={muiCustomStyles.menuItem}>None</MenuItem>
-            </Select>
-          </FormControl>
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+            <FormControl fullWidth sx={{ ...muiCustomStyles.select }}>
+              <InputLabel>Notification Frequency</InputLabel>
+              <Select
+                value={notificationFreq}
+                onChange={(e) => setNotificationFreq(e.target.value)}
+                label="Notification Frequency"
+                MenuProps={{ sx: muiCustomStyles.menu }}
+              >
+                <MenuItem value="24" sx={muiCustomStyles.menuItem}>Daily</MenuItem>
+                <MenuItem value="48" sx={muiCustomStyles.menuItem}>48 hrs</MenuItem>
+                <MenuItem value="none" sx={muiCustomStyles.menuItem}>None</MenuItem>
+              </Select>
+            </FormControl>
+            <Tooltip title={frequencyTooltips[notificationFreq] || "Select a frequency for more information"} placement="right">
+              <IconButton size="small" sx={{ marginLeft: 1 }}>
+                <HelpOutlineIcon sx={{color: 'orange'}}/>
+              </IconButton>
+            </Tooltip>
+          </Box>
           <Button
             variant="contained"
             onClick={handleSubmit}

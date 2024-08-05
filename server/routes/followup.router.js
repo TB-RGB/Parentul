@@ -20,9 +20,7 @@ router.post("/", async (req, res) => {
     const checkResult = await client.query(checkQuery, [conversationId, userId]);
 
     if (checkResult.rows.length > 0) {
-      // A record exists, check if it has been asked
       if (checkResult.rows[0].is_asked) {
-        // Record exists and has been asked, send error
         await client.query("ROLLBACK");
         return res.status(400).json({
           error: "This conversation has already been flagged for follow-up.",
@@ -30,7 +28,6 @@ router.post("/", async (req, res) => {
         });
       }
     } else {
-      // No record exists, insert a new one
       const insertQuery = `
         INSERT INTO follow_ups (conversation_id, user_id, question_text, is_asked, created_at)
         VALUES ($1, $2, $3, true, NOW())
@@ -39,8 +36,17 @@ router.post("/", async (req, res) => {
       await client.query(insertQuery, [conversationId, userId, questionText]);
     }
 
-    // Schedule the notification
-    await scheduleNotification(userId, conversationId);
+    // Fetch the conversation log
+    const logQuery = `
+      SELECT * FROM messages
+      WHERE conversation_id = $1
+      ORDER BY timestamp ASC
+    `;
+    const logResult = await client.query(logQuery, [conversationId]);
+    const conversationLog = logResult.rows;
+
+    // Schedule the notification with the conversation log
+    await scheduleNotification(userId, conversationId, conversationLog);
 
     await client.query("COMMIT");
     res.status(200).json({ message: "Follow-up recorded and notification scheduled" });
