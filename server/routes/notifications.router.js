@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { checkJobStatus } = require('../services/notification.scheduler')
-const pool = require("../modules/pool");
+
 
 router.get('/job-status', async (req, res) => {
     try {

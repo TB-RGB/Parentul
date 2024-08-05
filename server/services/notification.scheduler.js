@@ -41,7 +41,7 @@ const scheduleNotification = async (userId, conversationId, conversationLog) => 
 
     const delayHours = userData.notifications_freq === '24' ? 24 : 48;
     // const delayMilliseconds = delayHours * 60 * 60 * 1000;
-    const delayMilliseconds = 4 *  1000; //4 hour test
+    const delayMilliseconds = 60 * 60 * 1000; //4 hour test
 
     // Add job to the queue
     await notificationQueue.add(
@@ -115,31 +115,22 @@ notificationQueue.process(async (job) => {
     }
   });
 
-async function checkJobStatus() {
-    // Get counts of jobs in different states
+  async function checkJobStatus() {
     const jobCounts = await notificationQueue.getJobCounts();
-    console.log('Job counts:', jobCounts);
+    const waitingJobs = await notificationQueue.getWaiting(); // Get first 10 waiting jobs
+    const activeJobs = await notificationQueue.getActive(); // Get first 10 active jobs
+    const delayedJobs = await notificationQueue.getDelayed(); // Get first 10 delayed jobs
+    const completedJobs = await notificationQueue.getCompleted(); // Get first 10 completed jobs
+    const failedJobs = await notificationQueue.getFailed(); // Get first 10 failed jobs
   
-    // Get all waiting jobs
-    const waitingJobs = await notificationQueue.getWaiting();
-    console.log('Waiting jobs:', waitingJobs.length);
-  
-    // Get all active jobs
-    const activeJobs = await notificationQueue.getActive();
-    console.log('Active jobs:', activeJobs.length);
-  
-    // Get all delayed jobs
-    const delayedJobs = await notificationQueue.getDelayed();
-    console.log('Delayed jobs:', delayedJobs.length);
-  
-    // Get all completed jobs
-    const completedJobs = await notificationQueue.getCompleted();
-    console.log('Completed jobs:', completedJobs.length);
-  
-    // Get all failed jobs
-    const failedJobs = await notificationQueue.getFailed();
-    console.log('Failed jobs:', failedJobs.length);
+    return {
+      counts: jobCounts,
+      waiting: waitingJobs.map(job => ({ id: job.id, data: job.data })),
+      active: activeJobs.map(job => ({ id: job.id, data: job.data })),
+      delayed: delayedJobs.map(job => ({ id: job.id, data: job.data })),
+      completed: completedJobs.map(job => ({ id: job.id, data: job.data })),
+      failed: failedJobs.map(job => ({ id: job.id, data: job.data }))
+    };
   }
-  
 
 module.exports = { scheduleNotification, checkJobStatus };

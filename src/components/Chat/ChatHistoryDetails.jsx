@@ -114,7 +114,7 @@ const ChatHistoryDetails = () => {
                           <div className="chat-footer">
                             {message.sender_type === "user"
                               ? `${user.first_name}'s Question`
-                              : "Parentul's Response"}
+                              : "Parentül's Response"}
                           </div>
                         </div>
                       }

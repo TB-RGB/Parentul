@@ -89,7 +89,7 @@ const muiCustomStyles = {
     snackbarAlert: {
         width: '100%',
         '& .MuiAlert-message': {
-            fontSize: '1.6rem',
+            fontSize: '1.3rem',
         },
         backgroundColor: '#ffe482'
     },

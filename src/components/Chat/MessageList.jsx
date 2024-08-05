@@ -74,7 +74,7 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages, setDisable
               >
                 {renderMessageContent(message.content)}
               </Typography>
-              <div className="chat-footer">{isUser ? " You" : "Parentul"}</div>
+              <div className="chat-footer">{isUser ? " You" : "Parentül"}</div>
             </div>
           }
         />

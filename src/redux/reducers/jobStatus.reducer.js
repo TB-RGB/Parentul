@@ -1,6 +1,6 @@
-const jobStatusReducer = (state = null, action) => {
+const jobStatusReducer = (state = {}, action) => {
     switch (action.type) {
-      case 'FETCH_JOB_STATUS':
+      case 'SET_JOB_STATUS':
         return action.payload;
       case 'FETCH_JOB_STATUS_FAILED':
         return { error: action.error };
@@ -10,3 +10,4 @@ const jobStatusReducer = (state = null, action) => {
   };
   
   export default jobStatusReducer;
+  

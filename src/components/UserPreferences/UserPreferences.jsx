@@ -28,8 +28,8 @@ const UserPreferences = () => {
   const [addChildModalOpen, setAddChildModalOpen] = useState(false);
 
   const frequencyTooltips = {
-    "24": "You will receive one notification per chat feedback, after 24 hours",
-    "48": "You will receive one notification per chat feedback, after 48 hours",
+    "24": "You will only receive one notification per chat feedback, after 24 hours",
+    "48": "You will only receive one notification per chat feedback, after 48 hours",
     "none": "You will not receive any automated notifications"
   };
 
@@ -53,12 +53,12 @@ const UserPreferences = () => {
   }, [preferences]);
 
   useEffect(() => {
-    if (jobStatus) {
+    if (jobStatus && Object.keys(jobStatus).length > 0) {
       console.log('Job Status:', jobStatus);
-      setSnackbarMessage(`Job Status: ${JSON.stringify(jobStatus)}`);
-      setSnackbarOpen(true);
     }
   }, [jobStatus]);
+
+
 
   const currentYear = new Date().getFullYear();
   const getBirthYear = (dateString) => new Date(dateString).getFullYear();
@@ -94,23 +94,23 @@ const UserPreferences = () => {
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
       icon: 'warning',
-            color: 'white',
-            background: '#1A1A1A',
-            showCancelButton: true,
-            cancelButtonText: 'CANCEL',
-            confirmButtonText: 'DELETE!',
+      color: 'white',
+      background: '#1A1A1A',
+      showCancelButton: true,
+      cancelButtonText: 'CANCEL',
+      confirmButtonText: 'DELETE!',
 
-            customClass: {
-                confirmButton: 'custom-confirm-button',
-                cancelButton: 'custom-cancel-button',
+      customClass: {
+        confirmButton: 'custom-confirm-button',
+        cancelButton: 'custom-cancel-button',
 
-                popup: 'custom-popup',
+        popup: 'custom-popup',
 
-            }
+      }
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch({ type: 'DELETE_CHILD', payload: { childId } });
-        
+
       }
     });
   };
@@ -119,7 +119,7 @@ const UserPreferences = () => {
     dispatch({ type: 'CHECK_JOB_STATUS' });
   };
 
-  
+
   if (isLoading) {
     return (
       <Box sx={muiCustomStyles.box}>
@@ -192,15 +192,9 @@ const UserPreferences = () => {
         </Box>
 
         <Box sx={{ marginTop: 4 }}>
+
           <Typography sx={muiCustomStyles.medium}>Notifications</Typography>
-          <Box sx={{ display: 'flex', ...muiCustomStyles.faqcard}}>
-            <Box>
-            <HelpOutlineIcon sx={{color: 'orange', marginRight: 1}}/>
-            </Box>
-            <Typography sx={{ color: 'orange'}}>
-              {frequencyTooltips[notificationFreq]}
-            </Typography>
-          </Box>
+
           <FormControl fullWidth sx={{ mt: 2, ...muiCustomStyles.select }}>
             <InputLabel>Notification Type</InputLabel>
             <Select
@@ -236,7 +230,7 @@ const UserPreferences = () => {
                 <MenuItem value="none" sx={muiCustomStyles.menuItem}>None</MenuItem>
               </Select>
             </FormControl>
-            
+
           </Box>
           <Button
             variant="contained"
@@ -245,15 +239,22 @@ const UserPreferences = () => {
           >
             Update Preferences
           </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+            <Box>
+              <HelpOutlineIcon sx={{ color: 'orange', marginRight: 1 }} />
+            </Box>
+            <Typography sx={{ color: 'orange' }}>
+              {frequencyTooltips[notificationFreq]}
+            </Typography>
+          </Box>
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-          {/* <Button
-            variant="contained"
-            onClick={handleCheckJobStatus}
-            sx={{ mt: 2, ...muiCustomStyles.button }}
-          >
-            Check Job Status
-          </Button> */}
-        </Box>
+            <Button
+              onClick={handleCheckJobStatus}
+              sx={{ mt: 2, ...muiCustomStyles.backButton }}
+            >
+              Check Job Status
+            </Button>
+          </Box>
         </Box>
       </Card>
 
@@ -267,20 +268,20 @@ const UserPreferences = () => {
         handleClose={() => setAddChildModalOpen(false)}
       />
       <Snackbar
-  anchorOrigin={{
-    vertical: 'bottom',
-    horizontal: 'center',
-  }}
-  open={snackbarOpen}
-  autoHideDuration={2500}
-  onClose={handleSnackbarClose}
->
-  <Alert onClose={handleSnackbarClose} severity="success" style={{ whiteSpace: 'pre-line' }} sx={muiCustomStyles.snackbarAlert}>
-    
-      {snackbarMessage}
-    
-  </Alert>
-</Snackbar>
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={snackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity="success" style={{ whiteSpace: 'pre-line' }} sx={muiCustomStyles.snackbarAlert}>
+
+          {snackbarMessage}
+
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

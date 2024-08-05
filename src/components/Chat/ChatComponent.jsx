@@ -23,7 +23,7 @@ const ChatComponent = () => {
     {
       sender: "ai",
       content:
-        "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on.",
+        "Hello, welcome to Parentül! Please, tell me what problem you'd like some advice on.",
     },
   ]);
   const [disabled, setDisabled] = useState(false);
@@ -52,7 +52,7 @@ const ChatComponent = () => {
         {
           sender: "ai",
           content:
-            "Hello, welcome to Parentul! Please, tell me what problem you'd like some advice on.",
+            "Hello, welcome to Parentül! Please, tell me what problem you'd like some advice on.",
         },
       ]);
     }

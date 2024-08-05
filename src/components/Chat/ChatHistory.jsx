@@ -135,7 +135,7 @@ const ChatHistory = () => {
                     {conversation.user_message}
                   </Typography>
                   <Typography>
-                    <strong>Parentul's Response:</strong>{" "}
+                    <strong>Parentül's Response:</strong>{" "}
                     {conversation.ai_response}
                   </Typography>
                 </AccordionDetails>
