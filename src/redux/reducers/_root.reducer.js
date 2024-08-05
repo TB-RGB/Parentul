@@ -7,7 +7,7 @@ import firstTimeSetupReducer from './firsttimesetup.reducer';
 import familyReducer from './family.reducer';
 import preferences from './preferences.reducer';
 import faqReducer from './faq.reducer';
-import redirectionReducer from './redirection.reducer';
+import jobStatusReducer from './jobStatus.reducer';
 
 
 // rootReducer is the primary reducer for our entire project
@@ -25,7 +25,7 @@ const rootReducer = combineReducers({
   familyReducer,
   preferences, // will have an array of user preferences
   faqReducer,
-
+  jobStatusReducer,
 
 });
 

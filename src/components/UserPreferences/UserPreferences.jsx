@@ -13,6 +13,7 @@ const UserPreferences = () => {
   const preferences = useSelector((store) => store.preferences.userPreferences[0]);
   const family = useSelector((store) => store.familyReducer);
   const user = useSelector((store) => store.user);
+  const jobStatus = useSelector(store => store.jobStatusReducer)
   const [isLoading, setIsLoading] = useState(true);
 
   const [notificationType, setNotificationType] = useState('');
@@ -41,6 +42,14 @@ const UserPreferences = () => {
       setPhoneNumber(preferences.phone_number || '');
     }
   }, [preferences]);
+
+  useEffect(() => {
+    if (jobStatus) {
+      console.log('Job Status:', jobStatus);
+      setSnackbarMessage(`Job Status: ${JSON.stringify(jobStatus)}`);
+      setSnackbarOpen(true);
+    }
+  }, [jobStatus]);
 
   const currentYear = new Date().getFullYear();
   const getBirthYear = (dateString) => new Date(dateString).getFullYear();
@@ -77,6 +86,11 @@ const UserPreferences = () => {
     }
   };
 
+  const handleCheckJobStatus = () => {
+    dispatch({ type: 'CHECK_JOB_STATUS' });
+  };
+
+  
   if (isLoading) {
     return (
       <Box sx={muiCustomStyles.box}>
@@ -191,6 +205,15 @@ const UserPreferences = () => {
           >
             Update Preferences
           </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Button
+            variant="contained"
+            onClick={handleCheckJobStatus}
+            sx={{ mt: 2, ...muiCustomStyles.button }}
+          >
+            Check Job Status
+          </Button>
+        </Box>
         </Box>
       </Card>
 
