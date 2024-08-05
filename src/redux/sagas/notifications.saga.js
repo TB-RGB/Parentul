@@ -41,6 +41,7 @@ function* sendNotification(action) {
     }
 }
 
-export function* notificationSaga() {
+function* notificationSaga() {
     yield takeEvery('SEND_NOTIFICATION', sendNotification);
 }
+export default notificationSaga

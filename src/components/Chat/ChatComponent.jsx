@@ -65,9 +65,7 @@ const ChatComponent = () => {
     <div style={{ overflow: "hidden" }}>
       <Box sx={muiCustomStyles.box}>
         <Card sx={muiCustomStyles.card}>
-          <Typography variant="h4" gutterBottom>
-            Parentül Chat
-          </Typography>
+          
 
           <MessageList
             messages={messages}

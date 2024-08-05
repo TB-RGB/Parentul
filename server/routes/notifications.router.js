@@ -23,18 +23,6 @@ router.post('/send-sms', async (req, res) => {
   }
 });
 
-router.post('/test-sms', async (req, res) => {
-    const testPhoneNumber = req.body.phoneNumber; // The phone number to send the test SMS to
-    const testMessage = "This is a test SMS from your application!";
-  
-    try {
-      const messageSid = await sendSMS(testPhoneNumber, testMessage);
-      res.json({ success: true, message: 'Test SMS sent successfully', messageSid });
-    } catch (error) {
-      console.error('Error sending test SMS:', error);
-      res.status(500).json({ success: false, message: 'Failed to send test SMS', error: error.message });
-    }
-  });
 
 async function getUserPreferences(userId) {
   const query = 'SELECT * FROM user_preferences WHERE user_id = $1';

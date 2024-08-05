@@ -85,6 +85,15 @@ const muiCustomStyles = {
         display: 'flex',
         justifyContent: 'flex-end'
     },
+
+    snackbarAlert: {
+        width: '100%',
+        '& .MuiAlert-message': {
+            fontSize: '1.4rem',
+        },
+        backgroundColor: '#ffe482'
+    },
+
     textField: {
         color: 'white',
         borderRadius: '1em',
