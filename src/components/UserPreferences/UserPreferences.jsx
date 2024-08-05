@@ -193,6 +193,14 @@ const UserPreferences = () => {
 
         <Box sx={{ marginTop: 4 }}>
           <Typography sx={muiCustomStyles.medium}>Notifications</Typography>
+          <Box sx={{ display: 'flex', ...muiCustomStyles.faqcard}}>
+            <Box>
+            <HelpOutlineIcon sx={{color: 'orange', marginRight: 1}}/>
+            </Box>
+            <Typography sx={{ color: 'orange'}}>
+              {frequencyTooltips[notificationFreq]}
+            </Typography>
+          </Box>
           <FormControl fullWidth sx={{ mt: 2, ...muiCustomStyles.select }}>
             <InputLabel>Notification Type</InputLabel>
             <Select
@@ -228,11 +236,7 @@ const UserPreferences = () => {
                 <MenuItem value="none" sx={muiCustomStyles.menuItem}>None</MenuItem>
               </Select>
             </FormControl>
-            <Tooltip title={frequencyTooltips[notificationFreq] || "Select a frequency for more information"} placement="right">
-              <IconButton size="small" sx={{ marginLeft: 1 }}>
-                <HelpOutlineIcon sx={{color: 'orange'}}/>
-              </IconButton>
-            </Tooltip>
+            
           </Box>
           <Button
             variant="contained"
@@ -271,10 +275,10 @@ const UserPreferences = () => {
   autoHideDuration={2500}
   onClose={handleSnackbarClose}
 >
-  <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
-    <Typography variant="body2" style={{ whiteSpace: 'pre-line' }}>
+  <Alert onClose={handleSnackbarClose} severity="success" style={{ whiteSpace: 'pre-line' }} sx={muiCustomStyles.snackbarAlert}>
+    
       {snackbarMessage}
-    </Typography>
+    
   </Alert>
 </Snackbar>
     </Box>

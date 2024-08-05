@@ -28,14 +28,14 @@ const FirstTimeSetup = () => {
   const [lastName, setLastName] = useState(user.last_name || '');
   const [children, setChildren] = useState([{ name: '', dob: '' }]);
   const [hasDiagnosis, setHasDiagnosis] = useState(false);
-  const [showAutoFill, setShowAutoFill] = useState(false);
+  
 
-  useEffect(() => {
-    if (redirection) {
-      history.push(redirection);
-      dispatch({ type: 'CLEAR_REDIRECTION' });
-    }
-  }, [redirection, history, dispatch]);
+  // useEffect(() => {
+  //   if (redirection) {
+  //     history.push(redirection);
+  //     dispatch({ type: 'CLEAR_REDIRECTION' });
+  //   }
+  // }, [redirection, history, dispatch]);
 
   useEffect(() => {
     if (family.parent.firstName && family.parent.lastName && family.children && family.children.length > 0) {
@@ -85,8 +85,9 @@ const FirstTimeSetup = () => {
   };
   const handleAutoFill = () => {
     const autoFilledChildren = [
-      { name: 'Jimmy', dob: '2018-05-15' },
-      { name: 'Billy', dob: '2020-09-22' }
+      { name: 'Jimothy', dob: '2018-05-15' },
+      { name: 'Billy', dob: '2020-09-22' },
+      { name: 'Carol', dob: '2015-03-14'}
     ];
     setChildren(autoFilledChildren);
   };
@@ -94,7 +95,7 @@ const FirstTimeSetup = () => {
   useEffect(() => {
     const handleKeyPress = (event) => {
       if (event.ctrlKey && event.shiftKey && event.key === 'A') {
-        setShowAutoFill(prev => !prev);
+        handleAutoFill();
       }
     };
 
@@ -103,6 +104,8 @@ const FirstTimeSetup = () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
   }, []);
+
+
   const steps = [
     {
       label: 'Your Name',
@@ -233,14 +236,6 @@ const FirstTimeSetup = () => {
 
   return (
     <>
-     {showAutoFill && (
-            <Button
-              onClick={handleAutoFill}
-              sx={{ ...muiCustomStyles.backButton, marginLeft: 2 }}
-            >
-              
-            </Button>
-          )}
         <Box sx={muiCustomStyles.box}>
       <Card sx={muiCustomStyles.card}>
         <Typography variant="h4" gutterBottom>
