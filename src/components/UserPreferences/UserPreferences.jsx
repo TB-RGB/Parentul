@@ -143,11 +143,11 @@ const UserPreferences = () => {
       <Card sx={muiCustomStyles.card}>
 
         <Typography sx={muiCustomStyles.header}>User Preferences</Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 0 }}>
           <Button
             variant="outlined"
             onClick={() => setUpdateModalOpen(true)}
-            sx={{ mt: 2, ...muiCustomStyles.backButton }}
+            sx={{ mt: 1, ...muiCustomStyles.backButton }}
           >
             Update Family Information
           </Button>
@@ -191,11 +191,11 @@ const UserPreferences = () => {
           </Button>
         </Box>
 
-        <Box sx={{ marginTop: 4 }}>
+        <Box sx={{ marginTop: 0 }}>
 
           <Typography sx={muiCustomStyles.medium}>Notifications</Typography>
 
-          <FormControl fullWidth sx={{ mt: 2, ...muiCustomStyles.select }}>
+          <FormControl fullWidth sx={{ mt: 1, ...muiCustomStyles.select }}>
             <InputLabel>Notification Type</InputLabel>
             <Select
               value={notificationType}
@@ -239,7 +239,7 @@ const UserPreferences = () => {
           >
             Update Preferences
           </Button>
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'left', mt: 2 }}>
             <Box>
               <HelpOutlineIcon sx={{ color: 'orange', marginRight: 1 }} />
             </Box>

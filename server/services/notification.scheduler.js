@@ -40,8 +40,8 @@ const scheduleNotification = async (userId, conversationId, conversationLog) => 
     }
 
     const delayHours = userData.notifications_freq === '24' ? 24 : 48;
-    // const delayMilliseconds = delayHours * 60 * 60 * 1000;
-    const delayMilliseconds = 60 * 60 * 1000; //4 hour test
+    const delayMilliseconds = delayHours * 60 * 60 * 1000;
+    // const delayMilliseconds = 60 * 60 * 1000; //4 hour test
 
     // Add job to the queue
     await notificationQueue.add(
