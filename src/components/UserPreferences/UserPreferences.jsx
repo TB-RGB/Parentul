@@ -247,14 +247,14 @@ const UserPreferences = () => {
               {frequencyTooltips[notificationFreq]}
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          {/* <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
             <Button
               onClick={handleCheckJobStatus}
               sx={{ mt: 2, ...muiCustomStyles.backButton }}
             >
               Check Job Status
             </Button>
-          </Box>
+          </Box> */}
         </Box>
       </Card>
 

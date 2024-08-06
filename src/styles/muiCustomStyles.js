@@ -42,6 +42,23 @@ const muiCustomStyles = {
         border: '1px outset #FFA500',
         textAlign: 'center'
     },
+    tabs: {
+        mb: 2,
+        '& .MuiTabs-indicator': {
+            backgroundColor: '#FFA500',
+        },
+    },
+    tab: {
+        color: 'white',
+        '&.Mui-selected': {
+            color: '#FFA500',
+        },
+        '&:hover': {
+            color: '#FFA500',
+            opacity: 1,
+        },
+        fontWeight: 'bold',
+    },
     deleteButton: {
         border: '1px outset orange',
         '&:hover': {
