@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { Stack, Box, Card, Typography, Accordion, AccordionActions, AccordionSummary, AccordionDetails, Button, IconButton, Snackbar, Alert } from "@mui/material";
+import Swal from "sweetalert2";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -58,12 +59,29 @@ const ChatHistory = () => {
   };
 
   const handleDeleteClick = (conversationId) => {
-    if (window.confirm("Are you sure you want to delete this conversation?")) {
-      dispatch({
-        type: "DELETE_CONVERSATION",
-        payload: { conversationId: conversationId, userId: userId },
-      });
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      color: 'white',
+      background: '#1A1A1A',
+      showCancelButton: true,
+      cancelButtonText: 'CANCEL',
+      confirmButtonText: 'DELETE!',
+      customClass: {
+        confirmButton: 'custom-confirm-button',
+        cancelButton: 'custom-cancel-button',
+        popup: 'custom-popup',
+
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch({
+          type: "DELETE_CONVERSATION",
+          payload: { conversationId: conversationId, userId: userId },
+        });
+      }
+    });
   };
 
   function formatDate(dateString) {
