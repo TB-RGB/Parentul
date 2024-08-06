@@ -1,6 +1,6 @@
-# Parentul
+# Parentül
 
-Parentul is a mobile-optimized application designed to provide real-time parenting advice, primarily targeting foster and adoptive parents, as well as parents in need of additional support. The app utilizes generative AI to offer evidence-based recommendations and employs a choose-your-own-adventure style to engage users.
+Parentül is a mobile-optimized application designed to provide real-time parenting advice, primarily targeting foster and adoptive parents, as well as parents in need of additional support. The app utilizes generative AI to offer evidence-based recommendations and employs a choose-your-own-adventure style to engage users.
 
 ## Table of Contents
 

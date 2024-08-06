@@ -42,7 +42,7 @@ function* finalizeFirstTimeSetup() {
     yield put({ type: 'CLEAR_FIRST_TIME_SETUP' });
 
  
-    yield put({ type: 'REDIRECT_TO_CHAT' });
+    yield put({ type: 'REDIRECT_TO_PREFERENCES' });
 
   } catch (error) {
     console.error('Error finalizing first time setup:', error);

@@ -28,7 +28,7 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages, setDisable
                   ...prevMessages,
                   { ...newMessage, content: advice }
                 ]);
-              }, (index * newMessage.content.length + adviceIndex) * 3500); // Delay each advice by 5s, staggering start times
+              }, (index * newMessage.content.length + adviceIndex) * 4000); // Delay each advice by 5s, staggering start times
             setDisabled(true);
             }
           });
@@ -74,7 +74,7 @@ const MessageList = ({ messages, visibleMessages, setVisibleMessages, setDisable
               >
                 {renderMessageContent(message.content)}
               </Typography>
-              <div className="chat-footer">{isUser ? " You" : "Parentul"}</div>
+              <div className="chat-footer">{isUser ? " You" : "Parentül"}</div>
             </div>
           }
         />

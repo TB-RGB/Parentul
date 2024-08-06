@@ -2,17 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Paper,
-  Typography,
-  Box,
-  Button,
-  Card,
-  IconButton,
-} from "@mui/material";
+import { List, ListItem, ListItemText, Paper, Typography, Box, Button, Card, IconButton } from "@mui/material";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
@@ -29,6 +19,7 @@ const ChatHistoryDetails = () => {
   const { chatId } = useParams();
   const messagesEndRef = useRef(null);
   const [userFeedback, setUserFeedback] = useState("");
+  
 
   useEffect(() => {
     if (log.length === 0) {
@@ -39,6 +30,7 @@ const ChatHistoryDetails = () => {
   useEffect(() => {
     scrollToBottom();
   }, [log]);
+
 
   const renderMessageContent = (content) => {
     if (content === null || content === undefined) {
@@ -70,100 +62,93 @@ const ChatHistoryDetails = () => {
     handleBackClick();
   };
 
+  
   return (
     <>
-    <div style={{ overflow: "hidden", overscrollBehavior: "contain" }}>
-      <Box sx={muiCustomStyles.box}>
-        <Card
-          sx={{
-            color: "white",
-            backgroundColor: "#1E1E1E",
-            borderRadius: "1em",
-            my: 2,
-            p: 4,
-            boxShadow: "0px 0px 20px black",
-            border: "2px outset orange",
-          }}
-        >
-          <Typography variant="h4" textAlign={"center"}>
-            Chat Log
-          </Typography>
-          <Button
-            variant="outlined"
-            sx={muiCustomStyles.backButton}
-            onClick={handleBackClick}
-            startIcon={<FirstPageIcon />}
+      <div style={{ overflow: "hidden", overscrollBehavior: "contain" }}>
+        <Box sx={muiCustomStyles.box}>
+          <Card
+            sx={muiCustomStyles.card}
           >
-            To Chat History
-          </Button>
-          <Paper
-            elevation={3}
-            sx={{ height: "400px", overflowY: "auto", pt: 2 }}
-          >
-            <List>
-              {log.map((message, index) => (
-                <ListItem key={index} alignItems="flex-start">
-                  <ListItemText
-                    primary={
-                      <div
-                        className={
-                          message.sender_type === "user"
-                            ? "chat chat-end"
-                            : "chat chat-start"
-                        }
-                      >
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          color={
-                            message.sender_type === "user" ? "white" : "black"
-                          }
+            <Typography variant="h4" textAlign={"center"}>
+              Chat Log
+            </Typography>
+            <Button
+              variant="outlined"
+              sx={muiCustomStyles.backButton}
+              onClick={handleBackClick}
+              startIcon={<FirstPageIcon />}
+            >
+              To Chat History
+            </Button>
+            <Paper
+              elevation={3}
+              sx={{ height: "400px", overflowY: "auto", pt: 2 }}
+            >
+              <List>
+                {log.map((message, index) => (
+                  <ListItem key={index} alignItems="flex-start">
+                    <ListItemText
+                      primary={
+                        <div
                           className={
                             message.sender_type === "user"
-                              ? "chat-bubble"
-                              : "chat-bubble chat-bubble-accent"
+                              ? "chat chat-end"
+                              : "chat chat-start"
                           }
                         >
-                          {renderMessageContent(message.content)}
-                        </Typography>
-                        <div className="chat-footer">
-                          {message.sender_type === "user"
-                            ? `${user.first_name}'s Question`
-                            : "Parentul's Response"}
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            color={
+                              message.sender_type === "user" ? "white" : "black"
+                            }
+                            className={
+                              message.sender_type === "user"
+                                ? "chat-bubble"
+                                : "chat-bubble chat-bubble-accent"
+                            }
+                          >
+                            {renderMessageContent(message.content)}
+                          </Typography>
+                          <div className="chat-footer">
+                            {message.sender_type === "user"
+                              ? `${user.first_name}'s Question`
+                              : "Parentül's Response"}
+                          </div>
                         </div>
-                      </div>
-                    }
-                  />
-                </ListItem>
-              ))}
-            </List>
-            <div ref={messagesEndRef} />
-          </Paper>
-          <Typography variant="h6" textAlign={'center'} sx={{ marginTop: 2 }}>
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
+              <div ref={messagesEndRef} />
+            </Paper>
+            <Typography variant="h6" textAlign={'center'} sx={{ marginTop: 2 }}>
               Was this helpful?
             </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <IconButton sx={{ mt: 2.3}} onClick={()=>setUserFeedback(false)}>
-              {userFeedback === false ? <ThumbDownAltIcon sx={{ color: "orange", fontSize: 40 }} /> : <ThumbDownOffAltIcon sx={{ color: "orange", fontSize: 40 }} />}
-            </IconButton>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <IconButton sx={{ mt: 2.3 }} onClick={() => setUserFeedback(false)}>
+                {userFeedback === false ? <ThumbDownAltIcon sx={{ color: "orange", fontSize: 40 }} /> : <ThumbDownOffAltIcon sx={{ color: "orange", fontSize: 40 }} />}
+              </IconButton>
 
-            <IconButton onClick={() => setUserFeedback(true)}>
-              {userFeedback === true ? <ThumbUpAltIcon sx={{ color: "orange", fontSize: 40 }} /> : <ThumbUpOffAltIcon sx={{ color: "orange", fontSize: 40 }} />}
-            </IconButton>
-          </Box>
-          <Box sx={{display: 'flex', justifyContent: 'center', marginTop: 2}}>
-          <Button variant="outlined" sx={muiCustomStyles.backButton} endIcon={<LibraryAddIcon />} onClick={sendFeedback}>
+              <IconButton onClick={() => setUserFeedback(true)}>
+                {userFeedback === true ? <ThumbUpAltIcon sx={{ color: "orange", fontSize: 40 }} /> : <ThumbUpOffAltIcon sx={{ color: "orange", fontSize: 40 }} />}
+              </IconButton>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+              <Button variant="outlined" sx={muiCustomStyles.backButton} endIcon={<LibraryAddIcon />} onClick={sendFeedback}>
                 Save Feedback
-            </Button>
-           </Box> 
-        </Card>
-      </Box>
-    </div>
+              </Button>
+            </Box>
+          </Card>
+        </Box>
+      </div>
     </>
   );
 };

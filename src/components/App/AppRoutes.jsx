@@ -45,7 +45,7 @@ function AppRoutes() {
         {user.id ? <Redirect to="/firsttime" /> : <RegisterPage />}
       </Route>
       <Route exact path="/home">
-        {user.id ? <Redirect to="/firsttime" /> : <LandingPage />}
+        {user.id ? <Redirect to="/firsttime" /> : <RegisterPage />}
       </Route>
       <Route path="/chat">
         {(children.length > 0 && user.id) ? <ChatComponent /> : (user.id && children.length === 0) ? <FirstTimeSetup /> : <LoginPage /> }

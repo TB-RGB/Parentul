@@ -7,12 +7,16 @@ import muiCustomStyles from "../../styles/muiCustomStyles";
 const FAQ = () => {
   const dispatch = useDispatch();
   const questions = useSelector((state) => state.faqReducer);
+  const user = useSelector(state => state.user)
   const [expandedCategory, setExpandedCategory] = useState(null);
   const [showDevelopmentalDiagnosis, setShowDevelopmentalDiagnosis] = useState(false);
 
   useEffect(() => {
     dispatch({ type: 'FETCH_FAQ' });
-  }, [dispatch]);
+    if (user && user.has_diag_in_family !== undefined) {
+        setShowDevelopmentalDiagnosis(user.has_diag_in_family);
+      }
+    }, [dispatch, user]);
 
   const handleCategoryExpand = (category) => {
     setExpandedCategory(expandedCategory === category ? null : category);

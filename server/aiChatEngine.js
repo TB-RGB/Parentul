@@ -40,6 +40,8 @@ class AIChatEngine {
       "They're having a bad day",
       "What's wrong with them?",
       "What are they feeling when they're angry?",
+      "Metldowns",
+      "Child hving metldown"
     ]);
 
     this.addTrainingData("not listening", [
@@ -270,10 +272,11 @@ class AIChatEngine {
       `I'm sorry to hear that ${this.conversationState.childName} is experiencing meltdowns. Here's some advice to help manage these situations:`,
       `1. Identify triggers: Keep a journal to note what situations or events seem to precede meltdowns. This can help you anticipate and possibly prevent them.`,
       `2. Create a calm-down space: Designate a quiet, comfortable area where ${this.conversationState.childName} can go to regulate emotions. Fill it with soothing items like soft toys, blankets, or calming pictures.`,
-      `3. Develop a calming routine: Work with ${this.conversationState.childName} to create a series of steps to follow when feeling overwhelmed. This might include deep breathing, counting, or using a stress ball.`,
-      `4. Use visual schedules: If transitions or unexpected changes trigger meltdowns, use picture schedules to help ${this.conversationState.childName} understand and prepare for daily activities.`,
-      `5. Validate feelings: During a meltdown, acknowledge ${this.conversationState.childName}'s feelings without judgment. Say something like, "I can see you're feeling very upset right now."`,
-      `6. Maintain your calm: Your calm demeanor can help ${this.conversationState.childName} regulate their own emotions. Take deep breaths and speak in a soft, reassuring tone.`,
+      `3. Validate feelings: During a meltdown, acknowledge ${this.conversationState.childName}'s feelings without judgment. Say something like, "I can see you're feeling very upset right now."`,
+      `4. Maintain your calm: Your calm demeanor can help ${this.conversationState.childName} regulate their own emotions. Take deep breaths and speak in a soft, reassuring tone.`,
+      `5. Develop a calming routine: Work with ${this.conversationState.childName} to create a series of steps to follow when feeling overwhelmed. This might include deep breathing, counting, or using a stress ball.`,
+      `6. Use visual schedules: If transitions or unexpected changes trigger meltdowns, use picture schedules to help ${this.conversationState.childName} understand and prepare for daily activities.`,
+      
       `7. Teach emotional vocabulary: Help ${this.conversationState.childName} name their feelings. This can make big emotions feel more manageable.`,
       `8. Offer choices: When possible, give ${this.conversationState.childName} some control by offering limited choices. This can help prevent feelings of powerlessness that might trigger a meltdown.`,
       `9. Praise calm behavior: When ${this.conversationState.childName} manages difficult emotions well, offer specific praise to reinforce this positive behavior.`,

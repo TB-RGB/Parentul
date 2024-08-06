@@ -8,6 +8,7 @@ import { firstTimeSetupSaga } from './firsttimesetup.saga';
 import familySaga from './family.saga';
 import preferencesSaga from './preferences.saga';
 import faqSaga from './faq.saga';
+import notificationSaga from './notifications.saga';
 
 
 // rootSaga is the primary saga.
@@ -28,5 +29,6 @@ export default function* rootSaga() {
     familySaga(),
     preferencesSaga(),
     faqSaga(),
+    notificationSaga(),
   ]);
 }

@@ -1,18 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import {
-  Stack,
-  Box,
-  Card,
-  Typography,
-  Accordion,
-  AccordionActions,
-  AccordionSummary,
-  AccordionDetails,
-  Button,
-  IconButton,
-} from "@mui/material";
+import { Stack, Box, Card, Typography, Accordion, AccordionActions, AccordionSummary, AccordionDetails, Button, IconButton, Snackbar, Alert } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -22,10 +11,11 @@ import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 
 const ChatHistory = () => {
   const dispatch = useDispatch();
-  const { conversations } = useSelector((store) => store.history);
+  const { conversations, feedbackError } = useSelector((store) => store.history);
   const history = useHistory();
   const { userId } = useParams();
   const family = useSelector((store) => store.familyReducer);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const historyStartRef = useRef(null);
 
@@ -40,6 +30,20 @@ const ChatHistory = () => {
   useEffect(() => {
     dispatch({ type: "FETCH_CONVERSATIONS", payload: { userId: userId } });
   }, [dispatch, userId]);
+
+  useEffect(() => {
+    if (feedbackError) {
+      setSnackbarOpen(true);
+    }
+  }, [feedbackError]);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+    dispatch({ type: 'CLEAR_FEEDBACK_ERROR' });
+  };
 
   const handleLogClick = (conversationId) => {
     history.push(`/chatlog/${conversationId}`);
@@ -65,10 +69,10 @@ const ChatHistory = () => {
   function formatDate(dateString) {
     const date = new Date(dateString);
     const options = {
-      year: "numeric",
-      month: "long",
+      year: "2-digit",
+      month: "numeric",
       day: "numeric",
-      hour: "2-digit",
+      hour: "numeric",
       minute: "2-digit",
     };
     return date.toLocaleDateString("en-US", options);
@@ -104,14 +108,19 @@ const ChatHistory = () => {
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
+                      alignItems: "center",
+                      width: "100%", // Ensure the Box takes full width
                     }}
                   >
-                    {formatDate(conversation.start_time)}{" "}
-                    {conversation.user_rating === true && (
-                      <ThumbUpAltIcon sx={{ color: "orange", ml:3 }} />
-                    )}
-                    {conversation.user_rating === false && (
-                      <ThumbDownAltIcon sx={{ color: "orange" , ml:2 }} />
+                    <Typography>{formatDate(conversation.start_time)}</Typography>
+                    {conversation.user_rating !== null && (
+                      <Box> {/* Ensure consistent space for icon */}
+                        {conversation.user_rating === true ? (
+                          <ThumbUpAltIcon sx={{ color: "orange", mr: 1 }} />
+                        ) : (
+                          <ThumbDownAltIcon sx={{ color: "orange", mr: 1 }} />
+                        )}
+                      </Box>
                     )}
                   </Box>
                 </AccordionSummary>
@@ -126,7 +135,7 @@ const ChatHistory = () => {
                     {conversation.user_message}
                   </Typography>
                   <Typography>
-                    <strong>Parentul's Response:</strong>{" "}
+                    <strong>Parentül's Response:</strong>{" "}
                     {conversation.ai_response}
                   </Typography>
                 </AccordionDetails>
@@ -152,6 +161,17 @@ const ChatHistory = () => {
           </Stack>
         </Card>
       </Box>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        sx={muiCustomStyles.snackbar}
+      >
+        <Alert onClose={handleSnackbarClose} severity="error" sx={muiCustomStyles.snackbarAlert}>
+          {feedbackError}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

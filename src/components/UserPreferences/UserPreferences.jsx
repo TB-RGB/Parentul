@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Alert, Box, Card, Typography, CircularProgress, Grid, Select, MenuItem, FormControl, InputLabel, Button, TextField, IconButton, Snackbar } from "@mui/material";
+import { Alert, Box, Card, Typography, CircularProgress, Grid, Select, MenuItem, FormControl, InputLabel, Button, TextField, IconButton, Snackbar, Tooltip } from "@mui/material";
+import Swal from "sweetalert2";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+
 import muiCustomStyles from "../../styles/muiCustomStyles";
 import UpdateFamilyModal from "./UpdateFamilyModal";
 import AddChildModal from "./AddChildModal";
@@ -13,6 +16,7 @@ const UserPreferences = () => {
   const preferences = useSelector((store) => store.preferences.userPreferences[0]);
   const family = useSelector((store) => store.familyReducer);
   const user = useSelector((store) => store.user);
+  const jobStatus = useSelector(store => store.jobStatusReducer)
   const [isLoading, setIsLoading] = useState(true);
 
   const [notificationType, setNotificationType] = useState('');
@@ -22,6 +26,12 @@ const UserPreferences = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [addChildModalOpen, setAddChildModalOpen] = useState(false);
+
+  const frequencyTooltips = {
+    "24": "You will only receive one notification per chat feedback, after 24 hours",
+    "48": "You will only receive one notification per chat feedback, after 48 hours",
+    "none": "You will not receive any automated notifications"
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +51,14 @@ const UserPreferences = () => {
       setPhoneNumber(preferences.phone_number || '');
     }
   }, [preferences]);
+
+  useEffect(() => {
+    if (jobStatus && Object.keys(jobStatus).length > 0) {
+      console.log('Job Status:', jobStatus);
+    }
+  }, [jobStatus]);
+
+
 
   const currentYear = new Date().getFullYear();
   const getBirthYear = (dateString) => new Date(dateString).getFullYear();
@@ -72,10 +90,35 @@ const UserPreferences = () => {
   };
 
   const handleDeleteChild = (childId) => {
-    if (window.confirm('Are you sure you want to delete this child?')) {
-      dispatch({ type: 'DELETE_CHILD', payload: { childId } });
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      color: 'white',
+      background: '#1A1A1A',
+      showCancelButton: true,
+      cancelButtonText: 'CANCEL',
+      confirmButtonText: 'DELETE!',
+
+      customClass: {
+        confirmButton: 'custom-confirm-button',
+        cancelButton: 'custom-cancel-button',
+
+        popup: 'custom-popup',
+
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch({ type: 'DELETE_CHILD', payload: { childId } });
+
+      }
+    });
   };
+
+  const handleCheckJobStatus = () => {
+    dispatch({ type: 'CHECK_JOB_STATUS' });
+  };
+
 
   if (isLoading) {
     return (
@@ -100,11 +143,11 @@ const UserPreferences = () => {
       <Card sx={muiCustomStyles.card}>
 
         <Typography sx={muiCustomStyles.header}>User Preferences</Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 0 }}>
           <Button
             variant="outlined"
             onClick={() => setUpdateModalOpen(true)}
-            sx={{ mt: 2, ...muiCustomStyles.backButton }}
+            sx={{ mt: 1, ...muiCustomStyles.backButton }}
           >
             Update Family Information
           </Button>
@@ -148,9 +191,11 @@ const UserPreferences = () => {
           </Button>
         </Box>
 
-        <Box sx={{ marginTop: 4 }}>
+        <Box sx={{ marginTop: 0 }}>
+
           <Typography sx={muiCustomStyles.medium}>Notifications</Typography>
-          <FormControl fullWidth sx={{ mt: 2, ...muiCustomStyles.select }}>
+
+          <FormControl fullWidth sx={{ mt: 1, ...muiCustomStyles.select }}>
             <InputLabel>Notification Type</InputLabel>
             <Select
               value={notificationType}
@@ -171,19 +216,22 @@ const UserPreferences = () => {
               sx={{ mt: 2, ...muiCustomStyles.textField }}
             />
           )}
-          <FormControl fullWidth sx={{ mt: 2, ...muiCustomStyles.select }}>
-            <InputLabel>Notification Frequency</InputLabel>
-            <Select
-              value={notificationFreq}
-              onChange={(e) => setNotificationFreq(e.target.value)}
-              label="Notification Frequency"
-              MenuProps={{ sx: muiCustomStyles.menu }}
-            >
-              <MenuItem value="24" sx={muiCustomStyles.menuItem}>Daily</MenuItem>
-              <MenuItem value="48" sx={muiCustomStyles.menuItem}>48 hrs</MenuItem>
-              <MenuItem value="none" sx={muiCustomStyles.menuItem}>None</MenuItem>
-            </Select>
-          </FormControl>
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+            <FormControl fullWidth sx={{ ...muiCustomStyles.select }}>
+              <InputLabel>Notification Frequency</InputLabel>
+              <Select
+                value={notificationFreq}
+                onChange={(e) => setNotificationFreq(e.target.value)}
+                label="Notification Frequency"
+                MenuProps={{ sx: muiCustomStyles.menu }}
+              >
+                <MenuItem value="24" sx={muiCustomStyles.menuItem}>Daily</MenuItem>
+                <MenuItem value="48" sx={muiCustomStyles.menuItem}>48 hrs</MenuItem>
+                <MenuItem value="none" sx={muiCustomStyles.menuItem}>None</MenuItem>
+              </Select>
+            </FormControl>
+
+          </Box>
           <Button
             variant="contained"
             onClick={handleSubmit}
@@ -191,6 +239,22 @@ const UserPreferences = () => {
           >
             Update Preferences
           </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'left', mt: 2 }}>
+            <Box>
+              <HelpOutlineIcon sx={{ color: 'orange', marginRight: 1 }} />
+            </Box>
+            <Typography sx={{ color: 'orange' }}>
+              {frequencyTooltips[notificationFreq]}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+            <Button
+              onClick={handleCheckJobStatus}
+              sx={{ mt: 2, ...muiCustomStyles.backButton }}
+            >
+              Check Job Status
+            </Button>
+          </Box>
         </Box>
       </Card>
 
@@ -204,20 +268,20 @@ const UserPreferences = () => {
         handleClose={() => setAddChildModalOpen(false)}
       />
       <Snackbar
-  anchorOrigin={{
-    vertical: 'bottom',
-    horizontal: 'center',
-  }}
-  open={snackbarOpen}
-  autoHideDuration={2500}
-  onClose={handleSnackbarClose}
->
-  <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
-    <Typography variant="body2" style={{ whiteSpace: 'pre-line' }}>
-      {snackbarMessage}
-    </Typography>
-  </Alert>
-</Snackbar>
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={snackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity="success" style={{ whiteSpace: 'pre-line' }} sx={muiCustomStyles.snackbarAlert}>
+
+          {snackbarMessage}
+
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

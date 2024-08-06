@@ -28,13 +28,14 @@ const FirstTimeSetup = () => {
   const [lastName, setLastName] = useState(user.last_name || '');
   const [children, setChildren] = useState([{ name: '', dob: '' }]);
   const [hasDiagnosis, setHasDiagnosis] = useState(false);
+  
 
-  useEffect(() => {
-    if (redirection) {
-      history.push(redirection);
-      dispatch({ type: 'CLEAR_REDIRECTION' });
-    }
-  }, [redirection, history, dispatch]);
+  // useEffect(() => {
+  //   if (redirection) {
+  //     history.push(redirection);
+  //     dispatch({ type: 'CLEAR_REDIRECTION' });
+  //   }
+  // }, [redirection, history, dispatch]);
 
   useEffect(() => {
     if (family.parent.firstName && family.parent.lastName && family.children && family.children.length > 0) {
@@ -73,7 +74,7 @@ const FirstTimeSetup = () => {
       });
       dispatch({ type: 'FINALIZE_FIRST_TIME_SETUP' });
       dispatch({ type: 'CREATE_USER_PREFERENCES', payload: { userId: user.id } });
-      history.push('/chat');
+      history.push(`/preferences/${user.id}`);
       return;
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -82,6 +83,28 @@ const FirstTimeSetup = () => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+  const handleAutoFill = () => {
+    const autoFilledChildren = [
+      { name: 'Jimothy', dob: '2018-05-15' },
+      { name: 'Billy', dob: '2020-09-22' },
+      { name: 'Carol', dob: '2015-03-14'}
+    ];
+    setChildren(autoFilledChildren);
+  };
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.ctrlKey && event.shiftKey && event.key === 'A') {
+        handleAutoFill();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
+
 
   const steps = [
     {
@@ -135,6 +158,7 @@ const FirstTimeSetup = () => {
                 InputLabelProps={{ shrink: true }}
                 required
               />
+              
             </div>
           ))}
           <IconButton onClick={handleAddChild} color="primary">
@@ -211,7 +235,8 @@ const FirstTimeSetup = () => {
   ];
 
   return (
-    <Box sx={muiCustomStyles.box}>
+    <>
+        <Box sx={muiCustomStyles.box}>
       <Card sx={muiCustomStyles.card}>
         <Typography variant="h4" gutterBottom>
           First Time Setup
@@ -253,6 +278,7 @@ const FirstTimeSetup = () => {
         </Stepper>
       </Card>
     </Box>
+    </>
   );
 };
 

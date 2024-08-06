@@ -3,7 +3,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from '@mui/material';
 import RegisterForm from '../RegisterForm/RegisterForm';
-import GoogleSignIn from '../GoogleSignIn/GoogleSignIn';
+import Header from '../Header/Header';
 import muiCustomStyles from '../../styles/muiCustomStyles';
 
 function RegisterPage() {
@@ -11,6 +11,7 @@ function RegisterPage() {
 
   return (
     <div>
+      <Header />
       <RegisterForm />
 
       <center>
