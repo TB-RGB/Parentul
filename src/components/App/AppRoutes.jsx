@@ -1,7 +1,19 @@
-import React, { useEffect } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect } from "react";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import AboutPage from "../AboutPage/AboutPage";
+import InfoPage from "../InfoPage/InfoPage";
+import LandingPage from "../LandingPage/LandingPage";
+import LoginPage from "../LoginPage/LoginPage";
+import RegisterPage from "../RegisterPage/RegisterPage";
+import ChatComponent from "../Chat/ChatComponent";
+import ChatHistory from "../Chat/ChatHistory";
+import ChatHistoryDetails from "../Chat/ChatHistoryDetails";
+import UserPreferences from "../UserPreferences/UserPreferences";
+import FAQ from "../FAQ/FAQ";
+import FirstTimeSetup from "../FirstTimeSetup/FirstTimeSetup";
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
@@ -15,10 +27,15 @@ import FirstTimeSetup from '../FirstTimeSetup/FirstTimeSetup';
 function AppRoutes() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const user = useSelector(store => store.user);
-  const children = useSelector(store => store.familyReducer.children)
+  const user = useSelector((store) => store.user);
+  const children = useSelector((store) => store.familyReducer.children);
 
   useEffect(() => {
+    // if (!user.id) {
+    //   history.push('/login');
+    // }
+    if (user.id) {
+      dispatch({ type: "FETCH_FAMILY", payload: user.id });
     if (user.id){
     dispatch({ type: 'FETCH_FAMILY', payload: user.id });
     }
@@ -40,7 +57,13 @@ function AppRoutes() {
         {user.id ? <Redirect to="/firsttime" /> : <RegisterPage />}
       </Route>
       <Route path="/chat">
-        {(children.length > 0 && user.id) ? <ChatComponent /> : (user.id && children.length === 0) ? <FirstTimeSetup /> : <LoginPage /> }
+        {children.length > 0 && user.id ? (
+          <ChatComponent />
+        ) : user.id && children.length === 0 ? (
+          <FirstTimeSetup />
+        ) : (
+          <LoginPage />
+        )}
       </Route>
       <Route exact path="/chathistory/:userId" component={ChatHistory} />
       <Route exact path="/chatlog/:chatId" component={ChatHistoryDetails} />

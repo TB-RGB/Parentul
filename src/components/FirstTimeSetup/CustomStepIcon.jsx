@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import CheckIcon from '@mui/icons-material/Check';
+import React from "react";
+import PropTypes from "prop-types";
+import CheckIcon from "@mui/icons-material/Check";
 
 const CustomStepIcon = (props) => {
   const { active, completed, icon } = props;
@@ -8,14 +8,14 @@ const CustomStepIcon = (props) => {
   const iconStyles = {
     width: 32,
     height: 32,
-    borderRadius: '50%',
-    backgroundColor: active ? '#FFA500' : completed ? '#4CAF50' : '#808080',
-    color: '#FFFFFF',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '2px solid',
-    borderColor: active ? '#FFA500' : completed ? '#4CAF50' : '#808080',
+    borderRadius: "50%",
+    backgroundColor: active ? "#FFA500" : completed ? "#4CAF50" : "#808080",
+    color: "#FFFFFF",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    border: "2px solid",
+    borderColor: active ? "#FFA500" : completed ? "#4CAF50" : "#808080",
   };
 
   return (

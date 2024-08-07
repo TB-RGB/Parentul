@@ -1,7 +1,8 @@
 const Queue = require("bull");
 const pool = require("../modules/pool");
-const sendEmail = require("../services/sendGrid");
-const { sendSMS } = require("../services/twilio-sms");
+const sendEmail = require('../services/sendGrid');
+// const { sendSMS } = require('../services/twilio-sms');
+
 
 // Create a new queue
 const notificationQueue = new Queue(
@@ -108,34 +109,26 @@ notificationQueue.process(async (job) => {
   Best regards,
   The Parentül Team
           `.trim();
-
-        await sendEmail(
-          userData.email,
-          `Parentül Follow-up: ${question}`,
-          emailBody
-        );
-      } else if (userData.notifications_email) {
-        console.error("Email address is missing for user:", userId);
+          
+          await sendEmail(userData.email, `Parentül Follow-up: ${question}`, emailBody);
+        } else if (userData.notifications_email) {
+          console.error('Email address is missing for user:', userId);
+        }
+  
+        // if (userData.notifications_sms && userData.phone_number) {
+        //   console.log('Attempting to send SMS to:', userData.phone_number);
+        //   await sendSMS(userData.phone_number, question);
+        // }
+  
+        console.log(`Notification sent for user ${userId}, conversation ${conversationId}`);
+      } else {
+        console.log(`No follow-up found for user ${userId}, conversation ${conversationId}`);
       }
-
-      // if (userData.notifications_sms && userData.phone_number) {
-      //   console.log('Attempting to send SMS to:', userData.phone_number);
-      //   await sendSMS(userData.phone_number, question);
-      // }
-
-      console.log(
-        `Notification sent for user ${userId}, conversation ${conversationId}`
-      );
-    } else {
-      console.log(
-        `No follow-up found for user ${userId}, conversation ${conversationId}`
-      );
+    } catch (error) {
+      console.error('Error sending notification:', error);
+      throw error; 
     }
-  } catch (error) {
-    console.error("Error sending notification:", error);
-    throw error;
-  }
-});
+  });
 
 async function checkJobStatus() {
   const jobCounts = await notificationQueue.getJobCounts();

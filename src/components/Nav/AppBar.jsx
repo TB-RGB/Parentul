@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import { Divider } from '@mui/material';
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import { Divider } from "@mui/material";
 
 function Nav() {
   const user = useSelector((store) => store.user);
@@ -30,25 +30,33 @@ function Nav() {
   };
 
   const handleLogout = () => {
-    dispatch({ type: 'LOGOUT' });
-    history.replace('/login')
+    dispatch({ type: "LOGOUT" });
+    history.replace("/login");
   };
 
   const handleUserPreferences = () => {
-    dispatch({ type: 'FETCH_USER_PREFERENCES', payload: { userId: user.id } });
+    dispatch({ type: "FETCH_USER_PREFERENCES", payload: { userId: user.id } });
   };
 
-
-  const pages = user.id ? [
-    { page: 'Chat', Link: '/chat' },
-    { page: 'Chat History', Link: `/chathistory/${user.id}` },
-    { page: 'FAQ', Link: '/questions' }] : [];
-  const settings = user.id ? [
-    { page: 'User Preferences', Link: `/preferences/${user.id}` },
-    { page: 'Logout', Link: '/login' }] : [{ page: 'Login', Link: '/login' }];
+  const pages = user.id
+    ? [
+        { page: "Chat", Link: "/chat" },
+        { page: "Chat History", Link: `/chathistory/${user.id}` },
+        { page: "FAQ", Link: "/questions" },
+      ]
+    : [];
+  const settings = user.id
+    ? [
+        { page: "User Preferences", Link: `/preferences/${user.id}` },
+        { page: "Logout", Link: "/login" },
+      ]
+    : [{ page: "Login", Link: "/login" }];
 
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: '#1E1E1E', borderBottom: '2px ridge orange' }}>
+    <AppBar
+      position="fixed"
+      sx={{ backgroundColor: "#1E1E1E", borderBottom: "2px ridge orange" }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box
@@ -56,24 +64,26 @@ function Nav() {
             to="/home"
             sx={{
               flexGrow: 1,
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
             }}
           >
             <img
               src="/images/parentullogo.png"
               alt="Parentül Logo"
-              style={{ height: '35px', width: 'auto' }}
+              style={{ height: "35px", width: "auto" }}
             />
           </Box>
 
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+          <Box
+            sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}
+          >
             {pages.map((page, index) => (
               <Button
                 key={index}
                 component={Link}
                 to={page.Link}
-                sx={{ color: 'white', display: 'flex', mr: 1 }}
+                sx={{ color: "white", display: "flex", mr: 1 }}
               >
                 {page.page}
               </Button>
@@ -87,23 +97,23 @@ function Nav() {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
               {user.id && (
-                <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+                <Box sx={{ display: { xs: "block", md: "none" } }}>
                   {pages.map((page, index) => (
                     <MenuItem
                       key={index}
@@ -117,19 +127,19 @@ function Nav() {
                   <Divider sx={{ my: 1 }} />
                 </Box>
               )}
-              {(settings).map((setting, index) => (
+              {settings.map((setting, index) => (
                 <MenuItem
                   key={index}
                   component={Link}
                   to={setting.Link}
                   onClick={() => {
                     handleCloseUserMenu();
-                    if (setting.page === 'Logout') {
+                    if (setting.page === "Logout") {
                       handleLogout();
-                    } else if (setting.page === 'User Preferences') {
+                    } else if (setting.page === "User Preferences") {
                       handleUserPreferences();
-                    } else if (setting.page === 'Login') {
-                      history.push('/login');
+                    } else if (setting.page === "Login") {
+                      history.push("/login");
                     }
                   }}
                 >

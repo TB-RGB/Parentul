@@ -1,13 +1,10 @@
-
 const Header = () => {
-
-return (
+  return (
     <>
-    <br/>
-    <br/>
+      <br />
+      <br />
     </>
-)
+  );
+};
 
-}
-
-export default Header
+export default Header;

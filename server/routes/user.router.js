@@ -1,12 +1,10 @@
-const express = require("express");
-const {
-  rejectUnauthenticated,
-} = require("../modules/authentication-middleware");
-const encryptLib = require("../modules/encryption");
-const pool = require("../modules/pool");
-const userStrategy = require("../strategies/user.strategy");
-const jwt = require("jsonwebtoken");
-const { OAuth2Client } = require("google-auth-library");
+const express = require('express');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+const encryptLib = require('../modules/encryption');
+const pool = require('../modules/pool');
+const userStrategy = require('../strategies/user.strategy');
+const { OAuth2Client } = require('google-auth-library');
+
 
 const router = express.Router();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);

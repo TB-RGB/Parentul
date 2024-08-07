@@ -1,10 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Alert, Box, Card, Typography, CircularProgress, Grid, Select, MenuItem, FormControl, InputLabel, Button, TextField, IconButton, Snackbar, Tooltip } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Card,
+  Typography,
+  CircularProgress,
+  Grid,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Button,
+  TextField,
+  IconButton,
+  Snackbar,
+  Tooltip,
+} from "@mui/material";
 import Swal from "sweetalert2";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 import muiCustomStyles from "../../styles/muiCustomStyles";
 import UpdateFamilyModal from "./UpdateFamilyModal";
@@ -13,30 +29,35 @@ import AddChildModal from "./AddChildModal";
 const UserPreferences = () => {
   const dispatch = useDispatch();
   const { userId } = useParams();
-  const preferences = useSelector((store) => store.preferences.userPreferences[0]);
+  const preferences = useSelector(
+    (store) => store.preferences.userPreferences[0]
+  );
   const family = useSelector((store) => store.familyReducer);
   const user = useSelector((store) => store.user);
-  const jobStatus = useSelector(store => store.jobStatusReducer)
+  const jobStatus = useSelector((store) => store.jobStatusReducer);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [notificationType, setNotificationType] = useState('');
-  const [notificationFreq, setNotificationFreq] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [notificationType, setNotificationType] = useState("");
+  const [notificationFreq, setNotificationFreq] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [addChildModalOpen, setAddChildModalOpen] = useState(false);
 
   const frequencyTooltips = {
-    "24": "You will only receive one notification per chat feedback, after 24 hours",
-    "48": "You will only receive one notification per chat feedback, after 48 hours",
-    "none": "You will not receive any automated notifications"
+    24: "You will only receive one notification per chat feedback, after 24 hours",
+    48: "You will only receive one notification per chat feedback, after 48 hours",
+    none: "You will not receive any automated notifications",
   };
 
   useEffect(() => {
     const fetchData = async () => {
       if (!preferences) {
-        await dispatch({ type: "FETCH_USER_PREFERENCES", payload: { userId: userId } });
+        await dispatch({
+          type: "FETCH_USER_PREFERENCES",
+          payload: { userId: userId },
+        });
       }
       await dispatch({ type: "FETCH_FAMILY", payload: userId });
       setIsLoading(false);
@@ -46,44 +67,50 @@ const UserPreferences = () => {
 
   useEffect(() => {
     if (preferences) {
-      setNotificationType(preferences.notifications_email ? 'email' : 'sms');
-      setNotificationFreq(preferences.notifications_freq || '');
-      setPhoneNumber(preferences.phone_number || '');
+      setNotificationType(preferences.notifications_email ? "email" : "sms");
+      setNotificationFreq(preferences.notifications_freq || "");
+      setPhoneNumber(preferences.phone_number || "");
     }
   }, [preferences]);
 
   useEffect(() => {
     if (jobStatus && Object.keys(jobStatus).length > 0) {
-      console.log('Job Status:', jobStatus);
+      console.log("Job Status:", jobStatus);
     }
   }, [jobStatus]);
-
-
 
   const currentYear = new Date().getFullYear();
   const getBirthYear = (dateString) => new Date(dateString).getFullYear();
 
   const handleSubmit = () => {
     const updatedPreferences = {
-      notifications_email: notificationType === 'email',
-      notifications_sms: notificationType === 'sms',
+      notifications_email: notificationType === "email",
+      notifications_sms: notificationType === "sms",
       notifications_freq: notificationFreq,
-      phone_number: phoneNumber
+      phone_number: phoneNumber,
     };
-    console.log('Updating preferences:', updatedPreferences);
-    dispatch({ type: "UPDATE_USER_PREFERENCES", payload: { userId, preferences: updatedPreferences } });
-    const notificationMethod = notificationType === 'email' ? 'Email' : 'SMS';
-    const frequencyText = notificationFreq === '24' ? 'Daily' : notificationFreq === '48' ? '48 hours' : 'None';
+    console.log("Updating preferences:", updatedPreferences);
+    dispatch({
+      type: "UPDATE_USER_PREFERENCES",
+      payload: { userId, preferences: updatedPreferences },
+    });
+    const notificationMethod = notificationType === "email" ? "Email" : "SMS";
+    const frequencyText =
+      notificationFreq === "24"
+        ? "Daily"
+        : notificationFreq === "48"
+        ? "48 hours"
+        : "None";
     const message = `Preferences updated: 
     Notification Method: ${notificationMethod}
     Frequency: ${frequencyText}
-    ${notificationType === 'sms' ? `Phone Number: ${phoneNumber}` : ''}`;
+    ${notificationType === "sms" ? `Phone Number: ${phoneNumber}` : ""}`;
 
     setSnackbarMessage(message);
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -91,34 +118,31 @@ const UserPreferences = () => {
 
   const handleDeleteChild = (childId) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
-      color: 'white',
-      background: '#1A1A1A',
+      icon: "warning",
+      color: "white",
+      background: "#1A1A1A",
       showCancelButton: true,
-      cancelButtonText: 'CANCEL',
-      confirmButtonText: 'DELETE!',
+      cancelButtonText: "CANCEL",
+      confirmButtonText: "DELETE!",
 
       customClass: {
-        confirmButton: 'custom-confirm-button',
-        cancelButton: 'custom-cancel-button',
+        confirmButton: "custom-confirm-button",
+        cancelButton: "custom-cancel-button",
 
-        popup: 'custom-popup',
-
-      }
+        popup: "custom-popup",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch({ type: 'DELETE_CHILD', payload: { childId } });
-
+        dispatch({ type: "DELETE_CHILD", payload: { childId } });
       }
     });
   };
 
   const handleCheckJobStatus = () => {
-    dispatch({ type: 'CHECK_JOB_STATUS' });
+    dispatch({ type: "CHECK_JOB_STATUS" });
   };
-
 
   if (isLoading) {
     return (
@@ -132,7 +156,9 @@ const UserPreferences = () => {
     return (
       <Box sx={muiCustomStyles.box}>
         <Card sx={muiCustomStyles.card}>
-          <Typography sx={muiCustomStyles.medium}>No preferences found for this user.</Typography>
+          <Typography sx={muiCustomStyles.medium}>
+            No preferences found for this user.
+          </Typography>
         </Card>
       </Box>
     );
@@ -141,9 +167,8 @@ const UserPreferences = () => {
   return (
     <Box sx={muiCustomStyles.box}>
       <Card sx={muiCustomStyles.card}>
-
         <Typography sx={muiCustomStyles.header}>User Preferences</Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 0 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 0 }}>
           <Button
             variant="outlined"
             onClick={() => setUpdateModalOpen(true)}
@@ -152,22 +177,27 @@ const UserPreferences = () => {
             Update Family Information
           </Button>
         </Box>
-        <Typography sx={muiCustomStyles.large}>{user.first_name} {user.last_name}</Typography>
-
+        <Typography sx={muiCustomStyles.large}>
+          {user.first_name} {user.last_name}
+        </Typography>
 
         <Grid container justifyContent="center" spacing={2}>
           {family.children && family.children.length > 0 ? (
             family.children.map((child, index) => (
               <Grid item {...muiCustomStyles.childGridItem} key={index}>
-                <Box sx={{ marginBottom: 0, position: 'relative' }}>
+                <Box sx={{ marginBottom: 0, position: "relative" }}>
                   <Card sx={muiCustomStyles.childcard}>
-                    <Typography sx={muiCustomStyles.small}>{child.name}</Typography>
-                    <Typography sx={muiCustomStyles.small}>Age: {currentYear - getBirthYear(child.dob)}</Typography>
+                    <Typography sx={muiCustomStyles.small}>
+                      {child.name}
+                    </Typography>
+                    <Typography sx={muiCustomStyles.small}>
+                      Age: {currentYear - getBirthYear(child.dob)}
+                    </Typography>
                     {family.children.length > 1 && (
                       <IconButton
                         aria-label="delete"
                         onClick={() => handleDeleteChild(child.id)}
-                        sx={{ position: 'absolute', top: -21, right: -21 }}
+                        sx={{ position: "absolute", top: -21, right: -21 }}
                         color="error"
                       >
                         <HighlightOffIcon />
@@ -181,9 +211,8 @@ const UserPreferences = () => {
             <Typography>No children information available.</Typography>
           )}
         </Grid>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
           <Button
-
             onClick={() => setAddChildModalOpen(true)}
             sx={{ mt: 2, ...muiCustomStyles.backButton }}
           >
@@ -192,7 +221,6 @@ const UserPreferences = () => {
         </Box>
 
         <Box sx={{ marginTop: 0 }}>
-
           <Typography sx={muiCustomStyles.medium}>Notifications</Typography>
 
           <FormControl fullWidth sx={{ mt: 1, ...muiCustomStyles.select }}>
@@ -203,11 +231,15 @@ const UserPreferences = () => {
               label="Notification Type"
               MenuProps={{ sx: muiCustomStyles.menu }}
             >
-              <MenuItem value="email" sx={muiCustomStyles.menuItem}>Email</MenuItem>
-              <MenuItem value="sms" sx={muiCustomStyles.menuItem}>SMS</MenuItem>
+              <MenuItem value="email" sx={muiCustomStyles.menuItem}>
+                Email
+              </MenuItem>
+              <MenuItem value="sms" sx={muiCustomStyles.menuItem}>
+                SMS
+              </MenuItem>
             </Select>
           </FormControl>
-          {notificationType === 'sms' && (
+          {notificationType === "sms" && (
             <TextField
               fullWidth
               label="Phone Number"
@@ -216,7 +248,7 @@ const UserPreferences = () => {
               sx={{ mt: 2, ...muiCustomStyles.textField }}
             />
           )}
-          <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+          <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
             <FormControl fullWidth sx={{ ...muiCustomStyles.select }}>
               <InputLabel>Notification Frequency</InputLabel>
               <Select
@@ -225,12 +257,17 @@ const UserPreferences = () => {
                 label="Notification Frequency"
                 MenuProps={{ sx: muiCustomStyles.menu }}
               >
-                <MenuItem value="24" sx={muiCustomStyles.menuItem}>Daily</MenuItem>
-                <MenuItem value="48" sx={muiCustomStyles.menuItem}>48 hrs</MenuItem>
-                <MenuItem value="none" sx={muiCustomStyles.menuItem}>None</MenuItem>
+                <MenuItem value="24" sx={muiCustomStyles.menuItem}>
+                  Daily
+                </MenuItem>
+                <MenuItem value="48" sx={muiCustomStyles.menuItem}>
+                  48 hrs
+                </MenuItem>
+                <MenuItem value="none" sx={muiCustomStyles.menuItem}>
+                  None
+                </MenuItem>
               </Select>
             </FormControl>
-
           </Box>
           <Button
             variant="contained"
@@ -239,11 +276,11 @@ const UserPreferences = () => {
           >
             Update Preferences
           </Button>
-          <Box sx={{ display: 'flex', justifyContent: 'left', mt: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "left", mt: 2 }}>
             <Box>
-              <HelpOutlineIcon sx={{ color: 'orange', marginRight: 1 }} />
+              <HelpOutlineIcon sx={{ color: "orange", marginRight: 1 }} />
             </Box>
-            <Typography sx={{ color: 'orange' }}>
+            <Typography sx={{ color: "orange" }}>
               {frequencyTooltips[notificationFreq]}
             </Typography>
           </Box>
@@ -269,17 +306,20 @@ const UserPreferences = () => {
       />
       <Snackbar
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
+          vertical: "bottom",
+          horizontal: "center",
         }}
         open={snackbarOpen}
         autoHideDuration={2500}
         onClose={handleSnackbarClose}
       >
-        <Alert onClose={handleSnackbarClose} severity="success" style={{ whiteSpace: 'pre-line' }} sx={muiCustomStyles.snackbarAlert}>
-
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          style={{ whiteSpace: "pre-line" }}
+          sx={muiCustomStyles.snackbarAlert}
+        >
           {snackbarMessage}
-
         </Alert>
       </Snackbar>
     </Box>
