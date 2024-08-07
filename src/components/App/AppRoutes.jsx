@@ -3,7 +3,6 @@ import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import AboutPage from '../AboutPage/AboutPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import ChatComponent from '../Chat/ChatComponent';
@@ -28,7 +27,6 @@ function AppRoutes() {
   return (
     <Switch>
       <Redirect exact from="/" to="/home" />
-      <Route exact path="/about" component={AboutPage} />
       <ProtectedRoute exact path="/user">
         <Redirect to="/firsttime" />
       </ProtectedRoute>

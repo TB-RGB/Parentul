@@ -2,7 +2,7 @@ import ChatInput from "./ChatInput";
 import MessageList from "./MessageList";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Button, Card, Typography } from "@mui/material";
+import { Box, Button, Card} from "@mui/material";
 import {
   sendMessage,
   initializeChat,
@@ -40,7 +40,6 @@ const ChatComponent = () => {
   }, [dispatch, user.id]);
 
   const handleSendMessage = (message) => {
-
     dispatch(sendMessage(message, user.id));
   };
 
