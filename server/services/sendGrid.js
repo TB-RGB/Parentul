@@ -15,7 +15,7 @@ const sendEmail = async (to, subject, text) => {
 
   const msg = {
     to,
-    from: "parentul.app@gmail.com",
+    from: "parentul.chat@gmail.com",
     subject,
     text,
     html: htmlContent,

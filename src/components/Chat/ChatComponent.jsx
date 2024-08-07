@@ -40,7 +40,7 @@ const ChatComponent = () => {
   }, [dispatch, user.id]);
 
   const handleSendMessage = (message) => {
-    console.log("Sending message:", message);
+
     dispatch(sendMessage(message, user.id));
   };
 
@@ -62,29 +62,31 @@ const ChatComponent = () => {
 
   return (
     <>
-    <div style={{ overflow: "hidden" }}>
-      <Box sx={muiCustomStyles.box}>
-        <Card sx={muiCustomStyles.card}>
-          
-
-          <MessageList
-            messages={messages}
-            visibleMessages={visibleMessages}
-            setVisibleMessages={setVisibleMessages}
-            setDisabled={setDisabled}
-          />
-          <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} disabled={disabled} />
-          <Box sx={muiCustomStyles.buttonbox}>
-            <Button
-              sx={{ mt: 4, ...muiCustomStyles.button }}
-              onClick={handleEndConversation}
-            >
-              End Conversation
-            </Button>
-          </Box>
-        </Card>
-      </Box>
-    </div>
+      <div style={{ overflow: "hidden" }}>
+        <Box sx={muiCustomStyles.box}>
+          <Card sx={muiCustomStyles.card}>
+            <MessageList
+              messages={messages}
+              visibleMessages={visibleMessages}
+              setVisibleMessages={setVisibleMessages}
+              setDisabled={setDisabled}
+            />
+            <ChatInput
+              onSendMessage={handleSendMessage}
+              isLoading={isLoading}
+              disabled={disabled}
+            />
+            <Box sx={muiCustomStyles.buttonbox}>
+              <Button
+                sx={{ mt: 4, ...muiCustomStyles.button }}
+                onClick={handleEndConversation}
+              >
+                End Conversation
+              </Button>
+            </Box>
+          </Card>
+        </Box>
+      </div>
     </>
   );
 };

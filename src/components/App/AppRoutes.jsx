@@ -4,8 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import AboutPage from '../AboutPage/AboutPage';
-import InfoPage from '../InfoPage/InfoPage';
-import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import ChatComponent from '../Chat/ChatComponent';
@@ -22,9 +20,6 @@ function AppRoutes() {
   const children = useSelector(store => store.familyReducer.children)
 
   useEffect(() => {
-    // if (!user.id) {
-    //   history.push('/login');
-    // }
     if (user.id){
     dispatch({ type: 'FETCH_FAMILY', payload: user.id });
     }
@@ -37,7 +32,6 @@ function AppRoutes() {
       <ProtectedRoute exact path="/user">
         <Redirect to="/firsttime" />
       </ProtectedRoute>
-      <ProtectedRoute exact path="/info" component={InfoPage} />
       <Route exact path="/login">
         {user.id ? <Redirect to="/firsttime" /> : <LoginPage />}
       </Route>
