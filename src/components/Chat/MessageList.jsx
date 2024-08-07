@@ -14,35 +14,25 @@ const MessageList = ({
   };
 
   useEffect(() => {
-    // ! This is a bit of a hack, but it works for now
-    console.log("Messages updated:", messages);
     if (messages.length > visibleMessages.length - 1) {
       // Subtract 1 to account for the initial greeting from chat
       const newMessages = messages.slice(visibleMessages.length - 1);
-      console.log("New messages:", newMessages);
 
       newMessages.forEach((newMessage, index) => {
         if (newMessage.sender === "ai" && Array.isArray(newMessage.content)) {
-          console.log("AI message with array content detected");
           newMessage.content.forEach((advice, adviceIndex) => {
             if (advice !== null) {
               // Skip null content, if any, shouldn't be but..
               setTimeout(() => {
-                console.log(
-                  `Adding advice ${adviceIndex + 1} of ${
-                    newMessage.content.length
-                  }`
-                );
                 setVisibleMessages((prevMessages) => [
                   ...prevMessages,
                   { ...newMessage, content: advice },
                 ]);
-              }, (index * newMessage.content.length + adviceIndex) * 4000); // Delay each advice by 5s, staggering start times
+              }, (index * newMessage.content.length + adviceIndex) * 4000); // Delay each advice by 4s, staggering start times
               setDisabled(true);
             }
           });
         } else {
-          console.log("Adding non-array message");
           setVisibleMessages((prevMessages) => [...prevMessages, newMessage]);
         }
       });
@@ -50,7 +40,6 @@ const MessageList = ({
   }, [messages]);
 
   useEffect(() => {
-    console.log("Visible messages updated:", visibleMessages);
     scrollToBottom();
   }, [visibleMessages]);
 

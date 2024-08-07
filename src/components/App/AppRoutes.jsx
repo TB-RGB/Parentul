@@ -14,6 +14,15 @@ import ChatHistoryDetails from "../Chat/ChatHistoryDetails";
 import UserPreferences from "../UserPreferences/UserPreferences";
 import FAQ from "../FAQ/FAQ";
 import FirstTimeSetup from "../FirstTimeSetup/FirstTimeSetup";
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import LoginPage from '../LoginPage/LoginPage';
+import RegisterPage from '../RegisterPage/RegisterPage';
+import ChatComponent from '../Chat/ChatComponent';
+import ChatHistory from '../Chat/ChatHistory';
+import ChatHistoryDetails from '../Chat/ChatHistoryDetails';
+import UserPreferences from '../UserPreferences/UserPreferences';
+import FAQ from '../FAQ/FAQ';
+import FirstTimeSetup from '../FirstTimeSetup/FirstTimeSetup';
 
 function AppRoutes() {
   const history = useHistory();
@@ -27,17 +36,17 @@ function AppRoutes() {
     // }
     if (user.id) {
       dispatch({ type: "FETCH_FAMILY", payload: user.id });
+    if (user.id){
+    dispatch({ type: 'FETCH_FAMILY', payload: user.id });
     }
   }, [user, history]);
 
   return (
     <Switch>
       <Redirect exact from="/" to="/home" />
-      <Route exact path="/about" component={AboutPage} />
       <ProtectedRoute exact path="/user">
         <Redirect to="/firsttime" />
       </ProtectedRoute>
-      <ProtectedRoute exact path="/info" component={InfoPage} />
       <Route exact path="/login">
         {user.id ? <Redirect to="/firsttime" /> : <LoginPage />}
       </Route>

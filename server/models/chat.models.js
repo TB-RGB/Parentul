@@ -50,7 +50,7 @@ async function logChatHistory(userId, userMessage, aiResponse) {
             RETURNING id;
             `;
     if (aiResponse.text) {
-      let content = aiResponse
+      let content = aiResponse;
       if (typeof content === "object" && content.text) {
         content = content.text;
       }
@@ -217,32 +217,34 @@ async function endConversation(conversationId) {
   }
 }
 
-  const deleteConversation = async (conversationId) => {
-    const client = await pool.connect();
-    try {
-      await client.query('BEGIN');
-      
-      // Delete the conversation
-      const deleteConversationResult = await client.query('DELETE FROM conversations WHERE id = $1', [conversationId]);
-      console.log(`Deleted ${deleteConversationResult.rowCount} conversation`);
-      
-      await client.query('COMMIT');
-    } catch (error) {
-      await client.query('ROLLBACK');
-      console.error('Database error:', error);
-      console.error('Error stack:', error.stack);
-      throw error;
-    } finally {
-      client.release();
-    }
-  };
+const deleteConversation = async (conversationId) => {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+
+    // Delete the conversation
+    const deleteConversationResult = await client.query(
+      "DELETE FROM conversations WHERE id = $1",
+      [conversationId]
+    );
+    console.log(`Deleted ${deleteConversationResult.rowCount} conversation`);
+
+    await client.query("COMMIT");
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Database error:", error);
+    console.error("Error stack:", error.stack);
+    throw error;
+  } finally {
+    client.release();
+  }
+};
 
 module.exports = {
-    logChatHistory,
-    getUserChatHistory,
-    addUserFeedback,
-    endConversation,
-    getConversationLog,
-    deleteConversation
-}
-
+  logChatHistory,
+  getUserChatHistory,
+  addUserFeedback,
+  endConversation,
+  getConversationLog,
+  deleteConversation,
+};

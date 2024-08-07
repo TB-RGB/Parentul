@@ -1,14 +1,20 @@
-const Queue = require('bull');
+const Queue = require("bull");
 const pool = require("../modules/pool");
 const sendEmail = require('../services/sendGrid');
 // const { sendSMS } = require('../services/twilio-sms');
 
 
 // Create a new queue
-const notificationQueue = new Queue('notification-queue', process.env.REDIS_URL);
+const notificationQueue = new Queue(
+  "notification-queue",
+  process.env.REDIS_URL
+);
 
-
-const scheduleNotification = async (userId, conversationId, conversationLog) => {
+const scheduleNotification = async (
+  userId,
+  conversationId,
+  conversationLog
+) => {
   try {
     // Fetch user data and preferences
     const userQuery = `
@@ -34,12 +40,12 @@ const scheduleNotification = async (userId, conversationId, conversationLog) => 
 
     // console.log('User data:', userData);
 
-    if (userData.notifications_freq === 'none') {
+    if (userData.notifications_freq === "none") {
       console.log(`User ${userId} has notifications disabled.`);
       return;
     }
 
-    const delayHours = userData.notifications_freq === '24' ? 24 : 48;
+    const delayHours = userData.notifications_freq === "24" ? 24 : 48;
     const delayMilliseconds = delayHours * 60 * 60 * 1000;
     // const delayMilliseconds = 60 * 60 * 1000; //4 hour test
 
@@ -49,43 +55,52 @@ const scheduleNotification = async (userId, conversationId, conversationLog) => 
         userId,
         conversationId,
         userData,
-        conversationLog
+        conversationLog,
       },
       {
         delay: delayMilliseconds,
-        attempts: 1
+        attempts: 1,
       }
     );
 
-    console.log(`Notification scheduled for user ${userId}, conversation ${conversationId} in ${delayHours} hours`);
+    console.log(
+      `Notification scheduled for user ${userId}, conversation ${conversationId} in ${delayHours} hours`
+    );
   } catch (error) {
-    console.error('Error scheduling notification:', error);
+    console.error("Error scheduling notification:", error);
   }
 };
 
 // Process jobs
 notificationQueue.process(async (job) => {
-    const { userId, conversationId, userData, conversationLog } = job.data;
-  
-    try {
-      const followUpQuery = 'SELECT * FROM follow_ups WHERE conversation_id = $1 AND user_id = $2';
-      const followUpResult = await pool.query(followUpQuery, [conversationId, userId]);
-      const followUp = followUpResult.rows[0];
-  
-      if (followUp) {
-        const question = followUp.question_text;
-  
-        if (userData.notifications_email && userData.email) {
-          console.log('Attempting to send email to:', userData.email);
-          
-          const formattedConversationLog = conversationLog
-            .map(entry => {
-              const senderName = entry.sender_type === 'ai' ? 'Parentül Chat' : userData.first_name;
-              return `<strong>${senderName}</strong>: ${entry.content}`;
-            })
-            .join('<br>');
-  
-          const emailBody = `
+  const { userId, conversationId, userData, conversationLog } = job.data;
+
+  try {
+    const followUpQuery =
+      "SELECT * FROM follow_ups WHERE conversation_id = $1 AND user_id = $2";
+    const followUpResult = await pool.query(followUpQuery, [
+      conversationId,
+      userId,
+    ]);
+    const followUp = followUpResult.rows[0];
+
+    if (followUp) {
+      const question = followUp.question_text;
+
+      if (userData.notifications_email && userData.email) {
+        console.log("Attempting to send email to:", userData.email);
+
+        const formattedConversationLog = conversationLog
+          .map((entry) => {
+            const senderName =
+              entry.sender_type === "ai"
+                ? "Parentül Chat"
+                : userData.first_name;
+            return `<strong>${senderName}</strong>: ${entry.content}`;
+          })
+          .join("<br>");
+
+        const emailBody = `
   Hello ${userData.first_name},
   ${question}
   Here's a recap of your conversation:
@@ -115,22 +130,22 @@ notificationQueue.process(async (job) => {
     }
   });
 
-  async function checkJobStatus() {
-    const jobCounts = await notificationQueue.getJobCounts();
-    const waitingJobs = await notificationQueue.getWaiting(); 
-    const activeJobs = await notificationQueue.getActive(); 
-    const delayedJobs = await notificationQueue.getDelayed();
-    const completedJobs = await notificationQueue.getCompleted(); 
-    const failedJobs = await notificationQueue.getFailed();
-  
-    return {
-      counts: jobCounts,
-      waiting: waitingJobs.map(job => ({ id: job.id, data: job.data })),
-      active: activeJobs.map(job => ({ id: job.id, data: job.data })),
-      delayed: delayedJobs.map(job => ({ id: job.id, data: job.data })),
-      completed: completedJobs.map(job => ({ id: job.id, data: job.data })),
-      failed: failedJobs.map(job => ({ id: job.id, data: job.data }))
-    };
-  }
+async function checkJobStatus() {
+  const jobCounts = await notificationQueue.getJobCounts();
+  const waitingJobs = await notificationQueue.getWaiting();
+  const activeJobs = await notificationQueue.getActive();
+  const delayedJobs = await notificationQueue.getDelayed();
+  const completedJobs = await notificationQueue.getCompleted();
+  const failedJobs = await notificationQueue.getFailed();
+
+  return {
+    counts: jobCounts,
+    waiting: waitingJobs.map((job) => ({ id: job.id, data: job.data })),
+    active: activeJobs.map((job) => ({ id: job.id, data: job.data })),
+    delayed: delayedJobs.map((job) => ({ id: job.id, data: job.data })),
+    completed: completedJobs.map((job) => ({ id: job.id, data: job.data })),
+    failed: failedJobs.map((job) => ({ id: job.id, data: job.data })),
+  };
+}
 
 module.exports = { scheduleNotification, checkJobStatus };

@@ -27,13 +27,6 @@ const FirstTimeSetup = () => {
   const [children, setChildren] = useState([{ name: "", dob: "" }]);
   const [hasDiagnosis, setHasDiagnosis] = useState(false);
 
-  // useEffect(() => {
-  //   if (redirection) {
-  //     history.push(redirection);
-  //     dispatch({ type: 'CLEAR_REDIRECTION' });
-  //   }
-  // }, [redirection, history, dispatch]);
-
   useEffect(() => {
     if (
       family.parent.firstName &&
@@ -87,27 +80,6 @@ const FirstTimeSetup = () => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-  const handleAutoFill = () => {
-    const autoFilledChildren = [
-      { name: "Jimothy", dob: "2018-05-15" },
-      { name: "Billy", dob: "2020-09-22" },
-      { name: "Carol", dob: "2015-03-14" },
-    ];
-    setChildren(autoFilledChildren);
-  };
-
-  useEffect(() => {
-    const handleKeyPress = (event) => {
-      if (event.ctrlKey && event.shiftKey && event.key === "A") {
-        handleAutoFill();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyPress);
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress);
-    };
-  }, []);
 
   const steps = [
     {

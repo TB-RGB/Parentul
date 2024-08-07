@@ -46,18 +46,19 @@ app.use(passport.session());
 // Routes
 app.use("/api/user", userRouter);
 app.use("/api/chat", chatRouter);
-app.use("/api/preferences", preferencesRouter);
-app.use("/api/faq", faqRouter);
-app.use("/api/child", childrenRouter);
-app.use("/api/followup", followupRouter);
-app.use("/api/notifications", notificationsRouter);
 
 //Check Server is Running
 app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
-// Listen Server & Port
+app.use("/api/preferences", preferencesRouter);
+app.use("/api/faq", faqRouter);
+app.use("/api/child", childrenRouter);
+app.use("/api/followup", followupRouter);
+app.use("/api/notifications", notificationsRouter);
+
+// Listen Server & Port, server (http) and io (socket.io)
 server.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });
