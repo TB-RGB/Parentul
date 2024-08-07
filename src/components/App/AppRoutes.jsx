@@ -1,16 +1,6 @@
 import React, { useEffect } from "react";
 import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import LoginPage from "../LoginPage/LoginPage";
-import RegisterPage from "../RegisterPage/RegisterPage";
-import ChatComponent from "../Chat/ChatComponent";
-import ChatHistory from "../Chat/ChatHistory";
-import ChatHistoryDetails from "../Chat/ChatHistoryDetails";
-import UserPreferences from "../UserPreferences/UserPreferences";
-import FAQ from "../FAQ/FAQ";
-import FirstTimeSetup from "../FirstTimeSetup/FirstTimeSetup";
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
