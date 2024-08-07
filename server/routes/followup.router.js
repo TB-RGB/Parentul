@@ -1,7 +1,7 @@
 const express = require("express");
 const pool = require("../modules/pool");
 const router = express.Router();
-const { scheduleNotification } = require('../services/notification.scheduler')
+const { scheduleNotification } = require("../services/notification.scheduler");
 
 // ? Route to post followup after feedback
 
@@ -17,14 +17,17 @@ router.post("/", async (req, res) => {
       SELECT * FROM follow_ups
       WHERE conversation_id = $1 AND user_id = $2
     `;
-    const checkResult = await client.query(checkQuery, [conversationId, userId]);
+    const checkResult = await client.query(checkQuery, [
+      conversationId,
+      userId,
+    ]);
 
     if (checkResult.rows.length > 0) {
       if (checkResult.rows[0].is_asked) {
         await client.query("ROLLBACK");
         return res.status(400).json({
           error: "This conversation has already been flagged for follow-up.",
-          showSnackbar: true
+          showSnackbar: true,
         });
       }
     } else {
@@ -49,13 +52,15 @@ router.post("/", async (req, res) => {
     await scheduleNotification(userId, conversationId, conversationLog);
 
     await client.query("COMMIT");
-    res.status(200).json({ message: "Follow-up recorded and notification scheduled" });
+    res
+      .status(200)
+      .json({ message: "Follow-up recorded and notification scheduled" });
   } catch (err) {
     await client.query("ROLLBACK");
     console.error("Error adding/updating follow-up:", err);
     res.status(500).json({
       error: "An error occurred while processing your request.",
-      showSnackbar: true
+      showSnackbar: true,
     });
   } finally {
     client.release();

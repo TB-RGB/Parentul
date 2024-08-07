@@ -1,11 +1,12 @@
-const express = require('express');
-const { rejectUnauthenticated } = require('../modules/authentication-middleware');
-const encryptLib = require('../modules/encryption');
-const pool = require('../modules/pool');
-const userStrategy = require('../strategies/user.strategy');
-const jwt = require('jsonwebtoken');
-const { OAuth2Client } = require('google-auth-library');
-
+const express = require("express");
+const {
+  rejectUnauthenticated,
+} = require("../modules/authentication-middleware");
+const encryptLib = require("../modules/encryption");
+const pool = require("../modules/pool");
+const userStrategy = require("../strategies/user.strategy");
+const jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
 
 const router = express.Router();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -25,7 +26,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
-router.post('/google', async (req, res) => {
+router.post("/google", async (req, res) => {
   const { token } = req.body;
 
   try {
@@ -36,12 +37,20 @@ router.post('/google', async (req, res) => {
 
     const { sub, email, name, picture } = ticket.getPayload();
 
-    let user = await pool.query('SELECT * FROM users WHERE google_id = $1', [sub]);
+    let user = await pool.query("SELECT * FROM users WHERE google_id = $1", [
+      sub,
+    ]);
 
     if (!user.rows.length) {
       const insertUserText = `INSERT INTO users (email, first_name, last_name, google_id, profile_pic_url)
                               VALUES ($1, $2, $3, $4, $5) RETURNING id, email, first_name, last_name, profile_pic_url`;
-      const values = [email, name.split(' ')[0], name.split(' ')[1], sub, picture];
+      const values = [
+        email,
+        name.split(" ")[0],
+        name.split(" ")[1],
+        sub,
+        picture,
+      ];
       const result = await pool.query(insertUserText, values);
       user = result.rows[0];
     } else {
@@ -51,18 +60,20 @@ router.post('/google', async (req, res) => {
     // Log in the user
     req.login(user, (err) => {
       if (err) {
-        return res.status(500).json({ error: 'Failed to log in after Google authentication' });
+        return res
+          .status(500)
+          .json({ error: "Failed to log in after Google authentication" });
       }
       res.json({ user });
     });
   } catch (error) {
-    console.error('Error with Google login:', error);
-    res.status(500).send({ error: 'Google login failed' });
+    console.error("Error with Google login:", error);
+    res.status(500).send({ error: "Google login failed" });
   }
 });
 
 // Handles POST request with new user data
-router.post('/register', async (req, res, next) => {
+router.post("/register", async (req, res, next) => {
   const email = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
 
@@ -70,7 +81,7 @@ router.post('/register', async (req, res, next) => {
     const queryText = `INSERT INTO "users" (email, password_hash) VALUES ($1, $2) RETURNING *`;
     const result = await pool.query(queryText, [email, password]);
     const newUser = result.rows[0];
-    
+
     req.login(newUser, (err) => {
       if (err) {
         return next(err);
@@ -78,17 +89,19 @@ router.post('/register', async (req, res, next) => {
       res.json({ user: newUser });
     });
   } catch (err) {
-    console.log('User registration failed: ', err);
+    console.log("User registration failed: ", err);
     res.sendStatus(500);
   }
 });
 
-router.put('/', rejectUnauthenticated, async (req, res) => {
+router.put("/", rejectUnauthenticated, async (req, res) => {
   const { id, first_name, last_name, has_diag_in_family } = req.body;
 
   // Ensure the logged-in user is only updating their own information
   if (req.user.id !== parseInt(id)) {
-    return res.status(403).json({ error: 'Not authorized to update this user' });
+    return res
+      .status(403)
+      .json({ error: "Not authorized to update this user" });
   }
 
   try {
@@ -98,45 +111,50 @@ router.put('/', rejectUnauthenticated, async (req, res) => {
       WHERE id = $4
       RETURNING id, email, first_name, last_name, profile_pic_url
     `;
-    const result = await pool.query(queryText, [first_name, last_name, has_diag_in_family, id]);
+    const result = await pool.query(queryText, [
+      first_name,
+      last_name,
+      has_diag_in_family,
+      id,
+    ]);
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: "User not found" });
     }
 
     const updatedUser = result.rows[0];
     res.json(updatedUser);
   } catch (error) {
-    console.error('Error updating user:', error);
-    res.status(500).json({ error: 'Failed to update user information' });
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Failed to update user information" });
   }
 });
 
 // Handles login form authenticate/login POST
-router.post('/login', (req, res, next) => {
-  console.log('Login attempt for user:', req.body.username); // Log the username
-  userStrategy.authenticate('local', (err, user, info) => {
+router.post("/login", (req, res, next) => {
+  console.log("Login attempt for user:", req.body.username); // Log the username
+  userStrategy.authenticate("local", (err, user, info) => {
     if (err) {
-      console.log('Error in authentication:', err);
+      console.log("Error in authentication:", err);
       return next(err);
     }
     if (!user) {
-      console.log('Authentication failed. Info:', info);
-      return res.status(401).json({ message: 'Invalid credentials' });
+      console.log("Authentication failed. Info:", info);
+      return res.status(401).json({ message: "Invalid credentials" });
     }
     req.login(user, (err) => {
       if (err) {
-        console.log('Error in req.login:', err);
+        console.log("Error in req.login:", err);
         return next(err);
       }
-      console.log('User logged in successfully:', user.email);
+      console.log("User logged in successfully:", user.email);
       return res.json({ user });
     });
   })(req, res, next);
 });
 
 // clear all server session information about this user
-router.post('/logout', (req, res, next) => {
+router.post("/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) {
       return next(err);

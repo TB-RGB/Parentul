@@ -1,49 +1,30 @@
-const express = require('express');
-const pool = require('../modules/pool');
+const express = require("express");
+const pool = require("../modules/pool");
 const router = express.Router();
 
-
-
-
-//route will return all children associated with a specific user_id
-//specifically all children belonging to a family will be returned
-router.get('/:user_id', (req, res) => {
-  // GET route code here
-
-
-  let childdataid = req.body.user_id
+router.get("/:user_id", (req, res) => {
+  let childdataid = req.body.user_id;
   const queryText = `SELECT *
                       FROM children
-                      where user_id = $1;`
+                      where user_id = $1;`;
 
-  pool.query(queryText, [childdataid])
-    .then(result => {
+  pool
+    .query(queryText, [childdataid])
+    .then((result) => {
       res.send(result.rows);
-
     })
-    .catch(err => {
+    .catch((err) => {
+      console.log("error with get child by user_id route");
 
-      console.log("error with get child by user_id route")
-
-      res.sendStatus(500)
-    })
-
-
-
+      res.sendStatus(500);
+    });
 });
 
-/**
- * POST route template
- * This template reflects a SQL Transaction
- */
-/**
- * POST route for adding one or multiple children
- */
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const connection = await pool.connect();
 
   try {
-    await connection.query('BEGIN');
+    await connection.query("BEGIN");
 
     const children = Array.isArray(req.body) ? req.body : [req.body];
 
@@ -62,19 +43,19 @@ router.post('/', async (req, res) => {
       results.push(result.rows[0]);
     }
 
-    await connection.query('COMMIT');
+    await connection.query("COMMIT");
 
     res.status(201).json(results);
   } catch (error) {
-    await connection.query('ROLLBACK');
-    console.error('Error adding child(ren):', error);
-    res.status(500).json({ error: 'Failed to add child(ren)' });
+    await connection.query("ROLLBACK");
+    console.error("Error adding child(ren):", error);
+    res.status(500).json({ error: "Failed to add child(ren)" });
   } finally {
     connection.release();
   }
 });
 
-router.get('/family/:user_id', async (req, res) => {
+router.get("/family/:user_id", async (req, res) => {
   const { user_id } = req.params;
 
   const queryText = `
@@ -101,23 +82,22 @@ GROUP BY
 
   try {
     const result = await pool.query(queryText, [user_id]);
-    
+
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error fetching family data:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error fetching family data:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
-  
-router.put('/update', async (req, res) => {
+router.put("/update", async (req, res) => {
   const connection = await pool.connect();
   try {
-    await connection.query('BEGIN');
+    await connection.query("BEGIN");
     const { children } = req.body;
 
     for (let child of children) {
@@ -126,21 +106,26 @@ router.put('/update', async (req, res) => {
         SET "name" = $1, "dob" = $2
         WHERE "id" = $3 AND "user_id" = $4
       `;
-      await connection.query(queryText, [child.name, child.dob, child.id, child.user_id]);
+      await connection.query(queryText, [
+        child.name,
+        child.dob,
+        child.id,
+        child.user_id,
+      ]);
     }
 
-    await connection.query('COMMIT');
+    await connection.query("COMMIT");
     res.sendStatus(200);
   } catch (error) {
-    await connection.query('ROLLBACK');
-    console.log('Error updating children:', error);
+    await connection.query("ROLLBACK");
+    console.log("Error updating children:", error);
     res.sendStatus(500);
   } finally {
     connection.release();
   }
 });
 
-router.put('/update-user', async (req, res) => {
+router.put("/update-user", async (req, res) => {
   const connection = await pool.connect();
   try {
     const { id, first_name, last_name } = req.body;
@@ -152,45 +137,49 @@ router.put('/update-user', async (req, res) => {
       RETURNING id, first_name, last_name;
     `;
 
-    const result = await connection.query(queryText, [first_name, last_name, id]);
+    const result = await connection.query(queryText, [
+      first_name,
+      last_name,
+      id,
+    ]);
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.log('Error updating user:', error);
+    console.log("Error updating user:", error);
     res.sendStatus(500);
   } finally {
     connection.release();
   }
 });
 
-router.delete('/:childId', async (req, res) => {
+router.delete("/:childId", async (req, res) => {
   const connection = await pool.connect();
   try {
-    await connection.query('BEGIN');
+    await connection.query("BEGIN");
     const { childId } = req.params;
-    const userId = req.user.id; // Assuming you have authentication middleware
+    const userId = req.user.id;
 
     const deleteQuery = `
       DELETE FROM "children"
       WHERE "id" = $1 AND "user_id" = $2
     `;
-    
+
     const result = await connection.query(deleteQuery, [childId, userId]);
-    
+
     if (result.rowCount === 0) {
-      throw new Error('Child not found or user not authorized');
+      throw new Error("Child not found or user not authorized");
     }
 
-    await connection.query('COMMIT');
+    await connection.query("COMMIT");
     res.sendStatus(200);
   } catch (error) {
-    await connection.query('ROLLBACK');
-    console.error('Error deleting child:', error);
-    res.status(500).json({ message: 'Failed to delete child' });
+    await connection.query("ROLLBACK");
+    console.error("Error deleting child:", error);
+    res.status(500).json({ message: "Failed to delete child" });
   } finally {
     connection.release();
   }

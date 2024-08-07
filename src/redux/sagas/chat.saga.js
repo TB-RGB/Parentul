@@ -24,7 +24,7 @@ import {
 import api from "../../services/api";
 
 function* sendMessageSaga(action) {
-  console.log("sendMessageSaga started", action);
+
   try {
     yield put(setLoading(true));
     yield put(
@@ -45,7 +45,7 @@ function* sendMessageSaga(action) {
     });
 
     if (wsResponse) {
-      console.log("Received WebSocket response:", wsResponse.payload);
+      
 
       const { content, chatLogId } = wsResponse.payload;
 
