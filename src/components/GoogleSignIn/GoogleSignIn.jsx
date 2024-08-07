@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useState } from "react";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const GoogleSignIn = () => {
   const [error, setError] = useState(null);
@@ -13,21 +13,20 @@ const GoogleSignIn = () => {
     setIsLoading(true);
     try {
       const token = response.credential;
-    //   console.log("google token", token)
-      await dispatch({ type: 'GOOGLE_LOGIN', payload: { token } });
+      await dispatch({ type: "GOOGLE_LOGIN", payload: { token } });
       setError(null);
-      history.replace('/user'); // Use replace instead of push to avoid the same path issue
+      history.replace("/user"); // Use replace instead of push to avoid the same path issue
     } catch (err) {
-      console.error('Error during Google login:', err);
-      setError('Failed to process login information.');
+      console.error("Error during Google login:", err);
+      setError("Failed to process login information.");
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleFailure = (error) => {
-    console.error('Login Failed:', error);
-    setError('Login failed. Please try again.');
+    console.error("Login Failed:", error);
+    setError("Login failed. Please try again.");
     setIsLoading(false);
   };
 
@@ -35,7 +34,7 @@ const GoogleSignIn = () => {
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <div>
         {isLoading && <p>Loading...</p>}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <GoogleLogin
           onSuccess={handleSuccess}
           onError={handleFailure}

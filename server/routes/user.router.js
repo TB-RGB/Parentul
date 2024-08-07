@@ -3,7 +3,6 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const encryptLib = require('../modules/encryption');
 const pool = require('../modules/pool');
 const userStrategy = require('../strategies/user.strategy');
-const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 
 

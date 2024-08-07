@@ -1,7 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { Stack, Box, Card, Typography, Accordion, AccordionActions, AccordionSummary, AccordionDetails, Button, IconButton, Snackbar, Alert } from "@mui/material";
+import {
+  Stack,
+  Box,
+  Card,
+  Typography,
+  Accordion,
+  AccordionActions,
+  AccordionSummary,
+  AccordionDetails,
+  Button,
+  IconButton,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import Swal from "sweetalert2";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
@@ -12,7 +25,9 @@ import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 
 const ChatHistory = () => {
   const dispatch = useDispatch();
-  const { conversations, feedbackError } = useSelector((store) => store.history);
+  const { conversations, feedbackError } = useSelector(
+    (store) => store.history
+  );
   const history = useHistory();
   const { userId } = useParams();
   const family = useSelector((store) => store.familyReducer);
@@ -39,11 +54,11 @@ const ChatHistory = () => {
   }, [feedbackError]);
 
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
-    dispatch({ type: 'CLEAR_FEEDBACK_ERROR' });
+    dispatch({ type: "CLEAR_FEEDBACK_ERROR" });
   };
 
   const handleLogClick = (conversationId) => {
@@ -60,20 +75,19 @@ const ChatHistory = () => {
 
   const handleDeleteClick = (conversationId) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
-      color: 'white',
-      background: '#1A1A1A',
+      icon: "warning",
+      color: "white",
+      background: "#1A1A1A",
       showCancelButton: true,
-      cancelButtonText: 'CANCEL',
-      confirmButtonText: 'DELETE!',
+      cancelButtonText: "CANCEL",
+      confirmButtonText: "DELETE!",
       customClass: {
-        confirmButton: 'custom-confirm-button',
-        cancelButton: 'custom-cancel-button',
-        popup: 'custom-popup',
-
-      }
+        confirmButton: "custom-confirm-button",
+        cancelButton: "custom-cancel-button",
+        popup: "custom-popup",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch({
@@ -130,9 +144,13 @@ const ChatHistory = () => {
                       width: "100%", // Ensure the Box takes full width
                     }}
                   >
-                    <Typography>{formatDate(conversation.start_time)}</Typography>
+                    <Typography>
+                      {formatDate(conversation.start_time)}
+                    </Typography>
                     {conversation.user_rating !== null && (
-                      <Box> {/* Ensure consistent space for icon */}
+                      <Box>
+                        {" "}
+                        {/* Ensure consistent space for icon */}
                         {conversation.user_rating === true ? (
                           <ThumbUpAltIcon sx={{ color: "orange", mr: 1 }} />
                         ) : (
@@ -180,13 +198,17 @@ const ChatHistory = () => {
         </Card>
       </Box>
       <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={snackbarOpen}
         autoHideDuration={4000}
         onClose={handleSnackbarClose}
         sx={muiCustomStyles.snackbar}
       >
-        <Alert onClose={handleSnackbarClose} severity="error" sx={muiCustomStyles.snackbarAlert}>
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="error"
+          sx={muiCustomStyles.snackbarAlert}
+        >
           {feedbackError}
         </Alert>
       </Snackbar>

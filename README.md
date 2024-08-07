@@ -88,7 +88,7 @@ Parentül is a mobile-optimized application designed to provide real-time parent
    - Add the following variables:
      ```
      DATABASE_URL=postgresql://username:password@localhost:5432/parentul
-     JWT_SECRET=your_jwt_secret
+   
      GOOGLE_CLIENT_ID=your_google_client_id
      GOOGLE_CLIENT_SECRET=your_google_client_secret
      ```

@@ -2,13 +2,23 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { List, ListItem, ListItemText, Paper, Typography, Box, Button, Card, IconButton } from "@mui/material";
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Typography,
+  Box,
+  Button,
+  Card,
+  IconButton,
+} from "@mui/material";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import muiCustomStyles from "../../styles/muiCustomStyles";
 
 const ChatHistoryDetails = () => {
@@ -19,7 +29,6 @@ const ChatHistoryDetails = () => {
   const { chatId } = useParams();
   const messagesEndRef = useRef(null);
   const [userFeedback, setUserFeedback] = useState("");
-  
 
   useEffect(() => {
     if (log.length === 0) {
@@ -30,7 +39,6 @@ const ChatHistoryDetails = () => {
   useEffect(() => {
     scrollToBottom();
   }, [log]);
-
 
   const renderMessageContent = (content) => {
     if (content === null || content === undefined) {
@@ -57,19 +65,24 @@ const ChatHistoryDetails = () => {
     }
     dispatch({
       type: "SEND_FEEDBACK",
-      payload: { userId: user.id, conversationId: chatId, rating: userFeedback, questionText: userFeedback === true ? "Did using the advice given have a postive impact?" : "What did you find unhelpful about the advice given?" },
+      payload: {
+        userId: user.id,
+        conversationId: chatId,
+        rating: userFeedback,
+        questionText:
+          userFeedback === true
+            ? "Did using the advice given have a postive impact?"
+            : "What did you find unhelpful about the advice given?",
+      },
     });
     handleBackClick();
   };
 
-  
   return (
     <>
       <div style={{ overflow: "hidden", overscrollBehavior: "contain" }}>
         <Box sx={muiCustomStyles.box}>
-          <Card
-            sx={muiCustomStyles.card}
-          >
+          <Card sx={muiCustomStyles.card}>
             <Typography variant="h4" textAlign={"center"}>
               Chat Log
             </Typography>
@@ -124,7 +137,7 @@ const ChatHistoryDetails = () => {
               </List>
               <div ref={messagesEndRef} />
             </Paper>
-            <Typography variant="h6" textAlign={'center'} sx={{ marginTop: 2 }}>
+            <Typography variant="h6" textAlign={"center"} sx={{ marginTop: 2 }}>
               Was this helpful?
             </Typography>
             <Box
@@ -133,16 +146,34 @@ const ChatHistoryDetails = () => {
                 justifyContent: "center",
               }}
             >
-              <IconButton sx={{ mt: 2.3 }} onClick={() => setUserFeedback(false)}>
-                {userFeedback === false ? <ThumbDownAltIcon sx={{ color: "orange", fontSize: 40 }} /> : <ThumbDownOffAltIcon sx={{ color: "orange", fontSize: 40 }} />}
+              <IconButton
+                sx={{ mt: 2.3 }}
+                onClick={() => setUserFeedback(false)}
+              >
+                {userFeedback === false ? (
+                  <ThumbDownAltIcon sx={{ color: "orange", fontSize: 40 }} />
+                ) : (
+                  <ThumbDownOffAltIcon sx={{ color: "orange", fontSize: 40 }} />
+                )}
               </IconButton>
 
               <IconButton onClick={() => setUserFeedback(true)}>
-                {userFeedback === true ? <ThumbUpAltIcon sx={{ color: "orange", fontSize: 40 }} /> : <ThumbUpOffAltIcon sx={{ color: "orange", fontSize: 40 }} />}
+                {userFeedback === true ? (
+                  <ThumbUpAltIcon sx={{ color: "orange", fontSize: 40 }} />
+                ) : (
+                  <ThumbUpOffAltIcon sx={{ color: "orange", fontSize: 40 }} />
+                )}
               </IconButton>
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
-              <Button variant="outlined" sx={muiCustomStyles.backButton} endIcon={<LibraryAddIcon />} onClick={sendFeedback}>
+            <Box
+              sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}
+            >
+              <Button
+                variant="outlined"
+                sx={muiCustomStyles.backButton}
+                endIcon={<LibraryAddIcon />}
+                onClick={sendFeedback}
+              >
                 Save Feedback
               </Button>
             </Box>

@@ -1,10 +1,9 @@
-import React from 'react';
-import LoginForm from '../LoginForm/LoginForm';
-import { useHistory } from 'react-router-dom';
-import { Button } from '@mui/material';
-import Header from '../Header/Header';
-import muiCustomStyles from '../../styles/muiCustomStyles';
-
+import React from "react";
+import LoginForm from "../LoginForm/LoginForm";
+import { useHistory } from "react-router-dom";
+import { Button } from "@mui/material";
+import Header from "../Header/Header";
+import muiCustomStyles from "../../styles/muiCustomStyles";
 
 function LoginPage() {
   const history = useHistory();
@@ -16,11 +15,9 @@ function LoginPage() {
 
       <center>
         <Button
-        sx={muiCustomStyles.continueButton}
-          
-          
+          sx={muiCustomStyles.continueButton}
           onClick={() => {
-            history.push('/registration');
+            history.push("/registration");
           }}
         >
           Register

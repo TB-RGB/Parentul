@@ -1,20 +1,19 @@
-import React, { useEffect } from 'react';
-import { HashRouter as Router } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from "react";
+import { HashRouter as Router } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-import NavAppBar from '../Nav/AppBar';
-import Footer from '../Footer/Footer';
-import Header from '../Header/Header';
-import AppRoutes from './AppRoutes';
+import NavAppBar from "../Nav/AppBar";
+import Footer from "../Footer/Footer";
+import Header from "../Header/Header";
+import AppRoutes from "./AppRoutes";
 // import './App.css';
 // import './output.css';
 
 function App() {
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
-    
-    dispatch({ type: 'FETCH_USER' });
+    dispatch({ type: "FETCH_USER" });
   }, [dispatch]);
 
   return (
@@ -23,7 +22,7 @@ function App() {
         <NavAppBar />
         <Header />
         <main>
-        <AppRoutes />
+          <AppRoutes />
         </main>
         <Footer />
       </div>

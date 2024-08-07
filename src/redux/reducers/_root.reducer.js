@@ -1,14 +1,13 @@
-import { combineReducers } from 'redux';
-import errors from './errors.reducer';
-import user from './user.reducer';
-import chat from './chat.reducer';
-import history from './chatHistory.reducer';
-import firstTimeSetupReducer from './firsttimesetup.reducer';
-import familyReducer from './family.reducer';
-import preferences from './preferences.reducer';
-import faqReducer from './faq.reducer';
-import jobStatusReducer from './jobStatus.reducer';
-
+import { combineReducers } from "redux";
+import errors from "./errors.reducer";
+import user from "./user.reducer";
+import chat from "./chat.reducer";
+import history from "./chatHistory.reducer";
+import firstTimeSetupReducer from "./firsttimesetup.reducer";
+import familyReducer from "./family.reducer";
+import preferences from "./preferences.reducer";
+import faqReducer from "./faq.reducer";
+import jobStatusReducer from "./jobStatus.reducer";
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -26,7 +25,6 @@ const rootReducer = combineReducers({
   preferences, // will have an array of user preferences
   faqReducer,
   jobStatusReducer,
-
 });
 
 export default rootReducer;

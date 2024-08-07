@@ -1,7 +1,7 @@
 const Queue = require('bull');
 const pool = require("../modules/pool");
 const sendEmail = require('../services/sendGrid');
-const { sendSMS } = require('../services/twilio-sms');
+// const { sendSMS } = require('../services/twilio-sms');
 
 
 // Create a new queue
@@ -100,10 +100,10 @@ notificationQueue.process(async (job) => {
           console.error('Email address is missing for user:', userId);
         }
   
-        if (userData.notifications_sms && userData.phone_number) {
-          console.log('Attempting to send SMS to:', userData.phone_number);
-          await sendSMS(userData.phone_number, question);
-        }
+        // if (userData.notifications_sms && userData.phone_number) {
+        //   console.log('Attempting to send SMS to:', userData.phone_number);
+        //   await sendSMS(userData.phone_number, question);
+        // }
   
         console.log(`Notification sent for user ${userId}, conversation ${conversationId}`);
       } else {
