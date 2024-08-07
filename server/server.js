@@ -1,41 +1,38 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-require('dotenv').config();
+require("dotenv").config();
 const PORT = process.env.PORT || 5001;
-const cors = require('cors');
-const { Server } = require('socket.io');
-const http = require('http');
+const cors = require("cors");
+const { Server } = require("socket.io");
+const http = require("http");
 const server = http.createServer(app);
-const { setupSocket } = require('./services/setupSocket');
+const { setupSocket } = require("./services/setupSocket");
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST'],
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
   },
 });
 
 setupSocket(io);
 
-
-
 // Middleware Includes
-const sessionMiddleware = require('./modules/session-middleware');
-const passport = require('./strategies/user.strategy');
+const sessionMiddleware = require("./modules/session-middleware");
+const passport = require("./strategies/user.strategy");
 
 // Route Includes
-const userRouter = require('./routes/user.router');
-const chatRouter = require('./routes/chat.router');
-const preferencesRouter = require('./routes/preferences.router');
-const faqRouter = require('./routes/faq.router.js');
-const childrenRouter = require('./routes/children.router');
-const followupRouter = require('./routes/followup.router');
-const notificationsRouter = require('./routes/notifications.router.js')
-
+const userRouter = require("./routes/user.router");
+const chatRouter = require("./routes/chat.router");
+const preferencesRouter = require("./routes/preferences.router");
+const faqRouter = require("./routes/faq.router.js");
+const childrenRouter = require("./routes/children.router");
+const followupRouter = require("./routes/followup.router");
+const notificationsRouter = require("./routes/notifications.router.js");
 
 // Express Middleware
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(express.static('build'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("build"));
 // CORS Configuration
 app.use(cors());
 
@@ -47,23 +44,21 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.use('/api/user', userRouter);
-app.use('/api/chat', chatRouter);
+app.use("/api/user", userRouter);
+app.use("/api/chat", chatRouter);
 
 //Check Server is Running
-app.get('/', (req, res) => {
-  res.send('Server is running');
+app.get("/", (req, res) => {
+  res.send("Server is running");
 });
 
-app.use('/api/preferences', preferencesRouter);
-app.use('/api/faq', faqRouter);
-app.use('/api/child', childrenRouter);
-app.use('/api/followup', followupRouter);
-app.use('/api/notifications', notificationsRouter)
+app.use("/api/preferences", preferencesRouter);
+app.use("/api/faq", faqRouter);
+app.use("/api/child", childrenRouter);
+app.use("/api/followup", followupRouter);
+app.use("/api/notifications", notificationsRouter);
 
-
-
-// Listen Server & Port
+// Listen Server & Port, server (http) and io (socket.io)
 server.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });

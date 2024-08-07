@@ -1,7 +1,7 @@
 // twilio-sms.js
 
-require('dotenv').config(); // Make sure to install dotenv: npm install dotenv
-const twilio = require('twilio');
+require("dotenv").config(); // Make sure to install dotenv: npm install dotenv
+const twilio = require("twilio");
 
 // Twilio credentials from environment variables
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -20,18 +20,18 @@ const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
  * @returns {Promise} A promise that resolves with the message SID if successful
  */
 async function sendSMS(toPhoneNumber, message) {
-    try {
-        const result = await client.messages.create({
-            body: message,
-            from: twilioPhoneNumber,
-            to: toPhoneNumber
-        });
-        console.log(`SMS sent successfully. SID: ${result.sid}`);
-        return result.sid;
-    } catch (error) {
-        console.error('Error sending SMS:', error);
-        throw error;
-    }
+  try {
+    const result = await client.messages.create({
+      body: message,
+      from: twilioPhoneNumber,
+      to: toPhoneNumber,
+    });
+    console.log(`SMS sent successfully. SID: ${result.sid}`);
+    return result.sid;
+  } catch (error) {
+    console.error("Error sending SMS:", error);
+    throw error;
+  }
 }
 
 module.exports = { sendSMS };

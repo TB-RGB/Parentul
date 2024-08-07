@@ -41,7 +41,7 @@ class AIChatEngine {
       "What's wrong with them?",
       "What are they feeling when they're angry?",
       "Metldowns",
-      "Child hving metldown"
+      "Child hving metldown",
     ]);
 
     this.addTrainingData("not listening", [
@@ -89,7 +89,7 @@ class AIChatEngine {
       });
     });
   }
-
+  // Adds training data for a specific category
   addTrainingData(category, phrases) {
     if (!this.trainingData) {
       this.trainingData = {};
@@ -103,7 +103,7 @@ class AIChatEngine {
   preprocessText(text) {
     return stemmer.tokenizeAndStem(text.toLowerCase());
   }
-
+  // Generates a response based on the input message
   async generateResponse(message) {
     console.log("Generating response for:", message);
     if (!message || typeof message !== "string") {
@@ -157,28 +157,6 @@ class AIChatEngine {
       console.log("Conversation state:", this.conversationState);
       return this.provideDetailedAdvice();
     }
-    // else if (this.conversationState.stage === "providing_advice") {
-    //   if (message.toLowerCase().includes("thumbs up")) {
-    //     this.conversationState = { stage: "initial" };
-    //     return {
-    //       text: "I'm glad you found that helpful! Is there anything else I can assist you with regarding parenting?",
-    //       category: "positive",
-    //       confidence: 1,
-    //     };
-    //   } else if (message.toLowerCase().includes("thumbs down")) {
-    //     return {
-    //       text: "I'm sorry the advice wasn't helpful. Could you explain why, so I can try to provide better assistance?",
-    //       category: "negative",
-    //       confidence: 1,
-    //     };
-    //   } else {
-    //     return {
-    //       text: "Thank you for your feedback. Is there anything else I can help you with regarding parenting?",
-    //       category: "follow_up",
-    //       confidence: 1,
-    //     };
-    //   }
-    // }
   }
 
   classifyMessage(message) {
@@ -186,7 +164,7 @@ class AIChatEngine {
     const classifications =
       this.classifier.getClassifications(preprocessedMessage);
 
-    // Use TF-IDF to improve classification
+    // Using TF-IDF to improve classification, adds a weight to each category
     this.tfIdf.tfidfs(preprocessedMessage, (i, measure, key) => {
       const category = key;
       const existingClassification = classifications.find(
@@ -198,13 +176,13 @@ class AIChatEngine {
         classifications.push({ label: category, value: measure });
       }
     });
-
+    // Sort the classifications by their value
     classifications.sort((a, b) => b.value - a.value);
     const topClassification = classifications[0];
 
     // Set a minimum confidence threshold
     const confidenceThreshold = 0.2;
-
+    // If the top classification has a confidence value above the threshold, return it
     console.log("Top classification:", topClassification);
     return topClassification && topClassification.value > confidenceThreshold
       ? {
@@ -243,8 +221,12 @@ class AIChatEngine {
         ];
     }
 
-    adviceMessages.push(`I look forward to hearing if this advice helps you. You can end this conversation now, and give it a thumbs up or down, and I'll send a follow up message so we can touch base about it soon. I'd love to know either way if this advice had an impact on your parenting journey.`);
-    adviceMessages.push("Any time, if there is any additional help I can provide to assist you with parenting, come back and we can chat again.")
+    adviceMessages.push(
+      `I look forward to hearing if this advice helps you. You can end this conversation now, and give it a thumbs up or down, and I'll send a follow up message so we can touch base about it soon. I'd love to know either way if this advice had an impact on your parenting journey.`
+    );
+    adviceMessages.push(
+      "Any time, if there is any additional help I can provide to assist you with parenting, come back and we can chat again."
+    );
 
     return {
       messages: adviceMessages,
@@ -276,7 +258,7 @@ class AIChatEngine {
       `4. Maintain your calm: Your calm demeanor can help ${this.conversationState.childName} regulate their own emotions. Take deep breaths and speak in a soft, reassuring tone.`,
       `5. Develop a calming routine: Work with ${this.conversationState.childName} to create a series of steps to follow when feeling overwhelmed. This might include deep breathing, counting, or using a stress ball.`,
       `6. Use visual schedules: If transitions or unexpected changes trigger meltdowns, use picture schedules to help ${this.conversationState.childName} understand and prepare for daily activities.`,
-      
+
       `7. Teach emotional vocabulary: Help ${this.conversationState.childName} name their feelings. This can make big emotions feel more manageable.`,
       `8. Offer choices: When possible, give ${this.conversationState.childName} some control by offering limited choices. This can help prevent feelings of powerlessness that might trigger a meltdown.`,
       `9. Praise calm behavior: When ${this.conversationState.childName} manages difficult emotions well, offer specific praise to reinforce this positive behavior.`,
