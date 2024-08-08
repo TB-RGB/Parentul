@@ -6,8 +6,7 @@ import NavAppBar from "../Nav/AppBar";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import AppRoutes from "./AppRoutes";
-// import './App.css';
-// import './output.css';
+
 
 function App() {
   const dispatch = useDispatch();

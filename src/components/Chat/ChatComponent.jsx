@@ -11,7 +11,8 @@ import {
 } from "../../redux/actions/chatActions";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import muiCustomStyles from "../../styles/muiCustomStyles";
-import "./output.css";
+import "./build.css";
+import "./Chat.css"
 
 const ChatComponent = () => {
   const dispatch = useDispatch();
