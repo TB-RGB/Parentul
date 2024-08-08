@@ -97,7 +97,6 @@ Parentül is a mobile-optimized application designed to provide real-time parent
      SENDGRID_API_KEY=your_sendgrid_api_key
      SERVER_SESSION_SECRET=a_super_duper_secret_key
      REDIS_URL=your_redis_localhost_url
-     
      ```
 
 4. Start the backend server:
