@@ -5,7 +5,7 @@ import { receiveWebSocketMessage } from "../redux/actions/chatActions";
 let socket;
 
 export const initializeWebSocket = () => {
-  (socket = io("http://localhost:5001")),
+  (socket = io(process.env.CLIENT_URL || "http://localhost:5001")),
     {
       transports: ["websocket", "polling"],
     };
