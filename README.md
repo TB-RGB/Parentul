@@ -29,38 +29,39 @@ Parentül is a mobile-optimized application designed to provide real-time parent
    - Ability to create and edit family profiles
    - Add and manage information about children
 
-4. **Customized Advice**:
-   - Tailored recommendations based on the age and specific needs of each child
-   - Separate advice tracks for parents of children with and without diagnosed neurological disorders or trauma-related behaviors
-
-5. **Chat History and Feedback**:
+4. **Chat History and Feedback**:
    - Logging of chat interactions for future reference
    - Ability to review past conversations
    - Option to provide feedback on the helpfulness of advice
 
-6. **Mobile-Optimized Design**:
+5. **Mobile-Optimized Design**:
    - Responsive interface for seamless use on various devices
    - Optimized for mobile use with touch-friendly controls
 
 7. **Follow-up System**:
    - Scheduled follow-ups to check on the effectiveness of provided advice
-   - Option for email, SMS, or in-app notifications
+   - Option for email or SMS
 
 ## Technologies Used
+<a href="https://www.w3schools.com/w3css/defaulT.asp"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg" height="40px" width="40px" /></a>
+<a href="https://www.w3schools.com/html/"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" height="40px" width="40px" /></a>
+<a href="https://www.w3schools.com/js/default.asp"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" height="40px" width="40px" /></a>
+<a href="https://www.postgresql.org/"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg" height="40px" width="40px" /></a>
+<a href="https://reactjs.org/"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" height="40px" width="40px" /></a>
+<a href="https://redux.js.org/"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" height="40px" width="40px" /></a>
+<a href="https://redux-saga.js.org/docs/introduction/GettingStarted"><img src="./public/images/redux-saga.svg" height="40px" width="40px" /></a>
+<a href="https://material-ui.com/"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/materialui/materialui-original.svg" height="40px" width="40px" /></a>
+<a href="https://nodejs.org/en/"><img src="https://github.com/devicons/devicon/blob/master/icons/nodejs/nodejs-plain.svg" height="40px" width="40px" /></a>
+<a href="https://axios-http.com/docs/intro"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/axios/axios-plain.svg" height="40px" width="40px" /></a>
+<a href="https://socket.io/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/socketio/socketio-original.svg" height="40px" width="40px"/></a>
+<a href="https://oauth.net/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/oauth/oauth-original.svg" height="40px" width="40px" /></a>
+<a href="https://redis.io/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg" height="40px" width="40px" /></a>
 
-- Frontend:
-  - React
-  - Redux
-  - Redux-Saga
-  - Axios
-  - Socket.io-client
-- Backend:
-  - Node.js
-  - Express
-  - PostgreSQL
-  - Socket.io
-  - Natural (NLP library)
-  - Twillio
+- Also:
+  - [Natural (NLP library)](https://www.npmjs.com/package/natural?activeTab=code)
+  - [Twilio](https://www.twilio.com/en-us)
+  - [Sendgrid](https://sendgrid.com/en-us)
+  - [Bull](https://www.npmjs.com/package/bull)
 
 ## Getting Started
 
@@ -87,23 +88,30 @@ Parentül is a mobile-optimized application designed to provide real-time parent
    - Create a `.env` file in the `server` directory
    - Add the following variables:
      ```
-     DATABASE_URL=postgresql://username:password@localhost:5432/parentul
-   
+     VITE_GOOGLE_CLIENT_ID=your_google_client_id
      GOOGLE_CLIENT_ID=your_google_client_id
      GOOGLE_CLIENT_SECRET=your_google_client_secret
+     TWILIO_ACCOUNT_SID=your_twilio_account_secret_id
+     TWILIO_AUTH_TOKEN=your_twilio_auth_token
+     TWILIO_PHONE_NUMBER=your_toll_free_number
+     SENDGRID_API_KEY=your_sendgrid_api_key
+     SERVER_SESSION_SECRET=a_super_duper_secret_key
+     REDIS_URL=your_redis_localhost_url
+     
      ```
 
 4. Start the backend server:
    ```
    npm run server
    ```
+   **Note:** This project was developed with nodemon as a global dependancy, if not using nodemon, then you'll need to modify the `server` script within the `package.json`
 
 5. Start the frontend development server:
    ```
    npm run client
    ```
 
-6. Visit in browers `localhost:5173`
+6. Visit in brower `http://localhost:5173`
 
 ### Database Setup
 
@@ -191,11 +199,5 @@ The Parentul application uses the following main tables:
    - `question`
    - `answer`
 
-## Project Structure
 
-overview of the project's folder structure
-
-## API Documentation
-
-Endpoints and their descriptions
 
